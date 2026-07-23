@@ -1,0 +1,37 @@
+{
+	"dockerFile": "Dockerfile",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-dotnettools.csharp"
+			]
+		}
+	},
+	"mounts": [
+		{ "source": "nuget", "target": "/root/.nuget", "type": "volume" },
+		"type=tmpfs,target=/run/libpod",
+    "type=tmpfs,target=/run/containers/storage",
+    "type=tmpfs,target=/run/containers/networks"
+	],
+	"containerEnv": {
+    "DEV_NETWORK": "dev-network",
+    "DEV_NETWORK_SUBNET": "10.99.1.0/24",
+    "DEV_NETWORK_DNS": "10.99.1.2",
+    "KAFKA_USERNAME": "admin",
+    "KAFKA_PASSWORD": "p@ssw0rd!",
+    "CONTAINERS_REGISTRIES_CONF": "/workspaces/backend-kafka/.podman/registries.conf",
+    "CONTAINERS_STORAGE_CONF": "/workspaces/backend-kafka/.podman/storage.conf",
+    "WORKSPACE_ROOT": "/workspaces/backend-kafka"
+	},
+	"runArgs": [
+		"--name=backend-kafka",
+		"--hostname=kafka",
+    "--add-host=host.containers.internal:host-gateway",
+    "--network=kafka-network",
+    "--dns=127.0.0.1", "--dns=8.8.8.8", "--dns=1.1.1.1",
+		"--privileged"
+	],
+	"initializeCommand": "chmod u+x .podman/*.sh; .podman/initializing.sh",
+  "postCreateCommand": "chmod u+x .services/*.sh .services/**/*.sh; .services/starting.sh",
+  "postStartCommand": ".podman/starting.sh"
+}
