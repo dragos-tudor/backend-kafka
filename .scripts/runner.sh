@@ -1,2 +1,2 @@
 
-cd $WORKSPACE_ROOT/.runner && ./run.sh
+cd $WORKSPACE_ROOT/.runner && RUNNER_ALLOW_RUNASROOT=true ./run.sh
