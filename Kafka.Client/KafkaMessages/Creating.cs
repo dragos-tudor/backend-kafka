@@ -24,12 +24,14 @@ partial class KafkaFuncs
     DateTime date = default,
     int schemaVersion = 1,
     string? traceId = default,
+    Guid? messageId = default,
+    Guid? correlationId = default,
     Func<TPayload, byte[]>? serializer = default)
   =>
     CreateKafkaMessage(
       key,
       serializer?.Invoke(value) ?? SerializeJson(value),
-      SetKafkaMessageHeaders<TPayload>(headers, schemaVersion, traceId),
+      SetKafkaMessageHeaders<TPayload>(headers, schemaVersion, traceId, messageId, correlationId),
       date
     );
 }

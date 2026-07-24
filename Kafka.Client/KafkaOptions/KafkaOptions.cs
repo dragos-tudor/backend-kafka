@@ -16,6 +16,9 @@ public record KafkaOptions : KafkaBaseOptions<string>
     public TimeSpan RetryBaseDelay { get; init; } = TimeSpan.FromSeconds(1);
     public double RetryBackoffFactor { get; init; } = 2d;
     public TimeSpan MaxRetryDelay { get; init; } = TimeSpan.FromMinutes(1);
+    public IsolationLevel IsolationLevel { get; init; } = IsolationLevel.ReadCommitted;
+    public int MaxPollRecords { get; init; } = 500;
+    public TimeSpan SessionTimeout { get; init; } = TimeSpan.FromMilliseconds(30000);
     public new TimeSpan ConnectTimeout { get; init; } = TimeSpan.FromSeconds(15);
     public TimeSpan OperationTimeout { get; init; } = TimeSpan.FromSeconds(5);
 }

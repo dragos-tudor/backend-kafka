@@ -19,7 +19,10 @@ partial class KafkaFuncs
     TimeSpan? retryBaseDelay = default,
     double retryBackoffFactor = 2d,
     TimeSpan? maxRetryDelay = default,
-    string deadLetterTopicSuffix = "-dlq")
+    string deadLetterTopicSuffix = "-dlq",
+    int? maxPollRecords = default,
+    TimeSpan? sessionTimeout = default,
+    IsolationLevel? isolationlevel = default)
     => new()
     {
       EndPoints = endPoints,
@@ -39,6 +42,9 @@ partial class KafkaFuncs
       RetryBackoffFactor = retryBackoffFactor,
       MaxRetryDelay = maxRetryDelay ?? TimeSpan.FromMinutes(1),
       DeadLetterTopicSuffix = deadLetterTopicSuffix,
+      MaxPollRecords = maxPollRecords ?? 500,
+      SessionTimeout = sessionTimeout ?? TimeSpan.FromMilliseconds(30000),
+      IsolationLevel = isolationlevel ?? IsolationLevel.ReadCommitted
     };
 
   public static KafkaOptions CreateKafkaOptionsFromEnvironment(
@@ -58,7 +64,10 @@ partial class KafkaFuncs
     string retryBaseDelayMillisecondsName = "KAFKA_RETRY_BASE_DELAY_MS",
     string retryBackoffFactorName = "KAFKA_RETRY_BACKOFF_FACTOR",
     string maxRetryDelayMillisecondsName = "KAFKA_MAX_RETRY_DELAY_MS",
-    string deadLetterTopicSuffixName = "KAFKA_DLQ_SUFFIX")
+    string deadLetterTopicSuffixName = "KAFKA_DLQ_SUFFIX",
+    string maxPollRecordsName = "KAFKA_MAX_POOL_RECORDS",
+    string sessionTimeoutName = "KAFKA_SESSION_TIMEOUT",
+    string isolationLevelName = "KAFKA_ISOLATION_LEVEL")
   {
     var endpoints = SplitKafkaEndpoints(Environment.GetEnvironmentVariable(bootstrapServersName));
     var user = Environment.GetEnvironmentVariable(userName);
@@ -79,6 +88,9 @@ partial class KafkaFuncs
     var retryBackoffFactor = ParseKafkaDouble(Environment.GetEnvironmentVariable(retryBackoffFactorName), 2d);
     var maxRetryDelay = TimeSpan.FromMilliseconds(ParseKafkaInt(Environment.GetEnvironmentVariable(maxRetryDelayMillisecondsName), 60000));
     var deadLetterTopicSuffix = Environment.GetEnvironmentVariable(deadLetterTopicSuffixName) ?? "-dlq";
+    var maxPollRecords = ParseKafkaInt(Environment.GetEnvironmentVariable(maxPollRecordsName), 500);
+    var sessionTimeout = TimeSpan.FromMilliseconds(ParseKafkaInt(Environment.GetEnvironmentVariable(sessionTimeoutName), 30000));
+    var isolationLevel = ParseKafkaEnum(Environment.GetEnvironmentVariable(isolationLevelName), IsolationLevel.ReadCommitted);
 
     return CreateKafkaOptions(
       endpoints,
@@ -97,6 +109,9 @@ partial class KafkaFuncs
       retryBaseDelay,
       retryBackoffFactor,
       maxRetryDelay,
-      deadLetterTopicSuffix);
+      deadLetterTopicSuffix,
+      maxPollRecords,
+      sessionTimeout,
+      isolationLevel);
   }
 }

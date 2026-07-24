@@ -17,4 +17,10 @@ partial class KafkaFuncs
 
   public static string? GetKafkaTraceIdHeader(Headers headers) =>
     GetKafkaHeaderString(headers, TraceIdHeaderName);
+
+  public static Guid? GetKafkaMessageIdHeader(Headers headers) =>
+    Guid.TryParse(GetKafkaHeaderString(headers, MessageIdHeaderName), out var messageId) ? messageId : null;
+
+  public static Guid? GetKafkaCorrelationIdHeader(Headers headers) =>
+    Guid.TryParse(GetKafkaHeaderString(headers, CorrelationIdHeaderName), out var correlationId) ? correlationId : null;
 }

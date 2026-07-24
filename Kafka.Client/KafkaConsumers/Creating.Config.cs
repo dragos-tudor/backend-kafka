@@ -13,6 +13,9 @@ partial class KafkaFuncs
     bool enableAutoCommit = false,
     string? clientId = default,
     TimeSpan? connectTimeout = default,
+    int? maxPollRecords = default,
+    TimeSpan? sessionTimeout = default,
+    IsolationLevel? isolationLevel = default,
     Action<ConsumerConfig>? configBuilder = default)
   {
     var config = new ConsumerConfig
@@ -27,6 +30,9 @@ partial class KafkaFuncs
       EnableAutoCommit = enableAutoCommit,
       EnableAutoOffsetStore = false,
       ClientId = clientId,
+      MaxPollRecords = maxPollRecords,
+      SessionTimeoutMs = sessionTimeout?.Milliseconds,
+      IsolationLevel = isolationLevel,
       SocketTimeoutMs = (int)(connectTimeout ?? TimeSpan.FromSeconds(15)).TotalMilliseconds,
     };
 
@@ -48,5 +54,8 @@ partial class KafkaFuncs
       options.EnableAutoCommit,
       options.ClientId,
       options.ConnectTimeout,
+      options.MaxPollRecords,
+      options.SessionTimeout,
+      options.IsolationLevel,
       configBuilder);
 }

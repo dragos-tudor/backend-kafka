@@ -2,26 +2,27 @@ namespace Kafka.Client;
 
 partial class KafkaFuncs
 {
-  public static ConsumeResult<TKey, TValue> ConsumeMessage<TKey, TValue>(
-    IConsumer<TKey, TValue> consumer,
+  public static ConsumeResult<TKey, byte[]> ConsumeMessage<TKey>(
+    IConsumer<TKey, byte[]> consumer,
     CancellationToken cancellationToken = default)
   => consumer.Consume(cancellationToken);
 
-  public static IReadOnlyCollection<ConsumeResult<TKey, TValue>> ConsumeMessages<TKey, TValue>(
-    IConsumer<TKey, TValue> consumer,
-    int maxCount,
+  // Capture-only loop: persists an inbox record for every consumed message and immediately
+  // advances the offset (per the chosen commit strategy). Actual handling/retries happen later,
+  // asynchronously, via ResumeInboxMessageAsync/ProcessDueMessagesAsync.
+  public static async Task ConsumeMessagesAsync<TKey>(
+    IConsumer<TKey, byte[]> consumer,
+    KafkaCommitStrategy commitStrategy,
+    Func<Message<TKey, byte[]>, TopicPartitionOffset, CancellationToken, Task> saveInboxMessage,
     CancellationToken cancellationToken = default)
   {
-    var results = new List<ConsumeResult<TKey, TValue>>(maxCount);
-
-    while (results.Count < maxCount && !cancellationToken.IsCancellationRequested)
+    while (!cancellationToken.IsCancellationRequested)
     {
       var result = ConsumeMessage(consumer, cancellationToken);
+      if (result is null || result.IsPartitionEOF) continue;
 
-      if (result is null) break;
-      if (result.IsPartitionEOF is false) results.Add(result);
+      await saveInboxMessage(result.Message, result.TopicPartitionOffset, cancellationToken);
+      ApplyCommitStrategy(consumer, result, commitStrategy);
     }
-
-    return results;
   }
 }

@@ -9,12 +9,12 @@ partial class KafkaTests
     TimeSpan? retryAfter = default,
     CancellationToken cancellationToken = default)
   {
-    var defaultRetryAfter = TimeSpan.FromSeconds(0.5);
+    var delay = retryAfter ?? TimeSpan.FromSeconds(0.5);
     while (!cancellationToken.IsCancellationRequested)
     {
-      if (func.Invoke() == expected) return expected;
+      if (func() == expected) return expected;
 
-      await Task.Delay(retryAfter ?? defaultRetryAfter, cancellationToken);
+      await Task.Delay(delay, cancellationToken);
     }
     return !expected;
   }

@@ -20,4 +20,13 @@ partial class KafkaFuncs
     SetKafkaHeaderString(headers, OriginalTopicHeaderName, topicPartitionOffset.Topic);
     return headers;
   }
+
+  public static Headers SetDeadLetterHeaders<TKey>(
+    string reason,
+    Message<TKey, byte[]> message)
+  {
+    Headers headers = CloneKafkaHeaders(message.Headers);
+    SetKafkaHeaderString(headers, DeadLetterReasonHeaderName, reason);
+    return headers;
+  }
 }
