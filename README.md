@@ -8,8 +8,8 @@ tbi
 
 ### Remarks
 - all integration tests use podman containers [aspire testing NA].
-- dev container network is user-created. ensure isolation from host.
-- podman containers are isolated from host [using same dev container network].
+- dev container network is user-created. ensure isolation from host [kafka-netwok].
+- podman containers are isolated using dedicated network [dev-netwok].
 - podman containers:
   - when dev container is created podman containers are created.
   - when dev container is started podman containers are started (avoiding ghosts ports hanging).
