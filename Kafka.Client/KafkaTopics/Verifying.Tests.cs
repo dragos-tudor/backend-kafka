@@ -11,7 +11,7 @@ public sealed partial class KafkaTests
 
     await CreateTopicAsync(client, topicName, options, cancellationToken);
 
-    var exists = ExistsTopic(client, topicName, options);
+    var exists = await WaitForTrueAsync(() => ExistsTopic(client, topicName, options), cancellationToken: cancellationToken);
     exists.ShouldBeTrue();
 
     await DeleteTopicAsync(client, topicName, options, cancellationToken);

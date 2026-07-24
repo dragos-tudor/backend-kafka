@@ -33,7 +33,7 @@ public partial class KafkaTests
   [AssemblyInitialize]
   public static void InitializeKafka(TestContext testContext)
   {
-    var timeoutCancellationTokenSource = new CancellationTokenSource(TimeSpan.FromMinutes(1));
+    var timeoutCancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(15));
     var cancellationTokenSource = CreateLinkedTokenSource(timeoutCancellationTokenSource.Token, testContext.CancellationToken);
     cancellationToken = cancellationTokenSource.Token;
 
