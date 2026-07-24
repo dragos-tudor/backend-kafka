@@ -1,13 +1,12 @@
 set -euo pipefail
-set +H
 
 KAFKA_SERVER=${1:?missing server name}
-KAFKA_NODE_ID=${2:?missing node id}
-DEV_NETWORK=${3:?missing dev network}
-DEV_NETWORK_DNS=${4:?missing dev network dns}
-KAFKA_CLUSTER_ID=${5:?missing cluster id}
+KAFKA_VOTERS=${2:?missing kafka voters}
+KAFKA_NODE_ID=${3:?missing node id}
+KAFKA_CLUSTER_ID=${4:?missing cluster id}
 
-echo "starting ${KAFKA_SERVER} kafka container"
+echo "running ${KAFKA_SERVER} kafka container"
+podman rm -f ${KAFKA_SERVER} 2> /dev/null || true;
 podman run \
   -e KAFKA_NODE_ID=${KAFKA_NODE_ID} \
   -e KAFKA_LISTENERS="CONTROLLER://${KAFKA_SERVER}:9093,BROKER://${KAFKA_SERVER}:9094,EXTERNAL://${KAFKA_SERVER}:9092" \
@@ -23,7 +22,7 @@ podman run \
   -e KAFKA_DEFAULT_REPLICATION_FACTOR=3 \
   -e KAFKA_MIN_INSYNC_REPLICAS=2 \
   -e KAFKA_PROCESS_ROLES="broker,controller" \
-  -e KAFKA_CONTROLLER_QUORUM_VOTERS="1@kafka-1:9093,2@kafka-2:9093,3@kafka-3:9093" \
+  -e KAFKA_CONTROLLER_QUORUM_VOTERS="${KAFKA_VOTERS}" \
   -e KAFKA_CONTROLLER_LISTENER_NAMES="CONTROLLER" \
   -e CLUSTER_ID="${KAFKA_CLUSTER_ID}" \
   --network "${DEV_NETWORK}" --hosts-file=none --dns="${DEV_NETWORK_DNS}" -d --name "${KAFKA_SERVER}" \

@@ -10,8 +10,7 @@
 	"mounts": [
 		{ "source": "nuget", "target": "/root/.nuget", "type": "volume" },
 		"type=tmpfs,target=/run/libpod",
-    "type=tmpfs,target=/run/containers/storage",
-    "type=tmpfs,target=/run/containers/networks"
+    "type=tmpfs,target=/run/containers"
 	],
 	"containerEnv": {
     "DEV_NETWORK": "dev-network",
@@ -31,7 +30,7 @@
     "--dns=127.0.0.1", "--dns=8.8.8.8", "--dns=1.1.1.1",
 		"--privileged"
 	],
-	"initializeCommand": "chmod u+x .podman/*.sh; .podman/initializing.sh",
-  "postCreateCommand": "chmod u+x .services/*.sh .services/**/*.sh; .services/starting.sh",
-  "postStartCommand": ".podman/starting.sh"
+	"initializeCommand": "chmod u+x .services/*.sh .scripts/*.sh; .services/initializing.sh",
+  "postCreateCommand": "chmod u+x .services/**/*.sh; .services/creating.sh",
+  "postStartCommand": ".services/starting.sh"
 }

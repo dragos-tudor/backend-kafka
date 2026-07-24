@@ -1,10 +1,9 @@
 set -euo pipefail
 
 COREDNS_ROOT=$WORKSPACE_ROOT/.services/coredns
-DEV_NETWORK=${1:?dev network missing}
-DEV_NETWORK_DNS=${2:?dev network dns missing}
 
-echo "starting CoreDNS container"
+echo "running coredns container"
+podman rm -f coredns 2> /dev/null || true;
 podman run -p 53:53/tcp -p 53:53/udp \
   -v "$COREDNS_ROOT/Corefile:/etc/coredns/Corefile:Z" \
   -v "$COREDNS_ROOT/dynamic-hosts:/etc/coredns/dynamic-hosts:Z" \
