@@ -3,6 +3,7 @@ set +H
 
 # dnf install -y bash-completion
 # podman completion -f /etc/bash_completion.d/podman bash
+# dotnet completions script bash
 
 # podman run --rm docker.io/apache/kafka:4.3.1 /opt/kafka/bin/kafka-storage.sh random-uuid"
 CLUSTER_ID=Y7fX2qL9RmKp0O4kS-VjnQ
