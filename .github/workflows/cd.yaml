@@ -56,12 +56,12 @@ jobs:
           cd "${{ steps.workspace.outputs.path }}"
           chmod u+x -R ./.scripts/*.sh
 
-      - name: Pack packages
+      - name: Pack package
         shell: bash
         run: |
           cd "${{ steps.workspace.outputs.path }}"
           mkdir -p ./.packages
-          ./.scripts/packing.all.sh "${{ steps.version.outputs.version }}"
+          ./.scripts/packing.sh "${{ steps.version.outputs.version }}"
 
       - name: Publish to GitHub Packages
         shell: bash

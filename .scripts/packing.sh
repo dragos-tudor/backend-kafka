@@ -1,7 +1,7 @@
 set -eu
 
-PROJECT=${1}
-VERSION=${2}
+PROJECT=${WORKSPACE_ROOT}/Kafka/Kafka.csproj
+VERSION=${1:?missing version}
 
 dotnet pack \
   --configuration Release \
