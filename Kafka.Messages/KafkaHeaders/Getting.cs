@@ -1,0 +1,22 @@
+namespace Kafka.Messages;
+
+partial class MessagesFuncs
+{
+  static byte[]? GetKafkaHeaderValue(Headers headers, string headerName) =>
+    headers.LastOrDefault(value => value.Key == headerName)?.GetValueBytes();
+
+  internal static string? GetKafkaHeaderString(Headers headers, string headerName) =>
+    DecodeKafkaValue(GetKafkaHeaderValue(headers, headerName));
+
+  static Guid? GetCorrelationIdKafkaHeader(Headers headers) =>
+    Guid.TryParse(GetKafkaHeaderString(headers, CorrelationIdHeaderName), out var correlationId) ? correlationId : null;
+
+  internal static Guid? GetMessageIdKafkaHeader(Headers headers) =>
+    Guid.TryParse(GetKafkaHeaderString(headers, MessageIdHeaderName), out var messageId) ? messageId : null;
+
+  static string? GetSchemaTypeKafkaHeader(Headers headers) =>
+    GetKafkaHeaderString(headers, SchemaTypeHeaderName);
+
+  static int? GetSchemaVersionKafkaHeader(Headers headers) =>
+    GetKafkaHeaderString(headers, SchemaVersionHeaderName) is string versionString ? int.Parse(versionString, CultureInfo.InvariantCulture) : default;
+}
