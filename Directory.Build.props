@@ -4,7 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
     <UseArtifactsOutput>true</UseArtifactsOutput>
-    <NoWarn>$(NoWarn);RS0036;RS0037</NoWarn>
+    <NoWarn>$(NoWarn);RS0036;RS0037;CA1031</NoWarn>
 
     <!-- compiling -->
     <ImplicitUsings>disable</ImplicitUsings>
@@ -33,7 +33,7 @@
     <Copyright>Copyright @2026</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageLicense>https://github.com/dragos-tudor/backend-kafka/blob/master/LICENSE</PackageLicense>
+    <PackageLicense>https://github.com/dragos-tudor/backend-kafka/blob/main/LICENSE</PackageLicense>
 
     <!-- repository -->
     <PackageProjectUrl>https://github.com/dragos-tudor/backend-kafka/tree/main/$(MSBuildProjectName)</PackageProjectUrl>

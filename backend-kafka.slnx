@@ -1,3 +1,5 @@
 <Solution>
-  <Project Path="Kafka.Client/Kafka.Client.csproj" />
+  <Project Path="Kafka.Clients/Kafka.Clients.csproj" />
+  <Project Path="Kafka.Messages/Kafka.Messages.csproj" />
+  <Project Path="Kafka/Kafka.csproj" />
 </Solution>
