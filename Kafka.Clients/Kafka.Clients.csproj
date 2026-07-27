@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../Directory.Testing.props" />
+
+  <PropertyGroup>
+    <Description>Convenient functions for Kafka clients.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Kafka.Messages/Kafka.Messages.csproj" PrivateAssets="All"/>
+  </ItemGroup>
+
+</Project>

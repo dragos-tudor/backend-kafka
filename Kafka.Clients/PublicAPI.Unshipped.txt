@@ -1,0 +1,275 @@
+﻿#nullable enable
+abstract Kafka.Clients.KafkaBaseOptions<T>.<Clone>$() -> Kafka.Clients.KafkaBaseOptions<T>!
+abstract Kafka.Clients.Message.<Clone>$() -> Kafka.Clients.Message!
+Kafka.Clients.HandleConsumerMessage<TKey>
+Kafka.Clients.HandleNotPersistedMessage<TKey>
+Kafka.Clients.HandlePersistedMessage<TKey>
+Kafka.Clients.HandlePossiblyPersistedMessage<TKey>
+Kafka.Clients.InboxMessage
+Kafka.Clients.InboxMessage.InboxMessage() -> void
+Kafka.Clients.InboxMessage.InboxMessage(Kafka.Clients.InboxMessage! original) -> void
+Kafka.Clients.InboxMessage.LastFailureReason.get -> string?
+Kafka.Clients.InboxMessage.LastFailureReason.init -> void
+Kafka.Clients.InboxMessage.NextAttemptAt.get -> System.DateTime?
+Kafka.Clients.InboxMessage.NextAttemptAt.init -> void
+Kafka.Clients.InboxMessage.Offset.get -> long
+Kafka.Clients.InboxMessage.Offset.init -> void
+Kafka.Clients.InboxMessage.Partition.get -> int
+Kafka.Clients.InboxMessage.Partition.init -> void
+Kafka.Clients.InboxMessage.RetryCount.get -> int
+Kafka.Clients.InboxMessage.RetryCount.init -> void
+Kafka.Clients.InboxMessage.Status.get -> Kafka.Clients.InboxMessageStatus
+Kafka.Clients.InboxMessage.Status.init -> void
+Kafka.Clients.InboxMessage.Topic.get -> string!
+Kafka.Clients.InboxMessage.Topic.init -> void
+Kafka.Clients.InboxMessageStatus
+Kafka.Clients.InboxMessageStatus.DeadLettered = 4 -> Kafka.Clients.InboxMessageStatus
+Kafka.Clients.InboxMessageStatus.Pending = 0 -> Kafka.Clients.InboxMessageStatus
+Kafka.Clients.InboxMessageStatus.Processing = 1 -> Kafka.Clients.InboxMessageStatus
+Kafka.Clients.InboxMessageStatus.Retry = 3 -> Kafka.Clients.InboxMessageStatus
+Kafka.Clients.InboxMessageStatus.Succeeded = 2 -> Kafka.Clients.InboxMessageStatus
+Kafka.Clients.KafkaBaseOptions<T>
+Kafka.Clients.KafkaBaseOptions<T>.ConnectTimeout.get -> System.TimeSpan?
+Kafka.Clients.KafkaBaseOptions<T>.ConnectTimeout.init -> void
+Kafka.Clients.KafkaBaseOptions<T>.EndPoints.get -> System.Collections.Generic.IEnumerable<string!>!
+Kafka.Clients.KafkaBaseOptions<T>.EndPoints.init -> void
+Kafka.Clients.KafkaBaseOptions<T>.KafkaBaseOptions() -> void
+Kafka.Clients.KafkaBaseOptions<T>.KafkaBaseOptions(Kafka.Clients.KafkaBaseOptions<T>! original) -> void
+Kafka.Clients.KafkaBaseOptions<T>.Password.get -> string!
+Kafka.Clients.KafkaBaseOptions<T>.Password.init -> void
+Kafka.Clients.KafkaBaseOptions<T>.Ssl.get -> bool
+Kafka.Clients.KafkaBaseOptions<T>.Ssl.init -> void
+Kafka.Clients.KafkaBaseOptions<T>.SslCertificateValidation.get -> bool
+Kafka.Clients.KafkaBaseOptions<T>.SslCertificateValidation.init -> void
+Kafka.Clients.KafkaBaseOptions<T>.User.get -> string!
+Kafka.Clients.KafkaBaseOptions<T>.User.init -> void
+Kafka.Clients.ClientsFuncs
+Kafka.Clients.KafkaMessageOutcome
+Kafka.Clients.KafkaMessageOutcome.DeadLettered = 2 -> Kafka.Clients.KafkaMessageOutcome
+Kafka.Clients.KafkaMessageOutcome.Retrying = 1 -> Kafka.Clients.KafkaMessageOutcome
+Kafka.Clients.KafkaMessageOutcome.Succeeded = 0 -> Kafka.Clients.KafkaMessageOutcome
+Kafka.Clients.KafkaMessageProcessingResult
+Kafka.Clients.KafkaMessageProcessingResult.<Clone>$() -> Kafka.Clients.KafkaMessageProcessingResult!
+Kafka.Clients.KafkaMessageProcessingResult.Deconstruct(out Kafka.Clients.KafkaMessageOutcome Outcome, out string? Reason, out System.TimeSpan? NextAttemptDelay) -> void
+Kafka.Clients.KafkaMessageProcessingResult.Equals(Kafka.Clients.KafkaMessageProcessingResult? other) -> bool
+Kafka.Clients.KafkaMessageProcessingResult.KafkaMessageProcessingResult(Kafka.Clients.KafkaMessageOutcome Outcome, string? Reason = null, System.TimeSpan? NextAttemptDelay = null) -> void
+Kafka.Clients.KafkaMessageProcessingResult.NextAttemptDelay.get -> System.TimeSpan?
+Kafka.Clients.KafkaMessageProcessingResult.NextAttemptDelay.init -> void
+Kafka.Clients.KafkaMessageProcessingResult.Outcome.get -> Kafka.Clients.KafkaMessageOutcome
+Kafka.Clients.KafkaMessageProcessingResult.Outcome.init -> void
+Kafka.Clients.KafkaMessageProcessingResult.Reason.get -> string?
+Kafka.Clients.KafkaMessageProcessingResult.Reason.init -> void
+Kafka.Clients.KafkaOptions
+Kafka.Clients.KafkaOptions.AutoOffsetReset.get -> Confluent.Kafka.AutoOffsetReset
+Kafka.Clients.KafkaOptions.AutoOffsetReset.init -> void
+Kafka.Clients.KafkaOptions.ClientId.get -> string!
+Kafka.Clients.KafkaOptions.ClientId.init -> void
+Kafka.Clients.KafkaOptions.ConnectTimeout.get -> System.TimeSpan
+Kafka.Clients.KafkaOptions.ConnectTimeout.init -> void
+Kafka.Clients.KafkaOptions.DeadLetterTopicSuffix.get -> string!
+Kafka.Clients.KafkaOptions.DeadLetterTopicSuffix.init -> void
+Kafka.Clients.KafkaOptions.DefaultNumPartitions.get -> int
+Kafka.Clients.KafkaOptions.DefaultNumPartitions.init -> void
+Kafka.Clients.KafkaOptions.DefaultReplicationFactor.get -> short
+Kafka.Clients.KafkaOptions.DefaultReplicationFactor.init -> void
+Kafka.Clients.KafkaOptions.DefaultTopic.get -> string!
+Kafka.Clients.KafkaOptions.DefaultTopic.init -> void
+Kafka.Clients.KafkaOptions.EnableAutoCommit.get -> bool
+Kafka.Clients.KafkaOptions.EnableAutoCommit.init -> void
+Kafka.Clients.KafkaOptions.GroupId.get -> string!
+Kafka.Clients.KafkaOptions.GroupId.init -> void
+Kafka.Clients.KafkaOptions.IsolationLevel.get -> Confluent.Kafka.IsolationLevel
+Kafka.Clients.KafkaOptions.IsolationLevel.init -> void
+Kafka.Clients.KafkaOptions.KafkaOptions() -> void
+Kafka.Clients.KafkaOptions.KafkaOptions(Kafka.Clients.KafkaOptions! original) -> void
+Kafka.Clients.KafkaOptions.MaxPollRecords.get -> int
+Kafka.Clients.KafkaOptions.MaxPollRecords.init -> void
+Kafka.Clients.KafkaOptions.MaxRetryAttempts.get -> int
+Kafka.Clients.KafkaOptions.MaxRetryAttempts.init -> void
+Kafka.Clients.KafkaOptions.MaxRetryDelay.get -> System.TimeSpan
+Kafka.Clients.KafkaOptions.MaxRetryDelay.init -> void
+Kafka.Clients.KafkaOptions.OperationTimeout.get -> System.TimeSpan
+Kafka.Clients.KafkaOptions.OperationTimeout.init -> void
+Kafka.Clients.KafkaOptions.RetryBackoffFactor.get -> double
+Kafka.Clients.KafkaOptions.RetryBackoffFactor.init -> void
+Kafka.Clients.KafkaOptions.RetryBaseDelay.get -> System.TimeSpan
+Kafka.Clients.KafkaOptions.RetryBaseDelay.init -> void
+Kafka.Clients.KafkaOptions.SaslMechanism.get -> Confluent.Kafka.SaslMechanism
+Kafka.Clients.KafkaOptions.SaslMechanism.init -> void
+Kafka.Clients.KafkaOptions.SecurityProtocol.get -> Confluent.Kafka.SecurityProtocol
+Kafka.Clients.KafkaOptions.SecurityProtocol.init -> void
+Kafka.Clients.KafkaOptions.SessionTimeout.get -> System.TimeSpan
+Kafka.Clients.KafkaOptions.SessionTimeout.init -> void
+Kafka.Clients.ClientsTests
+Kafka.Clients.ClientsTests.deadletter__create_deadletter__deadletter_includes_metadata_headers() -> void
+Kafka.Clients.ClientsTests.deadletter__create_deadletter__deadletter_includes_original_message_headers() -> void
+Kafka.Clients.ClientsTests.deadletter__create_deadletter__deadletter_includes_reason_header() -> void
+Kafka.Clients.ClientsTests.json__serialize_deserialize__returns_original_payload() -> void
+Kafka.Clients.ClientsTests.ClientsTests() -> void
+Kafka.Clients.ClientsTests.kafka_options__create_from_environment__uses_env_specific_values() -> void
+Kafka.Clients.ClientsTests.kafka_options__split_kafka_endpoints__splits_values() -> void
+Kafka.Clients.ClientsTests.producer__publish_messages_sync__messages_persisted() -> System.Threading.Tasks.Task!
+Kafka.Clients.ClientsTests.producer__publish_message_async__message_persisted() -> System.Threading.Tasks.Task!
+Kafka.Clients.ClientsTests.producer__publish_message_async__message_with_key_and_value() -> System.Threading.Tasks.Task!
+Kafka.Clients.ClientsTests.producer__publish_message_sync__message_persisted() -> System.Threading.Tasks.Task!
+Kafka.Clients.ClientsTests.producer__publish_message_sync__message_with_key_and_value() -> System.Threading.Tasks.Task!
+Kafka.Clients.ClientsTests.topic__create_topic__topic_exists() -> System.Threading.Tasks.Task!
+Kafka.Clients.ClientsTests.topic__delete_topic__topic_deleted() -> System.Threading.Tasks.Task!
+Kafka.Clients.ClientsTests.topic__verify_topic_exists__returns_true_for_existing_topic() -> System.Threading.Tasks.Task!
+Kafka.Clients.Message
+Kafka.Clients.Message.CorrelationId.get -> System.Guid
+Kafka.Clients.Message.CorrelationId.init -> void
+Kafka.Clients.Message.Date.get -> System.DateTime
+Kafka.Clients.Message.Date.init -> void
+Kafka.Clients.Message.Message() -> void
+Kafka.Clients.Message.Message(Kafka.Clients.Message! original) -> void
+Kafka.Clients.Message.MessageId.get -> System.Guid
+Kafka.Clients.Message.MessageId.init -> void
+Kafka.Clients.Message.Payload.get -> byte[]!
+Kafka.Clients.Message.Payload.init -> void
+Kafka.Clients.Message.TraceParent.get -> string?
+Kafka.Clients.Message.TraceParent.init -> void
+Kafka.Clients.Message.Type.get -> string!
+Kafka.Clients.Message.Type.init -> void
+Kafka.Clients.Message.Version.get -> int
+Kafka.Clients.Message.Version.init -> void
+Kafka.Clients.OutboxMessage
+Kafka.Clients.OutboxMessage.Key.get -> string?
+Kafka.Clients.OutboxMessage.Key.init -> void
+Kafka.Clients.OutboxMessage.LastFailureReason.get -> string?
+Kafka.Clients.OutboxMessage.LastFailureReason.init -> void
+Kafka.Clients.OutboxMessage.MessageMetadata.get -> string?
+Kafka.Clients.OutboxMessage.MessageMetadata.init -> void
+Kafka.Clients.OutboxMessage.OutboxMessage() -> void
+Kafka.Clients.OutboxMessage.OutboxMessage(Kafka.Clients.OutboxMessage! original) -> void
+Kafka.Clients.OutboxMessage.PublishAttemptCount.get -> int
+Kafka.Clients.OutboxMessage.PublishAttemptCount.init -> void
+Kafka.Clients.OutboxMessage.Status.get -> Kafka.Clients.OutboxMessageStatus
+Kafka.Clients.OutboxMessage.Status.init -> void
+Kafka.Clients.OutboxMessage.Topic.get -> string!
+Kafka.Clients.OutboxMessage.Topic.init -> void
+Kafka.Clients.OutboxMessageStatus
+Kafka.Clients.OutboxMessageStatus.DeadLettered = 3 -> Kafka.Clients.OutboxMessageStatus
+Kafka.Clients.OutboxMessageStatus.Failed = 2 -> Kafka.Clients.OutboxMessageStatus
+Kafka.Clients.OutboxMessageStatus.Pending = 0 -> Kafka.Clients.OutboxMessageStatus
+Kafka.Clients.OutboxMessageStatus.Sent = 1 -> Kafka.Clients.OutboxMessageStatus
+override Kafka.Clients.InboxMessage.<Clone>$() -> Kafka.Clients.InboxMessage!
+override Kafka.Clients.InboxMessage.EqualityContract.get -> System.Type!
+override Kafka.Clients.InboxMessage.Equals(object? obj) -> bool
+override Kafka.Clients.InboxMessage.GetHashCode() -> int
+override Kafka.Clients.InboxMessage.PrintMembers(System.Text.StringBuilder! builder) -> bool
+override Kafka.Clients.InboxMessage.ToString() -> string!
+override Kafka.Clients.KafkaBaseOptions<T>.Equals(object? obj) -> bool
+override Kafka.Clients.KafkaBaseOptions<T>.GetHashCode() -> int
+override Kafka.Clients.KafkaBaseOptions<T>.ToString() -> string!
+override Kafka.Clients.KafkaMessageProcessingResult.Equals(object? obj) -> bool
+override Kafka.Clients.KafkaMessageProcessingResult.GetHashCode() -> int
+override Kafka.Clients.KafkaMessageProcessingResult.ToString() -> string!
+override Kafka.Clients.KafkaOptions.EqualityContract.get -> System.Type!
+override Kafka.Clients.Message.Equals(object? obj) -> bool
+override Kafka.Clients.Message.GetHashCode() -> int
+override Kafka.Clients.Message.ToString() -> string!
+override Kafka.Clients.OutboxMessage.<Clone>$() -> Kafka.Clients.OutboxMessage!
+override Kafka.Clients.OutboxMessage.EqualityContract.get -> System.Type!
+override Kafka.Clients.OutboxMessage.Equals(object? obj) -> bool
+override Kafka.Clients.OutboxMessage.GetHashCode() -> int
+override Kafka.Clients.OutboxMessage.PrintMembers(System.Text.StringBuilder! builder) -> bool
+override Kafka.Clients.OutboxMessage.ToString() -> string!
+override sealed Kafka.Clients.InboxMessage.Equals(Kafka.Clients.Message? other) -> bool
+override sealed Kafka.Clients.OutboxMessage.Equals(Kafka.Clients.Message? other) -> bool
+static Kafka.Clients.InboxMessage.operator !=(Kafka.Clients.InboxMessage? left, Kafka.Clients.InboxMessage? right) -> bool
+static Kafka.Clients.InboxMessage.operator ==(Kafka.Clients.InboxMessage? left, Kafka.Clients.InboxMessage? right) -> bool
+static Kafka.Clients.KafkaBaseOptions<T>.operator !=(Kafka.Clients.KafkaBaseOptions<T>? left, Kafka.Clients.KafkaBaseOptions<T>? right) -> bool
+static Kafka.Clients.KafkaBaseOptions<T>.operator ==(Kafka.Clients.KafkaBaseOptions<T>? left, Kafka.Clients.KafkaBaseOptions<T>? right) -> bool
+static Kafka.Clients.ClientsFuncs.ApplyCommitStrategy<TKey, TValue>(Confluent.Kafka.IConsumer<TKey, TValue>! consumer, Confluent.Kafka.ConsumeResult<TKey, TValue>! consumeResult, Kafka.Clients.KafkaCommitStrategy commitStrategy) -> void
+static Kafka.Clients.ClientsFuncs.CalculateNextRetryDelay(int retryCount, Kafka.Clients.KafkaOptions! options) -> System.TimeSpan
+static Kafka.Clients.ClientsFuncs.CommitConsumedMessage<TKey, TValue>(Confluent.Kafka.IConsumer<TKey, TValue>! consumer, Confluent.Kafka.ConsumeResult<TKey, TValue>! consumeResult) -> void
+static Kafka.Clients.ClientsFuncs.ConsumeMessage<TKey>(Confluent.Kafka.IConsumer<TKey, byte[]!>! consumer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> Confluent.Kafka.ConsumeResult<TKey, byte[]!>!
+static Kafka.Clients.ClientsFuncs.ConsumeMessagesAsync<TKey>(Confluent.Kafka.IConsumer<TKey, byte[]!>! consumer, Kafka.Clients.KafkaCommitStrategy commitStrategy, System.Func<Confluent.Kafka.Message<TKey, byte[]!>!, Confluent.Kafka.TopicPartitionOffset!, System.Threading.CancellationToken, System.Threading.Tasks.Task!>! saveInboxMessage, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+static Kafka.Clients.ClientsFuncs.CreateInboxMessage<TKey>(Confluent.Kafka.Message<TKey, byte[]!>! message, Confluent.Kafka.TopicPartitionOffset! topicPartitionOffset) -> Kafka.Clients.InboxMessage!
+static Kafka.Clients.ClientsFuncs.CreateKafkaAdminClient(Confluent.Kafka.AdminClientConfig! config, System.Action<Confluent.Kafka.AdminClientBuilder!>? configBuilder = null) -> Confluent.Kafka.IAdminClient!
+static Kafka.Clients.ClientsFuncs.CreateKafkaAdminClient(Kafka.Clients.KafkaOptions! options, System.Action<Confluent.Kafka.AdminClientBuilder!>? configBuilder = null, System.Action<Confluent.Kafka.AdminClientConfig!>? configOptions = null) -> Confluent.Kafka.IAdminClient!
+static Kafka.Clients.ClientsFuncs.CreateKafkaAdminConfig(Kafka.Clients.KafkaOptions! options, System.Action<Confluent.Kafka.AdminClientConfig!>? configBuilder = null) -> Confluent.Kafka.AdminClientConfig!
+static Kafka.Clients.ClientsFuncs.CreateKafkaAdminConfig(System.Collections.Generic.IEnumerable<string!>! endpoints, string? user = null, string? password = null, Confluent.Kafka.SecurityProtocol securityProtocol = Confluent.Kafka.SecurityProtocol.SaslPlaintext, Confluent.Kafka.SaslMechanism saslMechanism = Confluent.Kafka.SaslMechanism.ScramSha512, string? clientId = null, System.TimeSpan? connectTimeout = null, System.Action<Confluent.Kafka.AdminClientConfig!>? configBuilder = null) -> Confluent.Kafka.AdminClientConfig!
+static Kafka.Clients.ClientsFuncs.CreateKafkaConsumer<TKey, TValue>(Confluent.Kafka.ConsumerConfig! config, System.Action<Confluent.Kafka.ConsumerBuilder<TKey, TValue>!>? configBuilder = null) -> Confluent.Kafka.IConsumer<TKey, TValue>!
+static Kafka.Clients.ClientsFuncs.CreateKafkaConsumer<TKey, TValue>(Kafka.Clients.KafkaOptions! options, System.Action<Confluent.Kafka.ConsumerBuilder<TKey, TValue>!>? configBuilder = null, System.Action<Confluent.Kafka.ConsumerConfig!>? configOptions = null) -> Confluent.Kafka.IConsumer<TKey, TValue>!
+static Kafka.Clients.ClientsFuncs.CreateKafkaConsumerConfig(Kafka.Clients.KafkaOptions! options, System.Action<Confluent.Kafka.ConsumerConfig!>? configBuilder = null) -> Confluent.Kafka.ConsumerConfig!
+static Kafka.Clients.ClientsFuncs.CreateKafkaConsumerConfig(System.Collections.Generic.IEnumerable<string!>! endpoints, string! groupId, string? user = null, string? password = null, Confluent.Kafka.SecurityProtocol securityProtocol = Confluent.Kafka.SecurityProtocol.SaslPlaintext, Confluent.Kafka.SaslMechanism saslMechanism = Confluent.Kafka.SaslMechanism.ScramSha512, Confluent.Kafka.AutoOffsetReset autoOffsetReset = Confluent.Kafka.AutoOffsetReset.Earliest, bool enableAutoCommit = false, string? clientId = null, System.TimeSpan? connectTimeout = null, int? maxPollRecords = null, System.TimeSpan? sessionTimeout = null, Confluent.Kafka.IsolationLevel? isolationLevel = null, System.Action<Confluent.Kafka.ConsumerConfig!>? configBuilder = null) -> Confluent.Kafka.ConsumerConfig!
+static Kafka.Clients.ClientsFuncs.CreateKafkaDeadLetter<TKey>(string! reason, Confluent.Kafka.Message<TKey, byte[]!>! message) -> Confluent.Kafka.Message<TKey, byte[]!>!
+static Kafka.Clients.ClientsFuncs.CreateKafkaDeadLetter<TKey>(string! reason, Confluent.Kafka.Message<TKey, byte[]!>! message, Confluent.Kafka.TopicPartitionOffset! topicPartitionOffset) -> Confluent.Kafka.Message<TKey, byte[]!>!
+static Kafka.Clients.ClientsFuncs.CreateKafkaMessage<TKey, TPayload>(TKey key, TPayload value, Confluent.Kafka.Headers! headers, System.DateTime date = default(System.DateTime), int schemaVersion = 1, string? traceId = null, System.Guid? messageId = null, System.Guid? correlationId = null, System.Func<TPayload, byte[]!>? serializer = null) -> Confluent.Kafka.Message<TKey, byte[]!>!
+static Kafka.Clients.ClientsFuncs.CreateKafkaMessage<TKey>(TKey key, byte[]! value, Confluent.Kafka.Headers! headers, System.DateTime date = default(System.DateTime)) -> Confluent.Kafka.Message<TKey, byte[]!>!
+static Kafka.Clients.ClientsFuncs.CreateKafkaMessageFromOutbox<TKey>(Kafka.Clients.OutboxMessage! outboxMessage, TKey key) -> Confluent.Kafka.Message<TKey, byte[]!>!
+static Kafka.Clients.ClientsFuncs.CreateKafkaOptions(System.Collections.Generic.IEnumerable<string!>! endPoints, string? user = null, string? password = null, string? defaultTopic = null, string? groupId = null, string? clientId = null, Confluent.Kafka.SecurityProtocol securityProtocol = Confluent.Kafka.SecurityProtocol.SaslPlaintext, Confluent.Kafka.SaslMechanism saslMechanism = Confluent.Kafka.SaslMechanism.ScramSha512, Confluent.Kafka.AutoOffsetReset autoOffsetReset = Confluent.Kafka.AutoOffsetReset.Earliest, bool enableAutoCommit = false, System.TimeSpan? connectTimeout = null, System.TimeSpan? operationTimeout = null, int maxRetryAttempts = 5, System.TimeSpan? retryBaseDelay = null, double retryBackoffFactor = 2, System.TimeSpan? maxRetryDelay = null, string! deadLetterTopicSuffix = "-dlq", int? maxPollRecords = null, System.TimeSpan? sessionTimeout = null, Confluent.Kafka.IsolationLevel? isolationlevel = null) -> Kafka.Clients.KafkaOptions!
+static Kafka.Clients.ClientsFuncs.CreateKafkaOptionsFromEnvironment(string! bootstrapServersName = "KAFKA_BOOTSTRAP_SERVERS", string! userName = "KAFKA_USERNAME", string! passwordName = "KAFKA_PASSWORD", string! defaultTopicName = "KAFKA_TOPIC", string! groupIdName = "KAFKA_GROUP_ID", string! clientIdName = "KAFKA_CLIENT_ID", string! securityProtocolName = "KAFKA_SECURITY_PROTOCOL", string! saslMechanismName = "KAFKA_SASL_MECHANISM", string! autoOffsetResetName = "KAFKA_AUTO_OFFSET_RESET", string! enableAutoCommitName = "KAFKA_ENABLE_AUTO_COMMIT", string! connectTimeoutSecondsName = "KAFKA_CONNECT_TIMEOUT_SECONDS", string! operationTimeoutMillisecondsName = "KAFKA_OPERATION_TIMEOUT_MS", string! maxRetryAttemptsName = "KAFKA_MAX_RETRY_ATTEMPTS", string! retryBaseDelayMillisecondsName = "KAFKA_RETRY_BASE_DELAY_MS", string! retryBackoffFactorName = "KAFKA_RETRY_BACKOFF_FACTOR", string! maxRetryDelayMillisecondsName = "KAFKA_MAX_RETRY_DELAY_MS", string! deadLetterTopicSuffixName = "KAFKA_DLQ_SUFFIX", string! maxPollRecordsName = "KAFKA_MAX_POOL_RECORDS", string! sessionTimeoutName = "KAFKA_SESSION_TIMEOUT", string! isolationLevelName = "KAFKA_ISOLATION_LEVEL") -> Kafka.Clients.KafkaOptions!
+static Kafka.Clients.ClientsFuncs.CreateKafkaProducer<TKey, TValue>(Confluent.Kafka.ProducerConfig! config, System.Action<Confluent.Kafka.ProducerBuilder<TKey, TValue>!>? configBuilder = null) -> Confluent.Kafka.IProducer<TKey, TValue>!
+static Kafka.Clients.ClientsFuncs.CreateKafkaProducer<TKey, TValue>(Kafka.Clients.KafkaOptions! options, System.Action<Confluent.Kafka.ProducerBuilder<TKey, TValue>!>? configBuilder = null, System.Action<Confluent.Kafka.ProducerConfig!>? configOptions = null) -> Confluent.Kafka.IProducer<TKey, TValue>!
+static Kafka.Clients.ClientsFuncs.CreateKafkaProducerConfig(Kafka.Clients.KafkaOptions! options, System.Action<Confluent.Kafka.ProducerConfig!>? configBuilder = null) -> Confluent.Kafka.ProducerConfig!
+static Kafka.Clients.ClientsFuncs.CreateKafkaProducerConfig(System.Collections.Generic.IEnumerable<string!>! endpoints, string? user = null, string? password = null, Confluent.Kafka.SecurityProtocol securityProtocol = Confluent.Kafka.SecurityProtocol.SaslPlaintext, Confluent.Kafka.SaslMechanism saslMechanism = Confluent.Kafka.SaslMechanism.ScramSha512, string? clientId = null, System.TimeSpan? connectTimeout = null, System.Action<Confluent.Kafka.ProducerConfig!>? configBuilder = null) -> Confluent.Kafka.ProducerConfig!
+static Kafka.Clients.ClientsFuncs.CreateTopicAsync(Confluent.Kafka.IAdminClient! client, string! topicName, int numberOfPartitions = 12, short replicationFactor = 3, System.TimeSpan requestTimeout = default(System.TimeSpan), System.TimeSpan operationTimeout = default(System.TimeSpan), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+static Kafka.Clients.ClientsFuncs.CreateTopicAsync(Confluent.Kafka.IAdminClient! client, string! topicName, Kafka.Clients.KafkaOptions! options, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+static Kafka.Clients.ClientsFuncs.DeleteTopicAsync(Confluent.Kafka.IAdminClient! client, string! topicName, Kafka.Clients.KafkaOptions! options, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+static Kafka.Clients.ClientsFuncs.DeleteTopicAsync(Confluent.Kafka.IAdminClient! client, string! topicName, System.TimeSpan requestTimeout = default(System.TimeSpan), System.TimeSpan operationTimeout = default(System.TimeSpan), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+static Kafka.Clients.ClientsFuncs.DeserializeJson<T>(byte[]? value, System.Text.Json.JsonSerializerOptions? serializerOptions = null) -> T?
+static Kafka.Clients.ClientsFuncs.DeserializeJson<T>(string? value, System.Text.Json.JsonSerializerOptions? serializerOptions = null) -> T?
+static Kafka.Clients.ClientsFuncs.ExistsTopic(Confluent.Kafka.IAdminClient! client, string! topicName, Kafka.Clients.KafkaOptions! options) -> bool
+static Kafka.Clients.ClientsFuncs.ExistsTopic(Confluent.Kafka.IAdminClient! client, string! topicName, System.TimeSpan timeout) -> bool
+static Kafka.Clients.ClientsFuncs.GetDeadLetterTopicName(string! topicName, string! suffix = "-dlq") -> string!
+static Kafka.Clients.ClientsFuncs.GetKafkaCorrelationIdHeader(Confluent.Kafka.Headers! headers) -> System.Guid?
+static Kafka.Clients.ClientsFuncs.GetKafkaHeaderString(Confluent.Kafka.Headers! headers, string! headerName) -> string?
+static Kafka.Clients.ClientsFuncs.GetKafkaHeaderValue(Confluent.Kafka.Headers! headers, string! headerName) -> byte[]?
+static Kafka.Clients.ClientsFuncs.GetKafkaMessageIdHeader(Confluent.Kafka.Headers! headers) -> System.Guid?
+static Kafka.Clients.ClientsFuncs.GetKafkaPassword(string! password = "KAFKA_PASSWORD") -> string?
+static Kafka.Clients.ClientsFuncs.GetKafkaSchemaTypeHeader(Confluent.Kafka.Headers! headers) -> string?
+static Kafka.Clients.ClientsFuncs.GetKafkaSchemaVersionHeader(Confluent.Kafka.Headers! headers) -> int
+static Kafka.Clients.ClientsFuncs.GetKafkaTraceIdHeader(Confluent.Kafka.Headers! headers) -> string?
+static Kafka.Clients.ClientsFuncs.GetKafkaUserName(string! userName = "KAFKA_USERNAME") -> string?
+static Kafka.Clients.ClientsFuncs.HandleProducerMessage<TKey>(Confluent.Kafka.Message<TKey, byte[]!>! message, Confluent.Kafka.PersistenceStatus status, Confluent.Kafka.ErrorCode error, Kafka.Clients.HandlePersistedMessage<TKey>! handlePersisted, Kafka.Clients.HandleNotPersistedMessage<TKey>! handleNotPersisted, Kafka.Clients.HandlePossiblyPersistedMessage<TKey>! handlePossiblyPersisted) -> System.Threading.Tasks.Task<string?>!
+static Kafka.Clients.ClientsFuncs.JoinKafkaEndpoints(System.Collections.Generic.IEnumerable<string!>! endpoints) -> string!
+static Kafka.Clients.ClientsFuncs.ProcessDueMessagesAsync<TItem>(string! ownerId, System.Func<string!, System.Threading.CancellationToken, System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<TItem>!>!>! getDueItems, System.Func<TItem, System.Threading.CancellationToken, System.Threading.Tasks.Task<Kafka.Clients.KafkaMessageProcessingResult!>!>! processItem, System.Func<TItem, Kafka.Clients.KafkaMessageProcessingResult!, System.Threading.CancellationToken, System.Threading.Tasks.Task!>! recordOutcome, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+static Kafka.Clients.ClientsFuncs.ProcessDueMessagesAsync<TItem>(string! ownerId, System.Func<string!, System.Threading.CancellationToken, System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<TItem>!>!>! getDueItems, System.Func<TItem, System.Threading.CancellationToken, System.Threading.Tasks.Task<Kafka.Clients.KafkaMessageProcessingResult!>!>! processItem, System.Func<TItem, Kafka.Clients.KafkaMessageProcessingResult!, System.Threading.CancellationToken, System.Threading.Tasks.Task!>! recordOutcome, System.TimeSpan pollInterval, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task!
+static Kafka.Clients.ClientsFuncs.PublishMessage<TKey>(Confluent.Kafka.IProducer<TKey, byte[]!>! producer, string! topicName, Confluent.Kafka.Message<TKey, byte[]!>! message, System.Action<Confluent.Kafka.DeliveryReport<TKey, byte[]!>!>? deliveryHandler = null) -> Confluent.Kafka.Message<TKey, byte[]!>!
+static Kafka.Clients.ClientsFuncs.PublishMessageAsync<TKey>(Confluent.Kafka.IProducer<TKey, byte[]!>! producer, string! topicName, Confluent.Kafka.Message<TKey, byte[]!>! message, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Confluent.Kafka.DeliveryResult<TKey, byte[]!>!>!
+static Kafka.Clients.ClientsFuncs.PublishMessages<TKey>(Confluent.Kafka.IProducer<TKey, byte[]!>! producer, string! topicName, System.Collections.Generic.IEnumerable<Confluent.Kafka.Message<TKey, byte[]!>!>! messages, System.Action<Confluent.Kafka.DeliveryReport<TKey, byte[]!>!>? deliveryHandler = null) -> System.Collections.Generic.IEnumerable<Confluent.Kafka.Message<TKey, byte[]!>!>!
+static Kafka.Clients.ClientsFuncs.RelayOutboxMessageAsync<TItem, TKey>(Confluent.Kafka.IProducer<TKey, byte[]!>! producer, Confluent.Kafka.IProducer<TKey, byte[]!>! deadLetterProducer, Kafka.Clients.KafkaOptions! options, TItem outboxItem, System.Func<TItem, Confluent.Kafka.Message<TKey, byte[]!>!>! mapToKafkaMessage, System.Func<TItem, string!>! getTopic, System.Func<TItem, int>! getPublishAttemptCount, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Kafka.Clients.KafkaMessageProcessingResult!>!
+static Kafka.Clients.ClientsFuncs.ResumeInboxMessageAsync<TItem, TKey>(Confluent.Kafka.IProducer<TKey, byte[]!>! deadLetterProducer, Kafka.Clients.KafkaOptions! options, TItem inboxItem, System.Func<TItem, Confluent.Kafka.Message<TKey, byte[]!>!>! mapToKafkaMessage, System.Func<TItem, Confluent.Kafka.TopicPartitionOffset!>! getTopicPartitionOffset, System.Func<TItem, int>! getRetryCount, Kafka.Clients.HandleConsumerMessage<TKey>! handleMessage, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<Kafka.Clients.KafkaMessageProcessingResult!>!
+static Kafka.Clients.ClientsFuncs.SerializeJson<T>(T value, System.Text.Json.JsonSerializerOptions? serializerOptions = null) -> byte[]!
+static Kafka.Clients.ClientsFuncs.SerializeJsonString<T>(T value, System.Text.Json.JsonSerializerOptions? serializerOptions = null) -> string!
+static Kafka.Clients.ClientsFuncs.SetDeadLetterHeaders<TKey>(string! reason, Confluent.Kafka.Message<TKey, byte[]!>! message) -> Confluent.Kafka.Headers!
+static Kafka.Clients.ClientsFuncs.SetDeadLetterHeaders<TKey>(string! reason, Confluent.Kafka.Message<TKey, byte[]!>! message, Confluent.Kafka.TopicPartitionOffset! topicPartitionOffset) -> Confluent.Kafka.Headers!
+static Kafka.Clients.ClientsFuncs.SetKafkaCorrelationIdHeader(Confluent.Kafka.Headers! headers, System.Guid correlationId) -> Confluent.Kafka.Headers!
+static Kafka.Clients.ClientsFuncs.SetKafkaHeaderString(Confluent.Kafka.Headers! headers, string! headerName, string? value) -> Confluent.Kafka.Headers!
+static Kafka.Clients.ClientsFuncs.SetKafkaHeaderValue(Confluent.Kafka.Headers! headers, string! headerName, byte[]? value) -> Confluent.Kafka.Headers!
+static Kafka.Clients.ClientsFuncs.SetKafkaMessageHeaders(Confluent.Kafka.Headers! headers, string! schemaType, int schemaVersion, string? traceId, System.Guid? messageId = null, System.Guid? correlationId = null) -> Confluent.Kafka.Headers!
+static Kafka.Clients.ClientsFuncs.SetKafkaMessageHeaders<TSchema>(Confluent.Kafka.Headers! headers, int schemaVersion, string? traceId, System.Guid? messageId = null, System.Guid? correlationId = null) -> Confluent.Kafka.Headers!
+static Kafka.Clients.ClientsFuncs.SetKafkaMessageIdHeader(Confluent.Kafka.Headers! headers, System.Guid messageId) -> Confluent.Kafka.Headers!
+static Kafka.Clients.ClientsFuncs.SetKafkaSchemaTypeHeader(Confluent.Kafka.Headers! headers, string! schemaType) -> Confluent.Kafka.Headers!
+static Kafka.Clients.ClientsFuncs.SetKafkaSchemaVersionHeader(Confluent.Kafka.Headers! headers, int schemaVersion) -> Confluent.Kafka.Headers!
+static Kafka.Clients.ClientsFuncs.SetKafkaTraceIdHeader(Confluent.Kafka.Headers! headers, string! traceId) -> Confluent.Kafka.Headers!
+static Kafka.Clients.ClientsFuncs.SplitKafkaEndpoints(string? endpoints) -> System.Collections.Generic.IEnumerable<string!>!
+static Kafka.Clients.ClientsFuncs.StoreConsumedMessageOffset<TKey, TValue>(Confluent.Kafka.IConsumer<TKey, TValue>! consumer, Confluent.Kafka.ConsumeResult<TKey, TValue>! consumeResult) -> void
+static Kafka.Clients.ClientsFuncs.SubscribeToTopic<TKey, TValue>(Confluent.Kafka.IConsumer<TKey, TValue>! consumer, string! topicName) -> void
+static Kafka.Clients.ClientsFuncs.SubscribeToTopics<TKey, TValue>(Confluent.Kafka.IConsumer<TKey, TValue>! consumer, System.Collections.Generic.IEnumerable<string!>! topicNames) -> void
+static Kafka.Clients.KafkaMessageProcessingResult.operator !=(Kafka.Clients.KafkaMessageProcessingResult? left, Kafka.Clients.KafkaMessageProcessingResult? right) -> bool
+static Kafka.Clients.KafkaMessageProcessingResult.operator ==(Kafka.Clients.KafkaMessageProcessingResult? left, Kafka.Clients.KafkaMessageProcessingResult? right) -> bool
+static Kafka.Clients.ClientsTests.CleanupKafka() -> void
+static Kafka.Clients.ClientsTests.InitializeKafka(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext! testContext) -> void
+static Kafka.Clients.Message.operator !=(Kafka.Clients.Message? left, Kafka.Clients.Message? right) -> bool
+static Kafka.Clients.Message.operator ==(Kafka.Clients.Message? left, Kafka.Clients.Message? right) -> bool
+static Kafka.Clients.OutboxMessage.operator !=(Kafka.Clients.OutboxMessage? left, Kafka.Clients.OutboxMessage? right) -> bool
+static Kafka.Clients.OutboxMessage.operator ==(Kafka.Clients.OutboxMessage? left, Kafka.Clients.OutboxMessage? right) -> bool
+virtual Kafka.Clients.HandleConsumerMessage<TKey>.Invoke(Confluent.Kafka.Message<TKey, byte[]!>! messsage) -> System.Threading.Tasks.Task<string?>!
+virtual Kafka.Clients.HandleNotPersistedMessage<TKey>.Invoke(Confluent.Kafka.Message<TKey, byte[]!>! message, Confluent.Kafka.ErrorCode error) -> System.Threading.Tasks.Task<string?>!
+virtual Kafka.Clients.HandlePersistedMessage<TKey>.Invoke(Confluent.Kafka.Message<TKey, byte[]!>! message) -> System.Threading.Tasks.Task<string?>!
+virtual Kafka.Clients.HandlePossiblyPersistedMessage<TKey>.Invoke(Confluent.Kafka.Message<TKey, byte[]!>! message) -> System.Threading.Tasks.Task<string?>!
+virtual Kafka.Clients.InboxMessage.Equals(Kafka.Clients.InboxMessage? other) -> bool
+virtual Kafka.Clients.KafkaBaseOptions<T>.EqualityContract.get -> System.Type!
+virtual Kafka.Clients.KafkaBaseOptions<T>.Equals(Kafka.Clients.KafkaBaseOptions<T>? other) -> bool
+Kafka.Clients.KafkaCommitStrategy
+Kafka.Clients.KafkaCommitStrategy.DirectCommit = 1 -> Kafka.Clients.KafkaCommitStrategy
+Kafka.Clients.KafkaCommitStrategy.StoreOffset = 0 -> Kafka.Clients.KafkaCommitStrategy
+virtual Kafka.Clients.KafkaBaseOptions<T>.PrintMembers(System.Text.StringBuilder! builder) -> bool
+virtual Kafka.Clients.Message.EqualityContract.get -> System.Type!
+virtual Kafka.Clients.Message.Equals(Kafka.Clients.Message? other) -> bool
+virtual Kafka.Clients.Message.PrintMembers(System.Text.StringBuilder! builder) -> bool
+virtual Kafka.Clients.OutboxMessage.Equals(Kafka.Clients.OutboxMessage? other) -> bool
