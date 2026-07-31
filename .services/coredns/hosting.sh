@@ -3,7 +3,7 @@ set -euo pipefail
 
 HOSTS_FILE="$WORKSPACE_ROOT/.services/coredns/dynamic-hosts"
 
-echo "# dinamically generated kafka containers hosts" > "${HOSTS_FILE}"
+echo "# dinamically generated kafka containers hosts $(date)" > "${HOSTS_FILE}"
 podman ps -a --format '{{.Names}}' | while read -r name; do
   [ "${name}" = "coredns" ] && continue
 

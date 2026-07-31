@@ -8,9 +8,7 @@
 		}
 	},
 	"mounts": [
-		{ "source": "nuget", "target": "/root/.nuget", "type": "volume" },
-		"type=tmpfs,target=/run/libpod",
-    "type=tmpfs,target=/run/containers"
+		{ "source": "nuget", "target": "/root/.nuget", "type": "volume" }
 	],
 	"containerEnv": {
     "DEV_NETWORK": "dev-network",
