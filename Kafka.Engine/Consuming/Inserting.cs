@@ -1,0 +1,15 @@
+
+namespace Kafka.Engine;
+
+partial class EngineFuncs
+{
+  internal static async Task<InboxMessage<TKey, TPayload>?> InsertInboxMessageAsync<TKey, TValue, TPayload>(
+    ConsumeResult<TKey, TValue> result,
+    IInsertInboxMessageServices<TKey, TValue, TPayload> services,
+    CancellationToken cancellationToken)
+  {
+    var message = ToInboxMessage(result.Message, result.TopicPartitionOffset, services.ToPersistedMessagePayload, services.GetUtcDate());
+    var saved = await services.InsertInboxMessageAsync(message, cancellationToken);
+    return saved ? message : null;
+  }
+}
