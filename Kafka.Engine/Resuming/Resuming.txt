@@ -1,0 +1,67 @@
+RESUME INBOX MESSAGE
+
+1. handle pending inbox message
+2. publish deadlettering inbox message
+
+1. HANDLING PENDING INBOX MESSAGE
+--------------------------------
+  message param
+  result = handle(message)
+
+  a. handling succeeded (happy path):
+      - update message: status = 'handled'
+      - store result model + inbox message in SAME TRANSACTION
+        (transactional inbox pattern -> handled messages are skipped on redelivery)
+      - if save fails: log failure, treat as non-domain failure (1.c)
+
+  b. handling failed with domain failure:
+      - go to publish deadlettering inbox messages (2), for this message only
+      (no retry: domain failures are not transient, retrying won't change the outcome)
+
+  c. handling failed with non-domain failure:
+      - retryCount = message.retryCount + 1
+      - if retryCount > MAX_HANDLE_RETRIES:
+          -> go to publish deadlettering inbox messages (2), for this message only
+          -> return (skip the rest of this branch)
+      - update message: retryCount = retryCount,
+                        nextAttemptAt = backoff(retryCount),
+                        errorMessage = error
+      - save inbox message
+      - if save fails: just log; next eligible tick will re-handle this pending message
+        (message never left 'pending', so it's naturally retried)
+
+
+2. PUBLISHING DEADLETTERING INBOX MESSAGES
+-------------------------------------------
+  message param
+  if message.status != 'deadlettering':
+      - update message: status = 'deadlettering',
+                          publishRetryCount = 1,
+                          nextAttemptAt = backoff(1),
+                          errorMessage = error
+      - save inbox message
+      - if save fails: just log; next tick will pick it up again as pending
+        (possibly re-hitting the same domain failure, which is fine/idempotent)
+
+  deadletter = build deadletter from inbox message
+  publishResult = publish deadletter to deadletter topic
+
+  a. publishing succeeded (happy path):
+      - update message: status = 'deadlettered'
+      - save inbox message
+      - if save fails: just log; next tick will re-publish
+        (duplicate deadletter allowed, Kafka producer is idempotent)
+
+  b. publishing failed:
+      - publishRetryCount = message.publishRetryCount + 1
+      - if publishRetryCount > MAX_PUBLISH_RETRIES:
+          - update message: status = 'abandoned'   [new terminal status]
+          - save inbox message
+          - if save fails: just log; next tick will retry updating to 'abandoned'
+          - ALERT: raise notification/metric ("inbox message abandoned", message.id)
+          -> return
+      - update message: publishRetryCount = publishRetryCount,
+                          nextAttemptAt = backoff(publishRetryCount),
+                          errorMessage = error
+      - save inbox message
+      - if save fails: just log; next tick will retry publishing again

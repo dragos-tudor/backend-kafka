@@ -5,10 +5,9 @@ partial class ClientsFuncs
   internal static TopicPartitionOffset? ApplyConsumerOffsetStrategy<TKey, TValue>(
     IConsumer<TKey, TValue> consumer,
     TopicPartitionOffset offset,
-    bool enableAutoOffsetStore,
-    bool enableAutoCommit)
+    KafkaOptions kafkaOptions)
   =>
-    (enableAutoOffsetStore, enableAutoCommit) switch {
+    (kafkaOptions.EnableAutoOffsetStore, kafkaOptions.EnableAutoCommit) switch {
       (true, true) => default,
       (false, true) => StoreConsumerOffset(consumer, offset),
       (_, false) => CommitConsumerOffset(consumer, offset),

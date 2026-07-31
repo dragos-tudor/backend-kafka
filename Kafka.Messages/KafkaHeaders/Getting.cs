@@ -6,7 +6,7 @@ partial class MessagesFuncs
     headers.LastOrDefault(value => value.Key == headerName)?.GetValueBytes();
 
   internal static string? GetKafkaHeaderString(Headers headers, string headerName) =>
-    DecodeKafkaValue(GetKafkaHeaderValue(headers, headerName));
+    DecodeString(GetKafkaHeaderValue(headers, headerName));
 
   static Guid? GetCorrelationIdKafkaHeader(Headers headers) =>
     Guid.TryParse(GetKafkaHeaderString(headers, CorrelationIdHeaderName), out var correlationId) ? correlationId : null;

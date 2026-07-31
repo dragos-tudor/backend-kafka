@@ -4,7 +4,7 @@ namespace Kafka.Messages;
 partial class MessagesFuncs
 {
   internal static Headers SetKafkaHeaderString(Headers headers, string headerName, string? value) =>
-    SetKafkaHeaderValue(headers, headerName, EncodeKafkaValue(value));
+    SetKafkaHeaderValue(headers, headerName, EncodeString(value));
 
   static Headers SetSchemaTypeKafkaHeader(Headers headers, string? schemaType) =>
     SetKafkaHeaderString(headers, SchemaTypeHeaderName, schemaType);

@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../Directory.Testing.props" />
+
+  <PropertyGroup>
+    <Description>Implement result pattern and utility functions.</Description>
+  </PropertyGroup>
+
+</Project>

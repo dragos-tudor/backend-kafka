@@ -4,11 +4,11 @@ namespace Kafka.Messages;
 partial class MessagesFuncs
 {
   static Message<TKey, TValue> ToKafkaMessage<TKey, TValue, TPayload>(
-    MessageBase<TKey, TPayload> message,
+    PersistedMessage<TKey, TPayload> message,
     Func<TPayload, TValue> mapper) =>
       CreateKafkaMessage(
         message.MessageKey,
-        ToMessageValue(message, mapper)!,
+        ToKafkaMessageValue(message, mapper)!,
         SetKafkaMessageHeaders(
           [],
           message.MessageId,
@@ -18,4 +18,7 @@ partial class MessagesFuncs
         ),
         message.Date
       );
+
+  static TValue? ToKafkaMessageValue<TKey, TValue, TPayload>(PersistedMessage<TKey, TPayload> message, Func<TPayload, TValue> mapper) =>
+    message.Payload is not null ? mapper(message.Payload) : default;
 }

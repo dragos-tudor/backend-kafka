@@ -57,7 +57,6 @@ public sealed partial class ClientsTests
       options.SaslMechanism.ShouldBe(SaslMechanism.ScramSha512);
       options.AutoOffsetReset.ShouldBe(AutoOffsetReset.Earliest);
       options.EnableAutoCommit.ShouldBeFalse();
-      options.MaxRetryAttempts.ShouldBe(7);
     }
     finally
     {

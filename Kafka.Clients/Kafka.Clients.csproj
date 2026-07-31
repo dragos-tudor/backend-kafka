@@ -3,11 +3,11 @@
   <Import Project="../Directory.Testing.props" />
 
   <PropertyGroup>
-    <Description>Convenient functions for Kafka clients.</Description>
+    <Description>Convenient functions for Kafka admin clients, Kafka publishers and Kafka consumers.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Kafka.Messages/Kafka.Messages.csproj" PrivateAssets="All"/>
+    <ProjectReference Include="../Kafka.Messages/Kafka.Messages.csproj"/>
   </ItemGroup>
 
 </Project>

@@ -3,12 +3,12 @@
   <Import Project="../Directory.Testing.props" />
 
   <PropertyGroup>
-    <Description>Kafka messages functions</Description>
-    <IsPackable>false</IsPackable>
+    <Description>Inbox messages, Outbox messages, Kafka messages types and functions.</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Confluent.Kafka" />
+    <ProjectReference Include="../Kafka.Utils/Kafka.Utils.csproj" />
   </ItemGroup>
 
 </Project>

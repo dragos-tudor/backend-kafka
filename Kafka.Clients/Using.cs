@@ -8,9 +8,11 @@ global using Confluent.Kafka.Admin;
 global using Kafka.Messages;
 global using static Kafka.Clients.ClientsFuncs;
 global using static Kafka.Messages.MessagesFuncs;
+global using static Kafka.Utils.UtilsFuncs;
 using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("Kafka")]
+[assembly:InternalsVisibleTo("Kafka.Engine")]
+[assembly:InternalsVisibleTo("Kafka.Resiliency")]
 
 namespace Kafka.Clients;
 

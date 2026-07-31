@@ -1,28 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../Directory.Testing.props" />
+  <Import Project="../Directory.Packing.props" />
 
   <PropertyGroup>
-    <Description>Convenient functions for Confluent Kafka.</Description>
-
-    <!-- Hook our custom target for referenced outputs -->
+    <Description>Transactional Inbox/Outbox pattern implementation, convenient functions for Confluent Kafka. [metaproject]</Description>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeReferencedProjectInPackage</TargetsForTfmSpecificBuildOutput>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging" />
-    <PackageReference Include="Confluent.Kafka" />
-    <ProjectReference Include="../Kafka.Clients/Kafka.Clients.csproj" PrivateAssets="All"/>
-    <ProjectReference Include="../Kafka.Messages/Kafka.Messages.csproj" PrivateAssets="All"/>
+  	<None Include="../README.md" Pack="true" PackagePath="\"/>
+    <None Include="../LICENSE" Pack="true" PackagePath="\"/>
+
+    <ProjectReference Include="../Kafka.Resiliency/Kafka.Resiliency.csproj" />
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+
+    <None Include="PublicAPI.Shipped.txt" Pack="true" PackagePath="apidocs\" />
   </ItemGroup>
 
   <Target Name="IncludeReferencedProjectInPackage">
     <ItemGroup>
       <!-- Include both DLL and PDB in the package output -->
-      <BuildOutputInPackage Include="$(OutputPath)Kafka.Messages.dll" />
-      <BuildOutputInPackage Include="$(OutputPath)Kafka.Messages.pdb" />
       <BuildOutputInPackage Include="$(OutputPath)Kafka.Clients.dll" />
       <BuildOutputInPackage Include="$(OutputPath)Kafka.Clients.pdb" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Engine.dll" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Engine.pdb" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Messages.dll" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Messages.pdb" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Resiliency.dll" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Resiliency.pdb" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Utils.dll" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Utils.pdb" />
     </ItemGroup>
   </Target>
 

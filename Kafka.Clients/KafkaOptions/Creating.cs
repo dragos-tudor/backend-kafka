@@ -16,10 +16,6 @@ partial class ClientsFuncs
     bool enableAutoOffsetStore = false,
     TimeSpan? connectTimeout = default,
     TimeSpan? operationTimeout = default,
-    int maxRetryAttempts = 5,
-    TimeSpan? retryBaseDelay = default,
-    double retryBackoffFactor = 2d,
-    TimeSpan? maxRetryDelay = default,
     string deadLetterTopicSuffix = "-dlq",
     int? maxPollRecords = default,
     TimeSpan? sessionTimeout = default,
@@ -38,10 +34,6 @@ partial class ClientsFuncs
       EnableAutoCommit = enableAutoCommit,
       ConnectTimeout = connectTimeout ?? TimeSpan.FromSeconds(15),
       OperationTimeout = operationTimeout ?? TimeSpan.FromSeconds(1),
-      MaxRetryAttempts = maxRetryAttempts,
-      RetryBaseDelay = retryBaseDelay ?? TimeSpan.FromSeconds(1),
-      RetryBackoffFactor = retryBackoffFactor,
-      MaxRetryDelay = maxRetryDelay ?? TimeSpan.FromMinutes(1),
       DeadLetterTopicSuffix = deadLetterTopicSuffix,
       MaxPollRecords = maxPollRecords ?? 500,
       SessionTimeout = sessionTimeout ?? TimeSpan.FromMilliseconds(30000),
@@ -67,7 +59,7 @@ partial class ClientsFuncs
     string retryBackoffFactorName = "KAFKA_RETRY_BACKOFF_FACTOR",
     string maxRetryDelayMillisecondsName = "KAFKA_MAX_RETRY_DELAY_MS",
     string deadLetterTopicSuffixName = "KAFKA_DLQ_SUFFIX",
-    string maxPollRecordsName = "KAFKA_MAX_POOL_RECORDS",
+    string maxPollRecordsName = "KAFKA_MAX_POLL_RECORDS",
     string sessionTimeoutName = "KAFKA_SESSION_TIMEOUT",
     string isolationLevelName = "KAFKA_ISOLATION_LEVEL")
   {
@@ -78,22 +70,18 @@ partial class ClientsFuncs
     var groupId = Environment.GetEnvironmentVariable(groupIdName);
     var clientId = Environment.GetEnvironmentVariable(clientIdName);
 
-    var securityProtocol = ParseKafkaEnum(Environment.GetEnvironmentVariable(securityProtocolName), SecurityProtocol.SaslPlaintext);
-    var saslMechanism = ParseKafkaEnum(Environment.GetEnvironmentVariable(saslMechanismName), SaslMechanism.ScramSha512);
-    var autoOffsetReset = ParseKafkaEnum(Environment.GetEnvironmentVariable(autoOffsetResetName), AutoOffsetReset.Earliest);
+    var securityProtocol = ParseEnumValue(Environment.GetEnvironmentVariable(securityProtocolName), SecurityProtocol.SaslPlaintext);
+    var saslMechanism = ParseEnumValue(Environment.GetEnvironmentVariable(saslMechanismName), SaslMechanism.ScramSha512);
+    var autoOffsetReset = ParseEnumValue(Environment.GetEnvironmentVariable(autoOffsetResetName), AutoOffsetReset.Earliest);
 
-    var enableAutoCommit = ParseKafkaBool(Environment.GetEnvironmentVariable(enableAutoCommitName), false);
-    var enableAutoOffsetStore = ParseKafkaBool(Environment.GetEnvironmentVariable(enableAutoOffsetStoreName), false);
-    var connectTimeout = TimeSpan.FromSeconds(ParseKafkaInt(Environment.GetEnvironmentVariable(connectTimeoutSecondsName), 15));
-    var operationTimeout = TimeSpan.FromMilliseconds(ParseKafkaInt(Environment.GetEnvironmentVariable(operationTimeoutMillisecondsName), 1000));
-    var maxRetryAttempts = ParseKafkaInt(Environment.GetEnvironmentVariable(maxRetryAttemptsName), 5);
-    var retryBaseDelay = TimeSpan.FromMilliseconds(ParseKafkaInt(Environment.GetEnvironmentVariable(retryBaseDelayMillisecondsName), 1000));
-    var retryBackoffFactor = ParseKafkaDouble(Environment.GetEnvironmentVariable(retryBackoffFactorName), 2d);
-    var maxRetryDelay = TimeSpan.FromMilliseconds(ParseKafkaInt(Environment.GetEnvironmentVariable(maxRetryDelayMillisecondsName), 60000));
+    var enableAutoCommit = ParseBoolValue(Environment.GetEnvironmentVariable(enableAutoCommitName), false);
+    var enableAutoOffsetStore = ParseBoolValue(Environment.GetEnvironmentVariable(enableAutoOffsetStoreName), false);
+    var connectTimeout = TimeSpan.FromSeconds(ParseIntValue(Environment.GetEnvironmentVariable(connectTimeoutSecondsName), 15));
+    var operationTimeout = TimeSpan.FromMilliseconds(ParseIntValue(Environment.GetEnvironmentVariable(operationTimeoutMillisecondsName), 1000));
     var deadLetterTopicSuffix = Environment.GetEnvironmentVariable(deadLetterTopicSuffixName) ?? "-dlq";
-    var maxPollRecords = ParseKafkaInt(Environment.GetEnvironmentVariable(maxPollRecordsName), 500);
-    var sessionTimeout = TimeSpan.FromMilliseconds(ParseKafkaInt(Environment.GetEnvironmentVariable(sessionTimeoutName), 30000));
-    var isolationLevel = ParseKafkaEnum(Environment.GetEnvironmentVariable(isolationLevelName), IsolationLevel.ReadCommitted);
+    var maxPollRecords = ParseIntValue(Environment.GetEnvironmentVariable(maxPollRecordsName), 500);
+    var sessionTimeout = TimeSpan.FromMilliseconds(ParseIntValue(Environment.GetEnvironmentVariable(sessionTimeoutName), 30000));
+    var isolationLevel = ParseEnumValue(Environment.GetEnvironmentVariable(isolationLevelName), IsolationLevel.ReadCommitted);
 
     return CreateKafkaOptions(
       endpoints,
@@ -109,10 +97,6 @@ partial class ClientsFuncs
       enableAutoOffsetStore,
       connectTimeout,
       operationTimeout,
-      maxRetryAttempts,
-      retryBaseDelay,
-      retryBackoffFactor,
-      maxRetryDelay,
       deadLetterTopicSuffix,
       maxPollRecords,
       sessionTimeout,
