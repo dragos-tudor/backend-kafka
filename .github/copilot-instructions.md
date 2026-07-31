@@ -10,38 +10,63 @@
 - **Testing:** Tests live adjacent to feature code in `*.Tests.cs` files (e.g., Creating.Tests.cs next to Creating.cs).
 
 **Repository Structure**
-- **Project-per-storage:** Kafka.Clients.
+- **Project-per-storage:** Kafka, Kafka.Resiliency, Kafka.Engine, Kafka.Clients, Kafka.Messages, Kafka.Utils. Kafka is a METAPROJECT; keep only references to other projects.
 - **Functional folders:** Groups related logic within projects (e.g., `KafkaConsumers/`, `KafkaMessages/`, `KafkaHeaders/`).
-- **Partial static modules:** Use `static partial class <Name>Funcs` (e.g., `KafkaFuncs`, `KafkaTests`) split across many files for modular functions.
-- **Global usings:** Centralize commonly used usings in a Using.cs per project.
+- **Partial static modules:** Use `static partial class <Name>Funcs` (e.g., `ResiliencyFuncs`, `ResiliencyTests`) split across many files for modular functions.
+- **Global usings:** Centralize commonly used usings in a Using.cs per project and commonly used test usings in a Using.Tests.cs per project.
 
 **Naming Conventions**
 - **Types:** PascalCase (e.g., `KafkaOptions`, `KafkaCredentials`).
-- **Static helper classes:** PascalCase + `Funcs` suffix (e.g., `KafkaFuncs`, `KafkaTests`).
+- **Static helper classes:** PascalCase + `Funcs` suffix (e.g., `EngineFuncs`, `EngineTests`).
 - **Methods:** PascalCase; async methods suffixed with `Async` (e.g., `CreateTopicAsync`).
 - **Generic parameters:** `T...` style (e.g., `T1`, `T2`, `TResult`).
 - **Parameters & locals:** camelCase (e.g., `source`, `value`, `cancellationToken`).
+- **Names:**
+  - Use naming styles for methods:
+    - <Action><Object> (e.g., `CreateTopicAsync`).
+    - <Action><Object><Property> (e.g., `GetConsumerGroupOffsets`).
+  - Use naming style for folders:
+    - <Objects> (e.g., `KafkaConsumers`, `PersistedMessages`).
+    - <Feature> (e.g., `Retrying`, `Running`, `Consuming`) only in Engine or Resiliency projects.
+  - Avoid abbreviations; use full words (e.g., `KafkaConsumers` instead of `KCons`).
+  - Avoid Hungarian notation or type prefixes (e.g., `strName`, `iCount`).
+  - Use descriptive names for parameters and variables.
 - **Test names:** human-readable with double underscores `subject__action__expected` (e.g., `source__filter__results_returned`).
 - **Fields/constants:** PascalCase; avoid leading underscores for private fields.
 
 **File & Function Granularity**
 - Prefer many small files containing single, focused functions or small related groups within feature folders.
 - Use `partial` classes to keep related helpers grouped logically across files under a single static class.
+- Use for each project a `Using.cs` file for global usings and a `Using.Tests.cs` for test-wide usings.
 
 **Coding Style**
-- Use `var` when the right-hand type is obvious.
-- Prefer expression-bodied members for trivial functions.
+- Use functional programming paradigm.
 - Use `record` for immutable data/options containers (e.g., KafkaOptions.cs).
 - Use `init` properties for immutable initialization.
+- Use `var` even when the right-hand type is not obvious.
 - Use target-typed `new()` where readable.
 - Keep functions small and single-purpose.
 - Propagate `CancellationToken` in asynchronous APIs and default to `default`.
 - Be explicit about nullable types: `T?` for nullable returns/params.
+- Don't reassign parameters or locals; use new variables instead.
+- Don't use expression-bodied members for trivial functions, extract into standalone functions.
+
+**Functional coding style**
+- Separate data from behavior.
+- Write simple, pure, testable low-level functions (using an imperative style).
+- Combine/compose those simple functions into complex, testable, high-level functions that implement features (using declarative style).
+- Use higher-order functions (such as callbacks for side effects).
+- Bring all business logic and business structures to the surface.
+- Prefer immutability over mutability.
+- Prefer declarative over imperative.
+- Use recursion over looping.
+- Don't be afraid of Monads—you already use them in LINQ and Tasks anyway.
+- Don't throw exceptions; use the Result pattern instead.
 
 **Design Patterns & Architectural Principles**
 - **Functional composition via static funcs:** Logic lives in small pure-ish static functions grouped under `*Funcs` partial classes.
-- **Dependency injection by delegates:** Pass behavior as delegate parameters to decouple logic from infrastructure (e.g., `Func<T2, Expression<Func<T1, bool>>> expression`).
-- **Adapter per persistence:** Storage-specific implementations for different backends (SQL, Mongo, Redis, ElasticSearch) following the same functional patterns.
+- **Dependency injection by delegates:** Pass behavior as services to decouple logic from infrastructure (e.g., `IRelayOutboxMessageServices`).
+- **Adapter per persistence:** Avoid storage-specific implementations for different backends. Use callback to abstract storage operations.
 
 **Functional Programming Principles**
 - Favor small pure functions that return data rather than mutate state.
@@ -49,11 +74,10 @@
 - Localize side effects to specific storage adapters; keep logic side-effect-light.
 
 **Typical Signatures & Delegates**
-- Example function extension:
-  - `public static IQueryable<T1> Filter<T1, T2>(this IQueryable<T1> source, T2 value, Func<T2, Expression<Func<T1, bool>>> expression) => ...`
 - Example async operation:
-  - `public static Task CreateTopicAsync(IAdminClient client, string topicName, KafkaOptions options, CancellationToken cancellationToken = default)`
-
+  - `public static Task CreateTopicAsync(IAdminClient client, string topicName, KafkaOptions options, CancellationToken cancellationToken = default)`.
+- Example sync operation:
+  - `internal static Result<ConsumeResult<TKey, TValue>?, GetConsumerKafkaMessageError?> GetConsumerKafkaMessage<TKey, TValue>(IConsumer<TKey, TValue> consumer, ILogger logger,CancellationToken cancellationToken)`
 **Validation & Error Flows**
 - Reserve exceptions for unexpected/unrecoverable runtime issues.
 - Return results or allow callers to handle missing data via nullable returns or options.
@@ -74,24 +98,16 @@
 - Options record:
   - `public record KafkaOptions<T> { ... }`
 
-**Recommended Practices**
-- Identify and extract all well-defined, major structures/features into their folders. Bring them to surface instead to encapsulate into functions.
-- Organize structure into folders like `KafkaOptions`, `KafkaCredentials`, `KafkaEndpoints`, `KafkaMessages`, `KafkaConsumers`, `KafkaProducers`.
-- Keep files small and focused; prefer many small partial files over large monoliths.
-- Always include Using.cs for project-wide usings and Using.Tests.cs for test-wide usings.
-
 **Anti-patterns**
 - Avoid large mutable services and stateful classes.
 - Avoid hidden dependencies; prefer explicit function parameters or delegates.
-- Do not mix storage-specific logic (e.g., Mongo logic inside SQL project).
 
 **How to add new features**
 1. Identify the project (e.g., Kafka.Clients).
-2. Add small partial functions under the appropriate `*Funcs` static partial class (e.g., `KafkaFuncs`).
+2. Add small partial functions under the appropriate `*Funcs` static partial class (e.g., `ClientsFuncs`).
 3. Place files in a focused folder describing the concern.
 4. Add tests adjacent to the code in `*.Tests.cs` files.
 
 **References (repo hints)**
 - Central configuration: Directory.Build.props.
 - Package versions: Directory.Packages.props.
-- Project patterns: Using.cs, Creating.cs.
