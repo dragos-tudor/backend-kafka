@@ -10,11 +10,9 @@ partial class MessagesFuncs
     int? schemaVersion,
     Guid? correlationId)
   =>
-    SetCorrelationIdKafkaHeader(
-      SetMessageIdKafkaHeader(
-        SetSchemaVersionKafkaHeader(
-          SetSchemaTypeKafkaHeader(headers, schemaType),
-          schemaVersion),
-        messageId),
-      correlationId);
+    headers
+      .SetCorrelationIdKafkaHeader(correlationId)
+      .SetMessageIdKafkaHeader(messageId)
+      .SetSchemaVersionKafkaHeader(schemaVersion)
+      .SetSchemaTypeKafkaHeader(schemaType);
 }

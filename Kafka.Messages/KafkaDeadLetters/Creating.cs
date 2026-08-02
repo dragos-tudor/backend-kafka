@@ -4,14 +4,20 @@ namespace Kafka.Messages;
 partial class MessagesFuncs
 {
   internal static Message<TKey, TValue> CreateKafkaDeadLetter<TKey, TValue>(
-    Message<TKey, TValue> message,
+    TKey key,
+    TValue value,
+    Headers headers,
     TopicPartitionOffset? topicPartitionOffset,
-    string failureReason)
+    string failureReason,
+    DateTime date)
   =>
     CreateKafkaMessage(
-      message.Key,
-      message.Value,
-      SetDeadLetterHeaders(message, topicPartitionOffset, failureReason),
-      message.Timestamp.UtcDateTime
+      key,
+      value,
+      SetDeadLetterHeaders(
+        headers,
+        topicPartitionOffset,
+        failureReason),
+      date
     );
 }

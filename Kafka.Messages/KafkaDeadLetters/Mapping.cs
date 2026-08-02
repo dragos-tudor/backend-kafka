@@ -5,14 +5,21 @@ partial class MessagesFuncs
 {
   internal static Message<TKey, TValue> ToKafkaDeadLetter<TKey, TValue, TPayload>(
     PersistedMessage<TKey, TPayload> message,
+    TopicPartitionOffset topicPartitionOffset,
     string failureReason,
     DateTime date,
     Func<TPayload, TValue> mapper)
-  {
-    var headers = SetKafkaMessageHeaders([], message.MessageId, message.Type, message.Version, message.CorrelationId);
-    var kafkaMessage = CreateKafkaMessage(message.MessageKey, ToKafkaMessageValue(message, mapper)!, headers, date);
-    var topicPartitionOffset = DeserializeTopicPartitionOffset(message.Metadata);
-
-    return CreateKafkaDeadLetter(kafkaMessage, topicPartitionOffset, failureReason);
-  }
+  =>
+    CreateKafkaDeadLetter(
+      message.MessageKey,
+      mapper(message.Payload!),
+      SetKafkaMessageHeaders(
+        [],
+        message.MessageId,
+        message.Type,
+        message.Version,
+        message.CorrelationId),
+      topicPartitionOffset,
+      failureReason,
+      date);
 }

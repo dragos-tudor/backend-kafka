@@ -1,12 +1,18 @@
 
 namespace Kafka.Engine;
 
-public interface IInsertInboxMessageService<TKey, TPayload>
+public interface IGetStoreSession<TSession> where TSession : IDisposable { TSession GetSession(); }
+
+public interface IInsertInboxMessage<TKey, TPayload>
 {
   Task<bool> InsertInboxMessageAsync(InboxMessage<TKey, TPayload> message, CancellationToken ct = default);
 }
 
-public interface ITransactInboxService<TSession> where TSession: IDisposable {
+public interface IStoreSessionModel<TSession> where TSession: IDisposable {
+  Task StoreSessionModel<TModel>(TSession session, TModel model);
+}
+
+public interface ITransactInbox<TSession> where TSession: IDisposable {
   Task TransactInboxAsync<T1, T2>(
     TSession session,
     Func<TSession, T1> func1,
@@ -15,11 +21,7 @@ public interface ITransactInboxService<TSession> where TSession: IDisposable {
   );
 }
 
-public interface IStoreSessionModelService<TSession> where TSession: IDisposable {
-  Task StoreSessionModel<TModel>(TSession session, TModel model);
-}
-
-public interface IUpdateInboxMessageStatusService<TKey, TPayload>
+public interface IUpdateInboxMessageStatus<TKey, TPayload>
 {
   Task UpdateInboxMessageStatusAsync(
     InboxMessage<TKey, TPayload> message,
@@ -27,7 +29,7 @@ public interface IUpdateInboxMessageStatusService<TKey, TPayload>
     CancellationToken ct = default);
 }
 
-public interface IUpdateSessionInboxMessageStatusService<TSession, TKey, TPayload> where TSession: IDisposable
+public interface IUpdateSessionInboxMessageStatus<TSession, TKey, TPayload> where TSession: IDisposable
 {
   Task UpdateSessionInboxMessageStatus(
     TSession session,

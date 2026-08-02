@@ -1,5 +1,6 @@
 
 global using System;
+global using System.Collections.Generic;
 global using System.Threading;
 global using System.Threading.Tasks;
 global using System.Text;
@@ -8,6 +9,7 @@ using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("Kafka.Clients")]
 [assembly:InternalsVisibleTo("Kafka.Engine")]
+[assembly:InternalsVisibleTo("Kafka.Observability")]
 [assembly:InternalsVisibleTo("Kafka.Messages")]
 [assembly:InternalsVisibleTo("Kafka.Resiliency")]
 

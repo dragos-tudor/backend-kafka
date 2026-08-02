@@ -1,6 +1,6 @@
-namespace Kafka.Clients;
+namespace Kafka.Engine;
 
-partial class ClientsFuncs
+partial class EngineFuncs
 {
   internal static TopicPartitionOffset? ApplyConsumerOffsetStrategy<TKey, TValue>(
     IConsumer<TKey, TValue> consumer,

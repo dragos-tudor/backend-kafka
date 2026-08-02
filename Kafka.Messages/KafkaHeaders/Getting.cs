@@ -3,12 +3,12 @@ namespace Kafka.Messages;
 partial class MessagesFuncs
 {
   static byte[]? GetKafkaHeaderValue(Headers headers, string headerName) =>
-    headers.LastOrDefault(value => value.Key == headerName)?.GetValueBytes();
+    headers.GetLastBytes(headerName);
 
   internal static string? GetKafkaHeaderString(Headers headers, string headerName) =>
     DecodeString(GetKafkaHeaderValue(headers, headerName));
 
-  static Guid? GetCorrelationIdKafkaHeader(Headers headers) =>
+  internal static Guid? GetCorrelationIdKafkaHeader(Headers headers) =>
     Guid.TryParse(GetKafkaHeaderString(headers, CorrelationIdHeaderName), out var correlationId) ? correlationId : null;
 
   internal static Guid? GetMessageIdKafkaHeader(Headers headers) =>
@@ -19,4 +19,7 @@ partial class MessagesFuncs
 
   static int? GetSchemaVersionKafkaHeader(Headers headers) =>
     GetKafkaHeaderString(headers, SchemaVersionHeaderName) is string versionString ? int.Parse(versionString, CultureInfo.InvariantCulture) : default;
+
+  internal static string? GetTraceParentKafkaHeader(Headers headers) =>
+    GetKafkaHeaderString(headers, TraceParentHeaderName);
 }

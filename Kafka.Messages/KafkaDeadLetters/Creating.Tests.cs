@@ -5,19 +5,17 @@ partial class MessagesTests
   [TestMethod]
   public void deadletter__create_deadletter__deadletter_includes_reason_header()
   {
-    var message = CreateKafkaMessage("key", "payload", []);
     var topicPartitionOffset = new TopicPartitionOffset("", 0, 0);
-    var deadLetter = CreateKafkaDeadLetter(message, topicPartitionOffset, "handler_failed");
+    var deadLetter = CreateKafkaDeadLetter("key", "payload", [], topicPartitionOffset, "handler_failed", DateTime.UtcNow);
 
-    GetKafkaHeaderString(deadLetter.Headers, DeadLetterReasonHeaderName).ShouldBe("handler_failed");
+    GetKafkaHeaderString(deadLetter.Headers, FailureReasonHeaderName).ShouldBe("handler_failed");
   }
 
   [TestMethod]
   public void deadletter__create_deadletter__deadletter_includes_metadata_headers()
   {
-    var message = CreateKafkaMessage("key", "payload", []);
     var topicPartitionOffset = new TopicPartitionOffset("orders", 2, 25);
-    var deadLetter = CreateKafkaDeadLetter(message, topicPartitionOffset, "handler_failed");
+    var deadLetter = CreateKafkaDeadLetter("key", "payload", [], topicPartitionOffset, "handler_failed", DateTime.UtcNow);
 
     GetKafkaHeaderString(deadLetter.Headers, OriginalTopicHeaderName).ShouldBe("orders");
     GetKafkaHeaderString(deadLetter.Headers, OriginalPartitionHeaderName).ShouldBe("2");
@@ -27,9 +25,9 @@ partial class MessagesTests
   [TestMethod]
   public void deadletter__create_deadletter__deadletter_includes_original_message_headers()
   {
-    var message = CreateKafkaMessage("key", "payload", SetKafkaHeaderString([], "original-header", "original-value"));
+    var headers = new Headers().SetKafkaHeaderString("original-header", "original-value");
     var topicPartitionOffset = new TopicPartitionOffset("", 0, 0);
-    var deadLetter = CreateKafkaDeadLetter(message, topicPartitionOffset, "handler_failed");
+    var deadLetter = CreateKafkaDeadLetter("key", "payload", headers, topicPartitionOffset, "handler_failed", DateTime.UtcNow);
 
     GetKafkaHeaderString(deadLetter.Headers, "original-header").ShouldBe("original-value");
   }

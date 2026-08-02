@@ -5,7 +5,7 @@ partial class EngineFuncs
 {
   internal static async Task<InboxMessage<TKey, TPayload>?> InsertInboxMessageAsync<TKey, TValue, TPayload>(
     ConsumeResult<TKey, TValue> result,
-    IInsertInboxMessageServices<TKey, TValue, TPayload> services,
+    IInsertInboxMessage<TKey, TValue, TPayload> services,
     CancellationToken cancellationToken)
   {
     var message = ToInboxMessage(result.Message, result.TopicPartitionOffset, services.ToPersistedMessagePayload, services.GetUtcDate());

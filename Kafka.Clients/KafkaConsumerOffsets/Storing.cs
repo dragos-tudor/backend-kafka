@@ -3,7 +3,7 @@ namespace Kafka.Clients;
 
 partial class ClientsFuncs
 {
-  static TopicPartitionOffset StoreConsumerOffset<TKey, TValue>(
+  internal static TopicPartitionOffset StoreConsumerOffset<TKey, TValue>(
     IConsumer<TKey, TValue> consumer,
     TopicPartitionOffset offset)
   {
