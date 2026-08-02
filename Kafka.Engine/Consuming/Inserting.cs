@@ -9,7 +9,7 @@ partial class EngineFuncs
     CancellationToken cancellationToken)
   {
     var message = ToInboxMessage(result.Message, result.TopicPartitionOffset, services.ToPersistedMessagePayload, services.GetUtcDate());
-    var saved = await services.InsertInboxMessageAsync(message, cancellationToken);
-    return saved ? message : null;
+    var inserted = await services.InsertInboxMessageAsync(message, cancellationToken);
+    return inserted ? message : null;
   }
 }

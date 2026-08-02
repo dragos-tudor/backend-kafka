@@ -13,8 +13,8 @@ partial class EngineFuncs
     CancellationToken cancellationToken)
   where TSession : IDisposable
   {
-    using var activity = CreateComponentActivity(services.GetActivitySource(), "consume-kafka-messages", ActivityKind.Internal, KafkaConsumer);
-    using var logScope = CreateLogScopeForActivity(services.GetLogger(), activity, KafkaConsumer);
+    using var activity = CreateComponentActivity(services.GetActivitySource(), "consume-kafka-messages", ActivityKind.Internal);
+    using var logScope = CreateLogScopeForActivity(services.GetLogger(), activity, "consume-kafka-messages");
     var metricCounters = services.GetMetricCounters();
 
     while (!cancellationToken.IsCancellationRequested)
@@ -31,7 +31,7 @@ partial class EngineFuncs
       catch (Exception exception)
       {
         LogConsumeKafkaMessageFailed(services.GetLogger(), exception, currentState);
-        metricCounters[MetricCounterTypes.ConsumingErrors].Add(1);
+        IncrementMetricCounter(metricCounters, MetricCounterTypes.ConsumingErrors);
 
         var error = ToConsumingError(currentState);
         if (error != ConsumingError.None)

@@ -1,7 +1,7 @@
 
-namespace Kafka.Observability;
+namespace Kafka.Instrumentation;
 
-partial class ObservabilityFuncs
+partial class InstrumentationFuncs
 {
   internal static ActivityContext? ExtractActivityContext(string traceParent)
   {

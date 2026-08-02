@@ -1,7 +1,7 @@
 
-namespace Kafka.Observability;
+namespace Kafka.Instrumentation;
 
-partial class ObservabilityFuncs
+partial class InstrumentationFuncs
 {
   static string ToTraceParent(Activity activity) =>
     $"00-{activity.TraceId}-{activity.SpanId}-{ToTraceParentTraceFlags(activity)}";

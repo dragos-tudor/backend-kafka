@@ -1,7 +1,7 @@
 
-namespace Kafka.Observability;
+namespace Kafka.Instrumentation;
 
-partial class ObservabilityFuncs
+partial class InstrumentationFuncs
 {
   const string RecordedTraceFlags = "01";
   const string NoneTraceFlags = "00";

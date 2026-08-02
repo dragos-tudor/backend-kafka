@@ -1,7 +1,7 @@
 
-namespace Kafka.Observability;
+namespace Kafka.Instrumentation;
 
-partial class ObservabilityFuncs
+partial class InstrumentationFuncs
 {
   static string[] SplitTraceParent(string traceParent) =>
     traceParent.Split('-', StringSplitOptions.RemoveEmptyEntries);

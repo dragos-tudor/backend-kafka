@@ -1,19 +1,19 @@
 
-namespace Kafka.Observability;
+namespace Kafka.Instrumentation;
 
-partial class ObservabilityFuncs
+partial class InstrumentationFuncs
 {
   internal static IDisposable CreateLogScopeForActivity(
     ILogger logger,
     Activity? activity,
-    string? component = null)
+    string component)
   {
     var scope = new Dictionary<string, object?>
     {
       ["traceId"] = activity?.TraceId.ToString(),
-      ["spanId"] = activity?.SpanId.ToString()
+      ["spanId"] = activity?.SpanId.ToString(),
+      ["component"] = component
     };
-    if (component is not null) scope["component"] = component;
     return logger.BeginScope(scope)!;
   }
 }

@@ -1,9 +1,11 @@
 #pragma warning disable CA2000
 
-namespace Kafka.Observability;
+namespace Kafka.Instrumentation;
 
-partial class ObservabilityFuncs
+partial class InstrumentationFuncs
 {
+  internal const string System = "kafka-client";
+
   internal static Activity? CreateActivity(
     ActivitySource activitySource,
     string activityName,
@@ -17,7 +19,8 @@ partial class ObservabilityFuncs
     ActivitySource activitySource,
     string activityName,
     ActivityKind activityKind,
-    string component) =>
+    string? component = default,
+    string system = System) =>
       CreateActivity(activitySource, activityName, activityKind)?
-        .SetComponentActivityTags(component);
+        .SetComponentActivityTags(component ?? activityName, system);
 }

@@ -20,10 +20,10 @@ partial class EngineFuncs
     if (activity is not null)
       InjectMessageActivityContext(activity, deadLetter.Headers);
     await PublishMessageAsync(producer, deadLetterTopic, deadLetter, cancellationToken);
-    LogPublishedDeadLetter(services.GetLogger(), message.MessageId, offset, message.CorrelationId);
+    LogPublishedDeadLetter(services.GetLogger());
 
     var metricCounters = services.GetMetricCounters();
-    metricCounters[MetricCounterTypes.DeadLettered].Add(1);
+    IncrementMetricCounter(metricCounters, MetricCounterTypes.DeadLettered);
     AddActivityTag(activity, "deadletter.topic", deadLetterTopic);
     AddActivityTag(activity, "deadletter.reason", failureReason);
     AddActivityEvent(activity, "deadletter.published");

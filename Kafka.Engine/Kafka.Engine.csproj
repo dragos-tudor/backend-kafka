@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging" />
     <ProjectReference Include="../Kafka.Clients/Kafka.Clients.csproj" />
-    <ProjectReference Include="../Kafka.Observability/Kafka.Observability.csproj" />
+    <ProjectReference Include="../Kafka.Instrumentation/Kafka.Instrumentation.csproj" />
     <ProjectReference Include="../Kafka.Utils/Kafka.Utils.csproj" />
   </ItemGroup>
 

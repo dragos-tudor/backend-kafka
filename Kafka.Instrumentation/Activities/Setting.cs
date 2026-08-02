@@ -1,12 +1,12 @@
 
-namespace Kafka.Observability;
+namespace Kafka.Instrumentation;
 
-partial class ObservabilityFuncs
+partial class InstrumentationFuncs
 {
   internal static Activity? SetComponentActivityTags(
     this Activity? activity,
     string component,
-    string system = "kafka-client") =>
+    string system) =>
       activity?
         .AddTag(ActivityTagNames.KafkaSystem, system)
         .AddTag(ActivityTagNames.Component, component);

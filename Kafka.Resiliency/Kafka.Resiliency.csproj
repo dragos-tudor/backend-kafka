@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../Directory.Testing.props" />
-
   <PropertyGroup>
     <Description>Wraps Kafka.Engine's consume, resume, and relay operations in supervised loops with backoff and restart, keeping kafka messages processing alive across transient failures.</Description>
   </PropertyGroup>

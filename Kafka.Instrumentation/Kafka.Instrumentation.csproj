@@ -3,13 +3,15 @@
   <Import Project="../Directory.Testing.props" />
 
   <PropertyGroup>
-    <Description>Kafka observability utility functions.</Description>
+    <Description>Kafka Instrumentation utility functions.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OpenTelemetry" />
-    <PackageReference Include="OpenTelemetry.Api" />
     <ProjectReference Include="../Kafka.Messages/Kafka.Messages.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(PackOnly)' != 'true'">
+    <PackageReference Include="OpenTelemetry" />
   </ItemGroup>
 
 </Project>

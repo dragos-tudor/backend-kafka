@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("Kafka.Clients")]
 [assembly:InternalsVisibleTo("Kafka.Engine")]
-[assembly:InternalsVisibleTo("Kafka.Observability")]
+[assembly:InternalsVisibleTo("Kafka.Instrumentation")]
 
 namespace Kafka.Messages;
 
