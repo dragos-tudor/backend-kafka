@@ -14,9 +14,9 @@ Consumes a single Kafka message and drives it through the transactional inbox pa
 - on domain failure publish dead letter.
 
 **Consuming messages avoided race conditions**
- - durable-save-before-offset-commit (to avoid move offset for unsaved messages).
+ - durable-save-before-offset-commit (via commit offset for saved messages).
  - restart/resumer overlap (via the inserted check).
- - fresh-message/resumer-message overlap (via the retry threshold).
+ - fresh-message/resumer-message overlap (via the relay/resume intervals).
  - resumer-vs-resumer overlap (via the sliding-lease lock). avoid compete consumer pattern.
 
 ### Remarks
