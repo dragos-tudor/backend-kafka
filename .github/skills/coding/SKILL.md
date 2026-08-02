@@ -1,3 +1,7 @@
+---
+name: coding
+description: 'Coding instructions and guidelines for the project.'
+---
 
 # Coding instructions
 
