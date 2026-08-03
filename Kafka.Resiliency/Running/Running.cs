@@ -28,7 +28,7 @@ partial class ResiliencyFuncs
       using var producer = clients!.Producer;
       using var consumer = clients.Consumer;
 
-      var processFailure = await ConsumeKafkaMessagesAsync(consumer, producer, kafkaOptions, services, cancellationToken);
+      var processFailure = await ConsumeKafkaMessagesAsync(services, cancellationToken);
       if (processFailure == ConsumingError.CriticalError)
       {
         await DelayTask(kafkaOptions.OperationTimeout, cancellationToken);

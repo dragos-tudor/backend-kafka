@@ -1,73 +1,44 @@
+
 using static Kafka.Engine.ConsumingState;
 
 namespace Kafka.Engine;
 
 partial class EngineFuncs
 {
-  // consuming kafka message feature coordinator (state machine).
-  internal static async IAsyncEnumerable<ConsumingState> ConsumeKafkaMessageAsync<TKey, TValue, TPayload, TSession>(
-    IConsumer<TKey, TValue> consumer,
-    IProducer<TKey, TValue> producer,
-    KafkaOptions kafkaOptions,
-    IConsumeKafkaMessage<TKey, TValue, TPayload, TSession> services,
-    [EnumeratorCancellation] CancellationToken cancellationToken = default)
-  where TSession: IDisposable
+  internal static async Task<ConsumingError> ConsumeKafkaMessagesAsync<TKey, TValue, TPayload, TSession>(
+    IConsumeKafkaMessageServices<TKey, TValue, TPayload, TSession> services,
+    CancellationToken cancellationToken)
+  where TSession : IDisposable
   {
-    var result = CaptureKafkaMessage(consumer, cancellationToken);
-    if (result is null) { yield return NotConsumedMessageState; yield break; }
+    using var activity = CreateComponentActivity(services.GetActivitySource(), "consume-kafka-messages", ActivityKind.Internal);
+    using var logScope = CreateLogScopeForActivity(services.GetLogger(), activity, "consume-kafka-messages");
+    var stateActions = GetConsumingStateActions<TKey, TValue, TPayload, TSession>();
+    var terminalStates = GetConsumingTerminalStates();
+    var metricCounters = services.GetMetricCounters();
 
-    var messageId = GetMessageIdKafkaHeader(result.Message.Headers);
-    var correlationId = GetCorrelationIdKafkaHeader(result.Message.Headers);
-    var offset = result.TopicPartitionOffset;
-
-    using var activity = CreateMessageActivity(services.GetActivitySource(), "consume-kafka-message", result, messageId, correlationId);
-    using var logScope = CreateLogScopeForMessage(services.GetLogger(), activity, "consume-kafka-message", offset, messageId, correlationId);
-    var counters = services.GetMetricCounters();
-
-    LogCapturedKafkaMessage(services.GetLogger());
-    IncrementMetricCounter(counters, MetricCounterTypes.Captured);
-    yield return CapturedKafkaMessageState;
-
-    AddActivityTag(activity, "message.id", messageId);
-    AddActivityTag(activity, "message.topic", result.TopicPartitionOffset.Topic);
-    AddActivityTag(activity, "message.partition", result.TopicPartitionOffset.Partition);
-    AddActivityEvent(activity, "message.captured");
-
-    yield return InsertingInboxMessageState;
-    var message = await InsertInboxMessageAsync(result, services, cancellationToken);
-    if (message is not null)
+    while (!cancellationToken.IsCancellationRequested)
     {
-      LogInsertedInboxMessage(services.GetLogger());
-      AddActivityEvent(activity, "inbox.inserted");
-      yield return InsertedInboxMessageState;
+      var currentState = NotStartedState;
+      try
+      {
+        var data = CreateConsumingStepData<TKey, TValue, TPayload>();
+        var ctx = CreateConsumingStepContext(services, data, activity);
+        await foreach (var state in RunStateMachineAsync(ctx, stateActions, terminalStates, currentState, cancellationToken))
+          currentState = state;
+
+        LogConsumedKafkaMessage(services.GetLogger(), currentState);
+      }
+      catch (OperationCanceledException) { return ConsumingError.None; }
+      catch (Exception exception)
+      {
+        LogConsumeKafkaMessageFailed(services.GetLogger(), exception, currentState);
+        IncrementMetricCounter(metricCounters, MetricCounterTypes.ConsumingErrors);
+
+        var error = ToConsumingError(currentState);
+        if (error != ConsumingError.None)
+          return error;
+      }
     }
-
-    yield return ApplyingConsumerOffsetState;
-    var appliedOffset = ApplyConsumerOffsetStrategy(consumer, offset, kafkaOptions);
-    LogAppliedConsumerOffset(services.GetLogger());
-    AddActivityTag(activity, "offset.applied", appliedOffset);
-    yield return AppliedConsumerOffsetState;
-
-    if (message is null) { yield return AlreadySavedInboxMessageState; yield break; }
-
-    yield return HandlingInboxMessageState;
-    var domainError = await HandleInboxMessageAsync(message, services, cancellationToken);
-    IncrementMetricCounter(counters, MetricCounterTypes.Handled);
-    if (domainError is not null)
-    {
-      LogHandledInboxMessageFailed(services.GetLogger(), domainError);
-      AddActivityTag(activity, "domain.error", domainError);
-      AddActivityEvent(activity, "message.handling.failed", [new KeyValuePair<string, object?>("error", domainError)]);
-
-      yield return PublishingDeadLetterState;
-      using var publishScope = CreateLogScopeForActivity(services.GetLogger(), activity, "publish-dead-letter");
-      await PublishKafkaDeadLetterAsync(producer, message, offset, domainError, activity, services, cancellationToken);
-      yield return PublishedDeadLetterState;
-      yield break;
-    }
-
-    LogHandledInboxMessage(services.GetLogger());
-    AddActivityEvent(activity, "message.handled");
-    yield return HandledInboxMessageState;
+    return ConsumingError.None;
   }
 }

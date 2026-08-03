@@ -13,8 +13,8 @@ partial class EngineFuncs
     string? component = default,
     string system = InstrumentationFuncs.System,
     ActivityKind activityKind = ActivityKind.Consumer) =>
-      ExtractMessageActivityContext(result.Message.Headers) is ActivityContext activityContext ?
-        CreateActivity(activitySource, activityName, activityKind, activityContext)?
+      ExtractTraceParentActivityContext(result.Message.Headers) is ActivityContext activityContext ?
+        CreateActivity(activitySource, activityName, activityKind, activityContext)
           .SetComponentActivityTags(component ?? activityName, system)
           .SetMessageActivityTags(messageId, correlationId, result.TopicPartitionOffset) :
         default;
@@ -30,6 +30,4 @@ partial class EngineFuncs
         .AddTag(ActivityTagNames.KafkaOffset, topicPartition.Offset)
         .AddTag(ActivityTagNames.MessageId, messageId)
         .AddTag(ActivityTagNames.CorrelationId, correlationId);
-
-
 }

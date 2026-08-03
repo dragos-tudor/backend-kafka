@@ -1,18 +1,22 @@
 
 namespace Kafka.Engine;
 
-internal enum ConsumingState
+public enum ConsumingState
 {
-  ConsumingMessageState,
-  NotConsumedMessageState,
+  NotStartedState,
+
+  NotCapturedKafkaMessageState,
   CapturedKafkaMessageState,
+
   InsertingInboxMessageState,
   InsertedInboxMessageState,
+
   ApplyingConsumerOffsetState,
   AppliedConsumerOffsetState,
   AlreadySavedInboxMessageState,
-  HandlingInboxMessageState,
+
   HandledInboxMessageState,
-  PublishingDeadLetterState,
-  PublishedDeadLetterState,
+  HandlingInboxMessageFailedState,
+
+  PublishedDeadLetterState
 }

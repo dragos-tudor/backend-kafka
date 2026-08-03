@@ -2,9 +2,8 @@
 namespace Kafka.Resiliency;
 
 public interface IKafkaServices<TKey, TValue, TPayload, TSession> :
-  IConsumeKafkaMessages<TKey, TValue, TPayload, TSession>,
-  IConsumeKafkaMessage<TKey, TValue, TPayload, TSession>,
-  IHandleInboxMessage<TKey, TValue, TPayload, TSession>,
+  IConsumeKafkaMessageServices<TKey, TValue, TPayload, TSession>,
+  IHandleInboxMessageServices<TKey, TValue, TPayload, TSession>,
   IRetryInboxMessagesServices<TKey, TValue, TPayload, TSession>,
   IResumeInboxMessagesServices<TKey, TValue, TPayload, TSession>,
   IRetryOutboxMessagesServices<TKey, TValue, TPayload>,
@@ -13,12 +12,12 @@ public interface IKafkaServices<TKey, TValue, TPayload, TSession> :
   IRunPeriodicJobServices where TSession: IDisposable;
 
 public interface IRunKafkaMessagesServices<TKey, TValue, TPayload, TSession> :
-  IConsumeKafkaMessages<TKey, TValue, TPayload, TSession>,
-  IGetLogger where TSession: IDisposable;
+  IConsumeKafkaMessageServices<TKey, TValue, TPayload, TSession>,
+  IGetLoggerService where TSession: IDisposable;
 
 public interface IRunPeriodicJobServices :
   IDistributedLockService,
-  IGetLogger;
+  IGetLoggerService;
 
 public interface IRetryInboxMessagesServices<TKey, TValue, TPayload, TSession> :
   IRunPeriodicJobServices,

@@ -5,9 +5,9 @@ partial class InstrumentationFuncs
 {
   // manually extract the activity context from the traceparent header
   // TODO extract from baggage header as well
-  internal static ActivityContext? ExtractMessageActivityContext(Headers headers) =>
+  internal static ActivityContext? ExtractTraceParentActivityContext(Headers headers) =>
     GetTraceParentKafkaHeader(headers) is string traceParent?
-      ExtractActivityContext(traceParent) : default;
+      ToActivityContext(traceParent) : default;
 
   // delegate to OpenTelemetry TraceContextPropagator to extract the activity context from the traceparent header
   // [Obsolete("Too many allocations for traceparent extraction (CreatePropagationContext)")]

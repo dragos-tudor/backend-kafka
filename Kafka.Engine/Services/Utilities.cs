@@ -1,10 +1,16 @@
 
 namespace Kafka.Engine;
 
-public interface IGetActivitySource { ActivitySource GetActivitySource(); }
+public interface IGetActivitySourceService { ActivitySource GetActivitySource(); }
 
-public interface IGetMetricCounters { MetricCounters GetMetricCounters(); }
+public interface IGetConsumerService<TKey, TValue> { IConsumer<TKey, TValue> GetConsumer(); }
 
-public interface IGetLogger { ILogger GetLogger(); }
+public interface IGetMetricCountersService { MetricCounters GetMetricCounters(); }
+
+public interface IGetLoggerService { ILogger GetLogger(); }
+
+public interface IGetKafkaOptionsService { KafkaOptions GetKafkaOptions(); }
+
+public interface IGetProducerService<TKey, TValue> { IProducer<TKey, TValue> GetProducer(); }
 
 public interface IGetUtcDateService { DateTime GetUtcDate(); }
