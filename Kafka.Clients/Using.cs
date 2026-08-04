@@ -5,13 +5,12 @@ global using System.Threading;
 global using System.Threading.Tasks;
 global using Confluent.Kafka;
 global using Confluent.Kafka.Admin;
-global using Kafka.Messages;
 global using static Kafka.Clients.ClientsFuncs;
 global using static Kafka.Messages.MessagesFuncs;
 global using static Kafka.Utils.UtilsFuncs;
 using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("Kafka.Engine")]
+[assembly:InternalsVisibleTo("Kafka.Operations")]
 [assembly:InternalsVisibleTo("Kafka.Resiliency")]
 
 namespace Kafka.Clients;

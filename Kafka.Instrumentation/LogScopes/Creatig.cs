@@ -3,7 +3,7 @@ namespace Kafka.Instrumentation;
 
 partial class InstrumentationFuncs
 {
-  internal static IDisposable CreateLogScopeForActivity(
+  internal static IDisposable CreateComponentLogScope(
     ILogger logger,
     Activity? activity,
     string component)

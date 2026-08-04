@@ -7,7 +7,8 @@ global using Confluent.Kafka;
 global using static Kafka.Messages.MessagesFuncs;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Kafka.Engine")]
+[assembly: InternalsVisibleTo("Kafka.StateMachines")]
+[assembly: InternalsVisibleTo("Kafka.Operations")]
 
 namespace Kafka.Instrumentation;
 

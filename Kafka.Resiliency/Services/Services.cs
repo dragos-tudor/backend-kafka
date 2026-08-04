@@ -13,11 +13,11 @@ public interface IKafkaServices<TKey, TValue, TPayload, TSession> :
 
 public interface IRunKafkaMessagesServices<TKey, TValue, TPayload, TSession> :
   IConsumeKafkaMessageServices<TKey, TValue, TPayload, TSession>,
-  IGetLoggerService where TSession: IDisposable;
+  ILoggerService where TSession: IDisposable;
 
 public interface IRunPeriodicJobServices :
   IDistributedLockService,
-  IGetLoggerService;
+  ILoggerService;
 
 public interface IRetryInboxMessagesServices<TKey, TValue, TPayload, TSession> :
   IRunPeriodicJobServices,

@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../Directory.Testing.props" />
+
+  <PropertyGroup>
+    <Description>Consuming Kafka messages, resuming inbox messages and relaying outbox messages StateMachines operations.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Kafka.Operations/Kafka.Operations.csproj" />
+  </ItemGroup>
+
+</Project>

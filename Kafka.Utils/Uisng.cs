@@ -8,7 +8,7 @@ global using static Kafka.Utils.UtilsFuncs;
 using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("Kafka.Clients")]
-[assembly:InternalsVisibleTo("Kafka.Engine")]
+[assembly:InternalsVisibleTo("Kafka.StateMachines")]
 [assembly:InternalsVisibleTo("Kafka.Instrumentation")]
 [assembly:InternalsVisibleTo("Kafka.Messages")]
 [assembly:InternalsVisibleTo("Kafka.Resiliency")]
