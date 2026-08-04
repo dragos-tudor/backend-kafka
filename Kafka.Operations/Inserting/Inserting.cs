@@ -18,12 +18,12 @@ partial class OperationsFuncs
     var messageSaved = await services.InsertInboxMessageAsync(inboxMessage, ct);
     if (messageSaved)
     {
-      InstrumentIdempotentInboxMessage(services);
+      InstrumentIdempotentInboxMessage(inboxMessage.MessageId, services);
       return (data, IdempotentInboxMessageState);
     }
 
     data.InboxMessage = inboxMessage;
-    InstrumentInsertInboxMessage(services);
+    InstrumentInsertInboxMessage(inboxMessage.MessageId, services);
     return (data, InsertedInboxMessageState);
   }
 }

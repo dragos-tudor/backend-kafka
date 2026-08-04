@@ -27,17 +27,17 @@ partial class OperationsFuncs
     TServices services,
     TData data,
     CancellationToken cancellationToken)
-  where TSession : IDisposable
   where TServices : IHandleInboxMessageServices<TKey, TValue, TPayload, TSession>
   where TData : IHandleInboxMessageData<TKey, TValue, TPayload>
+  where TSession : IDisposable
   {
     var inboxMessage = data.InboxMessage!;
     var domainError = await HandleInboxMessageAsync(inboxMessage, services, cancellationToken);
     data.DomainError = domainError;
 
     var _ = domainError is null?
-      InstrumentHandleInboxMessage(services) :
-      InstrumentHandleInboxMessageError(domainError, services);
+      InstrumentHandleInboxMessage(inboxMessage.MessageId, services) :
+      InstrumentHandleInboxMessageError(inboxMessage.MessageId, domainError, services);
 
     return domainError is null ?
       (data, HandledInboxMessageState) :

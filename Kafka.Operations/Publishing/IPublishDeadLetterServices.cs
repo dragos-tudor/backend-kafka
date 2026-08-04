@@ -2,7 +2,7 @@
 namespace Kafka.Operations;
 
 public interface IPublishDeadLetterServices<TKey, TValue, TPayload> :
-  IKafkaDeadLetterTopicService<TKey, TPayload>,
+  IDeadLetterTopicService<TKey, TPayload>,
   IProducerService<TKey, TValue>,
   IUtcDateService,
   IInstrumentationServices,

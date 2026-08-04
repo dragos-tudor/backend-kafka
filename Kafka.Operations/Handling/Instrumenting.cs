@@ -4,26 +4,28 @@ namespace Kafka.Operations;
 
 partial class OperationsFuncs
 {
-  [LoggerMessage(5, LogLevel.Debug, "Handled inbox message.")]
-  static partial void LogHandledInboxMessage(ILogger logger);
+  [LoggerMessage(5, LogLevel.Debug, "Handled inbox message. MessageId: {messageId}")]
+  static partial void LogHandledInboxMessage(ILogger logger, Guid? messageId);
 
-  [LoggerMessage(6, LogLevel.Error, "Handled inbox message failed. Domain error: {domainError}")]
-  static partial void LogHandledInboxMessageFailed(ILogger logger, string domainError);
+  [LoggerMessage(6, LogLevel.Error, "Handling inbox message failed. MessageId: {messageId}. Domain error: {domainError}")]
+  static partial void LogHandlingInboxMessageFailed(ILogger logger, Guid? messageId, string domainError);
 
   static Activity? InstrumentHandleInboxMessage(
+    Guid? messageId,
     IInstrumentationServices services)
   {
-    LogHandledInboxMessage(services.GetLogger());
+    LogHandledInboxMessage(services.GetLogger(), messageId);
     AddMetricCounter(services.GetMetricCounters(), HandledCounter);
     AddActivityEvent(Activity.Current, "message.handled");
     return Activity.Current;
   }
 
   private static Activity? InstrumentHandleInboxMessageError(
+    Guid? messageId,
     string domainError,
     IInstrumentationServices services)
   {
-    LogHandledInboxMessageFailed(services.GetLogger(), domainError);
+    LogHandlingInboxMessageFailed(services.GetLogger(), messageId, domainError);
     AddActivityTag(Activity.Current, "domain.error", domainError);
     AddActivityEvent(Activity.Current, "message.handling.failed",
       [CreateActivityEventAttribute("domain.error", domainError)]);

@@ -8,7 +8,7 @@ public interface IHandleInboxMessageService<TKey, TPayload>
 
 public interface IInboxMessageMapperService<TValue, TPayload> { TPayload ToInboxMessagePayload(TValue value); }
 
-public interface IKafkaDeadLetterTopicService<TKey, TPayload> { string GetKafkaDeadLetterTopic(InboxMessage<TKey, TPayload> message); }
+public interface IDeadLetterTopicService<TKey, TPayload> { string GetDeadLetterTopic(InboxMessage<TKey, TPayload> message); }
 
 public interface IKafkaMessageMapperService<TPayload, TValue> { TValue ToKafkaMessageValue(TPayload value); }
 

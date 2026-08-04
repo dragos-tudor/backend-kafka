@@ -4,8 +4,8 @@ namespace Kafka.Operations;
 
 partial class OperationsFuncs
 {
-  [LoggerMessage(1, LogLevel.Information, "Captured kafka message.")]
-  static partial void LogCapturedKafkaMessage(ILogger logger);
+  [LoggerMessage(1, LogLevel.Information, "Captured kafka message. MessageId: {messageId}, CorrelationId: {correlationId}, Offset: {topicOffsetPartition}")]
+  static partial void LogCapturedKafkaMessage(ILogger logger, Guid? messageId, Guid? correlationId, TopicPartitionOffset topicOffsetPartition);
 
   static void InstrumentCaptureKafkaMessage(
     Guid? messageId,
@@ -13,8 +13,8 @@ partial class OperationsFuncs
     TopicPartitionOffset topicOffsetPartition,
     IInstrumentationServices services)
   {
+    LogCapturedKafkaMessage(services.GetLogger(), messageId, correlationId, topicOffsetPartition);
     SetCapturingActivityTags(messageId, correlationId, topicOffsetPartition);
-    LogCapturedKafkaMessage(services.GetLogger());
     AddMetricCounter(services.GetMetricCounters(), CapturedCounter);
     AddActivityEvent(Activity.Current, "message.captured");
   }

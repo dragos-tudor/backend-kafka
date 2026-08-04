@@ -23,13 +23,17 @@ partial class OperationsFuncs
   where TData : IOffsetConsumerData<TKey, TPayload>
   {
     var topicPartitionOffset = data.TopicPartitionOffset!;
+    var inboxMessage = data.InboxMessage;
 
     var offsetApplied = OffsetConsumer(services.GetConsumer(), topicPartitionOffset, services.GetKafkaOptions());
     data.OffsetApplied = offsetApplied is not null;
 
-    if (data.InboxMessage is null) return new((data, MissingInboxMessageState));
+    if (inboxMessage is null) {
+      InstrumentOffsetConsumerFailed(null, topicPartitionOffset, services);
+      return new((data, MissingInboxMessageState));
+    }
 
-    InstrumentOffsetConsumer(offsetApplied, services);
+    InstrumentOffsetConsumer(inboxMessage.MessageId, topicPartitionOffset, services);
     return new ((data, OffsetConsumerState));
   }
 }

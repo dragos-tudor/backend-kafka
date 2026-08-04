@@ -4,7 +4,7 @@ namespace Kafka.Operations;
 
 partial class OperationsFuncs
 {
-  static async Task<Message<TKey, TValue>> PublishKafkaDeadLetterAsync<TKey, TValue, TPayload>(
+  static async Task<Message<TKey, TValue>> PublishDeadLetterAsync<TKey, TValue, TPayload>(
     IProducer<TKey, TValue> producer,
     Message<TKey, TValue> deadLetter,
     string deadLetterTopic,
@@ -16,7 +16,7 @@ partial class OperationsFuncs
     await services.UpdateInboxMessageStatusAsync(message, InboxMessageStatus.DeadLettering, cancellationToken);
 
     await PublishMessageAsync(producer, deadLetterTopic, deadLetter, cancellationToken);
-    InstrumentPublishDeadLetter(domainError, deadLetterTopic, services);
+    InstrumentPublishDeadLetter(message.MessageId, deadLetter.Key?.ToString(), deadLetterTopic, domainError, services);
 
     await services.UpdateInboxMessageStatusAsync(message, InboxMessageStatus.DeadLettered, cancellationToken);
     return deadLetter;
@@ -34,11 +34,11 @@ partial class OperationsFuncs
     var kafkaMessage = data.KafkaMessage!;
     var topicPartitionOffset = data.TopicPartitionOffset!;
 
-    var deadLetterTopic = services.GetKafkaDeadLetterTopic(data.InboxMessage!);
+    var deadLetterTopic = services.GetDeadLetterTopic(data.InboxMessage!);
     var deadLetter = ToKafkaDeadLetter(inboxMessage!, topicPartitionOffset, domainError, services.GetUtcDate(), services.ToKafkaMessageValue);
 
     InjectTraceParentActivity(Activity.Current, kafkaMessage.Headers);
-    await PublishKafkaDeadLetterAsync(services.GetProducer(), deadLetter, deadLetterTopic, inboxMessage,  domainError, services, ct);
+    await PublishDeadLetterAsync(services.GetProducer(), deadLetter, deadLetterTopic, inboxMessage,  domainError, services, ct);
 
     return (data, PublishedDeadLetterState);
   }
