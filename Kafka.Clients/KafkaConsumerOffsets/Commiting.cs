@@ -1,3 +1,4 @@
+
 namespace Kafka.Clients;
 
 partial class ClientsFuncs

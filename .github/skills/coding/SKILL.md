@@ -30,7 +30,7 @@ description: 'Coding instructions and guidelines for the project.'
     - <Action><Object> (e.g., `CreateTopicAsync`).
     - <Action><Object><Property> (e.g., `GetConsumerGroupOffsets`).
   - Use naming style for folders:
-    - <Objects> (e.g., `KafkaConsumers`, `PersistedMessages`).
+    - <Objects> (e.g., `KafkaConsumers`, `IntegrationMessages`).
     - <Feature> (e.g., `Retrying`, `Running`, `Consuming`) only in Engine or Resiliency projects.
   - Avoid abbreviations; use full words (e.g., `KafkaConsumers` instead of `KCons`).
   - Avoid Hungarian notation or type prefixes (e.g., `strName`, `iCount`).

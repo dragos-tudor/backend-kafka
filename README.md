@@ -5,19 +5,30 @@
 
 ### Consumming Kafka Messages
 ---
-
 Consumes a single Kafka message and drives it through the transactional inbox pattern:
 - capture kafka message.
 - insert inbox message.
-- commit the Kafka offset.
+- offset kafka consumer.
 - handle business processing (transactional inbox pattern).
-- on domain failure publish dead letter.
+- on handling domain error dispatch dead letter.
+- dispatch dead letter.
 
 **Consuming messages avoided race conditions**
  - durable-save-before-offset-commit (via commit offset for saved messages).
  - restart/resumer overlap (via the inserted check).
  - fresh-message/resumer-message overlap (via the relay/resume intervals).
  - resumer-vs-resumer overlap (via the sliding-lease lock). avoid compete consumer pattern.
+
+### Resuming Kafka Messages
+---
+Resume a single pending/deadletting inbox message and drives it through the transactional inbox pattern:
+- handle business processing for inbox messages (transactional inbox pattern) - pending.
+- on handling technical error schedule inbox message next retry - pending.
+- on handling domain error dispatch dead letter - pending.
+- on scheduling exhausted inbox message retries dispatch dead letter - pending.
+- dispatch dead letter - deadlettering.
+- on dispatching error delay dead letter next retry - deadlettering.
+- on delaying exhausted dead letter retires abandon dead letter (notify dead letter abandon) - deadlettering.
 
 ### Remarks
 - all integration tests use podman containers [aspire testing NA].

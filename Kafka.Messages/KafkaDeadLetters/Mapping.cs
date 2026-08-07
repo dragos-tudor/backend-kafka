@@ -4,7 +4,7 @@ namespace Kafka.Messages;
 partial class MessagesFuncs
 {
   internal static Message<TKey, TValue> ToKafkaDeadLetter<TKey, TValue, TPayload>(
-    PersistedMessage<TKey, TPayload> message,
+    IntegrationMessage<TKey, TPayload> message,
     TopicPartitionOffset topicPartitionOffset,
     string failureReason,
     DateTime date,

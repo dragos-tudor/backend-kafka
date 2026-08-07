@@ -3,12 +3,14 @@ namespace Kafka.Resiliency;
 
 partial class ResiliencyFuncs
 {
-  public static async Task RunKafkaMessagesAsync<TKey, TValue, TPayload, TSession>(
+  internal static async Task RunKafkaMessagesAsync<TServices, TData, TKey, TValue, TPayload, TSession>(
     ConsumerConfig consumerConfig,
     ProducerConfig producerConfig,
     KafkaOptions kafkaOptions,
-    IRunKafkaMessagesServices<TKey, TValue, TPayload, TSession> services,
+    TServices services,
     CancellationToken cancellationToken = default)
+  where TServices: IConsumeKafkaMessageServices<TKey, TValue, TPayload, TSession>
+  where TData: IConsumingStepData<TKey, TValue, TPayload>
   where TSession: IDisposable
   {
     var clients = default(KafkaClients<TKey, TValue>);
@@ -20,7 +22,7 @@ partial class ResiliencyFuncs
       }
       catch (Exception exception)
       {
-        LogCreateKafkaClientsFailed(services.GetLogger(), exception);
+        LogCreateKafkaClientsError(services.GetLogger(), exception);
         await DelayTask(kafkaOptions.OperationTimeout, cancellationToken); //TODO: Consider using exponential backoff here instead of a fixed delay.
         continue;
       }
@@ -28,8 +30,8 @@ partial class ResiliencyFuncs
       using var producer = clients!.Producer;
       using var consumer = clients.Consumer;
 
-      var processFailure = await ConsumeKafkaMessagesAsync(services, cancellationToken);
-      if (processFailure == ConsumingError.CriticalError)
+      var error = await ConsumeKafkaMessagesAsync<TServices, TData, TKey, TValue, TPayload, TSession>(services, cancellationToken);
+      if (error is not null)
       {
         await DelayTask(kafkaOptions.OperationTimeout, cancellationToken);
         continue;
@@ -37,7 +39,7 @@ partial class ResiliencyFuncs
     }
   }
 
-  public static async Task RunPeriodicJobAsync(
+  internal static async Task RunPeriodicJobAsync(
     string jobName,
     TimeSpan timerInterval,
     TimeSpan lockInterval,
@@ -56,7 +58,7 @@ partial class ResiliencyFuncs
       }
       catch (Exception exception)
       {
-        LogPeriodicJobFailed(services.GetLogger(), exception, jobName);
+        LogPeriodicJobError(services.GetLogger(), exception, jobName);
       }
     }
   }

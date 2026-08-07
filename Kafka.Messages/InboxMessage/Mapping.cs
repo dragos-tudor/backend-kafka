@@ -8,25 +8,19 @@ partial class MessagesFuncs
     TopicPartitionOffset topicPartitionOffset,
     Func<TValue, TPayload> mapper,
     DateTime receivedDate,
-    InboxMessageStatus status = InboxMessageStatus.Pending,
-    int retryCount = 0,
-    DateTime? nextAttemptAt = default,
-    string? error = default)
+    InboxMessageStatus status = InboxMessageStatus.Pending)
   =>
     new()
     {
-      MessageId = GetMessageIdKafkaHeader(message.Headers) ?? GetNewPersistedMessageId(),
+      MessageId = GetMessageIdKafkaHeader(message.Headers) ?? GetNewIntegrationMessageId(),
       MessageKey = message.Key,
-      Payload = ToPersistedMessagePayload(message, mapper),
+      Payload = ToIntegrationMessagePayload(message, mapper),
       Date = message.Timestamp.UtcDateTime,
       ReceivedAt = receivedDate,
+      Status = status,
       Type = GetSchemaTypeKafkaHeader(message.Headers),
       Version = GetSchemaVersionKafkaHeader(message.Headers),
       Metadata = SerializeTopicPartitionOffset(topicPartitionOffset),
-      RetryCount = retryCount,
-      LastError = error,
-      Status = status,
-      NextAttemptAt = nextAttemptAt,
       CorrelationId = GetCorrelationIdKafkaHeader(message.Headers)
     };
 }

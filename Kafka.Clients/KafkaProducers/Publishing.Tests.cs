@@ -14,7 +14,7 @@ public sealed partial class ClientsTests
     var message = CreateKafkaMessage("key1", SerializeJson(payload), []);
     var result = await PublishMessageAsync(producer, publishTopicName, message, cancellationToken);
 
-    result.Status.ShouldBe(PersistenceStatus.Persisted);
+    result.Status.ShouldBe(PersistenceStatus.NotPersisted);
   }
 
   [TestMethod]

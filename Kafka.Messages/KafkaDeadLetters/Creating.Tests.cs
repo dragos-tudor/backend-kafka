@@ -6,17 +6,15 @@ partial class MessagesTests
   public void deadletter__create_deadletter__deadletter_includes_reason_header()
   {
     var topicPartitionOffset = new TopicPartitionOffset("", 0, 0);
-    var deadLetter = CreateKafkaDeadLetter("key", "payload", [], topicPartitionOffset, "handler_failed", DateTime.UtcNow);
-
-    GetKafkaHeaderString(deadLetter.Headers, FailureReasonHeaderName).ShouldBe("handler_failed");
+    var deadLetter = CreateKafkaDeadLetter("key", "payload", [], topicPartitionOffset, "handler_error", DateTime.UtcNow);
+    GetKafkaHeaderString(deadLetter.Headers, FailureReasonHeaderName).ShouldBe("handler_error");
   }
 
   [TestMethod]
   public void deadletter__create_deadletter__deadletter_includes_metadata_headers()
   {
     var topicPartitionOffset = new TopicPartitionOffset("orders", 2, 25);
-    var deadLetter = CreateKafkaDeadLetter("key", "payload", [], topicPartitionOffset, "handler_failed", DateTime.UtcNow);
-
+    var deadLetter = CreateKafkaDeadLetter("key", "payload", [], topicPartitionOffset, "handler_error", DateTime.UtcNow);
     GetKafkaHeaderString(deadLetter.Headers, OriginalTopicHeaderName).ShouldBe("orders");
     GetKafkaHeaderString(deadLetter.Headers, OriginalPartitionHeaderName).ShouldBe("2");
     GetKafkaHeaderString(deadLetter.Headers, OriginalOffsetHeaderName).ShouldBe("25");
@@ -27,8 +25,7 @@ partial class MessagesTests
   {
     var headers = new Headers().SetKafkaHeaderString("original-header", "original-value");
     var topicPartitionOffset = new TopicPartitionOffset("", 0, 0);
-    var deadLetter = CreateKafkaDeadLetter("key", "payload", headers, topicPartitionOffset, "handler_failed", DateTime.UtcNow);
-
+    var deadLetter = CreateKafkaDeadLetter("key", "payload", headers, topicPartitionOffset, "handler_error", DateTime.UtcNow);
     GetKafkaHeaderString(deadLetter.Headers, "original-header").ShouldBe("original-value");
   }
 }

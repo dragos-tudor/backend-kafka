@@ -3,16 +3,16 @@ namespace Kafka.Resiliency;
 
 partial class ResiliencyFuncs
 {
-  internal static Task RetryInboxMessagesAsync<TKey, TValue, TPaylod, TSession>(
+  internal static Task RetryInboxMessagesAsync<TKey, TValue, TPayload, TSession>(
     JobsOptions options,
-    IRetryInboxMessagesServices<TKey, TValue, TPaylod, TSession> services,
+    IRetryInboxMessagesServices<TKey, TValue, TPayload, TSession> services,
     CancellationToken cancellationToken = default)
   where TSession : IDisposable =>
       RunPeriodicJobAsync(
         "resume-inbox-messages",
         options.ResumeInboxInterval,
         options.ResumeInboxLockInterval,
-        token => ResumeInboxMessagesAsync(services, token),
+        token => ResumeInboxMessagesAsync<IResumeInboxMessageServices<TKey, TValue, TPayload, TSession>, IResumingStepData<TKey, TValue, TPayload>, TKey, TValue, TPayload, TSession>(services, token),
         services,
         cancellationToken);
 

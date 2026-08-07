@@ -4,7 +4,7 @@ namespace Kafka.Instrumentation;
 
 partial class InstrumentationFuncs
 {
-  internal const string System = "kafka-client";
+  internal const string System = "kafka.client";
 
   internal static Activity CreateActivity(
     ActivitySource activitySource,

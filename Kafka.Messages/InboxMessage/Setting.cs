@@ -10,5 +10,6 @@ public static class InboxMessageExtenions
     public InboxMessage<TKey, TPayload> SetInboxMessageRetryCount(int retryCount) { message.RetryCount = retryCount; return message; }
     public InboxMessage<TKey, TPayload> SetInboxMessagePublishRetryCount(int retryCount) { message.PublishRetryCount = retryCount; return message; }
     public InboxMessage<TKey, TPayload> SetInboxMessageLastError(string error) { message.LastError = error; return message; }
+    public InboxMessage<TKey, TPayload> SetInboxMessageNextAttemptAt(DateTimeOffset? nextAttemptAt) { message.NextAttemptAt = nextAttemptAt; return message; }
   }
 }

@@ -3,11 +3,11 @@
   <Import Project="../Directory.Testing.props" />
 
   <PropertyGroup>
-    <Description>Consuming Kafka messages, resuming inbox messages and relaying outbox messages StateMachines operations.</Description>
+    <Description>Consuming Kafka messages, resuming inbox messages and relaying outbox messages state machines operations.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Kafka.Operations/Kafka.Operations.csproj" />
+    <ProjectReference Include="../Kafka.Inbox/Kafka.Inbox.csproj" />
   </ItemGroup>
 
 </Project>

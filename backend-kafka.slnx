@@ -1,6 +1,6 @@
 <Solution>
   <Project Path="Kafka/Kafka.csproj" />
-  <Project Path="Kafka.Operations/Kafka.Operations.csproj" />
+  <Project Path="Kafka.Inbox/Kafka.Inbox.csproj" />
   <Project Path="Kafka.Resiliency/Kafka.Resiliency.csproj" />
   <Project Path="Kafka.StateMachines/Kafka.StateMachines.csproj" />
   <Project Path="Kafka.Clients/Kafka.Clients.csproj" />

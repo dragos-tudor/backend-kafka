@@ -5,12 +5,13 @@ namespace Kafka.StateMachines;
 
 partial class StateMachinesFuncs
 {
-  internal static async IAsyncEnumerable<(TData, TState)> RunStateMachineAsync<TServices, TData, TState>(
+  internal static async IAsyncEnumerable<(TData, TState)> RunStateMachineAsync<TServices, TData, TState, TStateActions>(
     TServices services,
     TData initialData,
     TState initialState,
-    IImmutableDictionary<TState, StepAsync<TServices, TData, TState>> stateActions,
+    TStateActions stateActions,
     [EnumeratorCancellation] CancellationToken ct = default)
+  where TStateActions: IImmutableDictionary<TState, StepAsync<TServices, TData, TState>>
   {
     var currentState = initialState;
     var currentData = initialData;
