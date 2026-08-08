@@ -1,6 +1,12 @@
 
 namespace Kafka.StateMachines;
 
+public enum ResumingCounterType
+{
+  ResumedCounter,
+  ResumingCriticalErrorsCounter
+}
+
 partial class ResumingFuncs
 {
   internal static ImmutableDictionary<ResumingCounterType, Counter<long>> CreateResumingCounters(Meter meter) =>

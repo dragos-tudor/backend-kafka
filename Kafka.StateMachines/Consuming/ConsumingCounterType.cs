@@ -1,6 +1,12 @@
 
 namespace Kafka.StateMachines;
 
+public enum ConsumingCounterType
+{
+  ConsumedCounter,
+  ConsumeCriticalErrorsCounter
+}
+
 partial class ConsumingFuncs
 {
   public static ImmutableDictionary<ConsumingCounterType, Counter<long>> CreateConsumingCounters(Meter meter) =>

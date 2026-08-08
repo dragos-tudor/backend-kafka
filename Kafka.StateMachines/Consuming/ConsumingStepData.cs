@@ -17,3 +17,9 @@ public sealed class ConsumingStepData<TKey, TValue, TPayload>:
   public Message<TKey, TValue>? DeadLetter { get; set; }
   public string? HandleError { get; set; }
 }
+
+partial class StateMachinesFuncs
+{
+  internal static IConsumingStepData<TKey, TValue, TPayload> CreateConsumingStepData<TKey, TValue, TPayload>() =>
+    new ConsumingStepData<TKey, TValue, TPayload>();
+}
