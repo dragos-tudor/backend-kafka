@@ -18,7 +18,7 @@ partial class InboxFuncs
     IInstrumentationServices services)
   {
     LogInsertedInboxMessage(services.GetLogger(), messageId);
-    AddMetricCounter(services.GetMetricCounters<InsertingCounterType>(), InsertedCounter);
+    AddMetricCounter(InsertingCounters[InsertedCounter]);
     AddActivityEvent(Activity.Current, "inserted.message");
   }
 
@@ -28,7 +28,7 @@ partial class InboxFuncs
     IInstrumentationServices services)
   {
     LogInsertInboxMessageError(services.GetLogger(), messageKey, ex);
-    AddMetricCounter(services.GetMetricCounters<InsertingCounterType>(), InsertErrorCounter);
+    AddMetricCounter(InsertingCounters[InsertErrorCounter]);
     AddActivityEvent(Activity.Current, "insert.message.error");
   }
 

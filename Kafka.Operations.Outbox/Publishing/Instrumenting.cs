@@ -17,7 +17,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogPublishedOutboxMessage(services.GetLogger(), messageId, messageKey, messageTopic, null);
-    AddMetricCounter(services.GetMetricCounters<PublishingCounterType>(), PublishedOutboxCounter);
+    AddMetricCounter(PublishingCounters[PublishedOutboxCounter]);
     AddActivityTag(Activity.Current, "publish.outbox.key", messageKey);
     AddActivityTag(Activity.Current, "publish.outbox.topic", messageTopic);
     AddActivityEvent(Activity.Current, "published.outbox");
@@ -29,7 +29,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogPublishOutboxMessageError(services.GetLogger(), messageId, ex);
-    AddMetricCounter(services.GetMetricCounters<PublishingCounterType>(), PublishOutboxErrorCounter);
+    AddMetricCounter(PublishingCounters[PublishOutboxErrorCounter]);
     AddActivityEvent(Activity.Current, "publish.outbox.error", [
       CreateActivityEventAttribute("publish.error", ex),
     ]);

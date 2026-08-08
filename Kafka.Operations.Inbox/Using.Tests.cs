@@ -1,12 +1,15 @@
 
 global using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+global using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Kafka.Operations.Outbox;
+namespace Kafka.Operations.Inbox;
 
 [TestClass]
-public partial class OutboxTests
+public partial class InboxTests
 {
-  [TestMethod]
-  public void FakeTest() {}
+  class InstrumentationServices : IInstrumentationServices
+  {
+    public ActivitySource GetActivitySource() => new ("inbox");
+    public ILogger GetLogger() => NullLogger.Instance;
+  }
 }

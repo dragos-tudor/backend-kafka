@@ -19,7 +19,7 @@ partial class InboxFuncs
     IInstrumentationServices services)
   {
     LogHandledInboxMessage(services.GetLogger(), messageId);
-    AddMetricCounter(services.GetMetricCounters<HandlingCounterType>(), HandledCounter);
+    AddMetricCounter(HandlingCounters[HandledCounter]);
     AddActivityEvent(Activity.Current, "message.handled");
     return Activity.Current;
   }
@@ -42,7 +42,7 @@ partial class InboxFuncs
     IInstrumentationServices services)
   {
     LogHandleInboxMessageTechnicalError(services.GetLogger(), messageId, technicalError);
-    AddMetricCounter(services.GetMetricCounters<HandlingCounterType>(), HandleTechnicalErrorCounter);
+    AddMetricCounter(HandlingCounters[HandleTechnicalErrorCounter]);
     AddActivityTag(Activity.Current, "handle.message.technical.error", technicalError);
     AddActivityEvent(Activity.Current, "handle.message.error",
       [CreateActivityEventAttribute("technical.error", technicalError)]);

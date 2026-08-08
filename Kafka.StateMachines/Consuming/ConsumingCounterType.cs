@@ -7,12 +7,12 @@ public enum ConsumingCounterType
   ConsumeCriticalErrorsCounter
 }
 
-partial class ConsumingFuncs
+partial class StateMachinesFuncs
 {
-  public static ImmutableDictionary<ConsumingCounterType, Counter<long>> CreateConsumingCounters(Meter meter) =>
+  static ImmutableDictionary<ConsumingCounterType, Counter<long>> ConsumingCounters =
     ImmutableDictionary<ConsumingCounterType, Counter<long>>.Empty
       .AddRange(new Dictionary<ConsumingCounterType, Counter<long>>() {
-        [ConsumingCounterType.ConsumedCounter] = meter.CreateCounter<long>("consumed.kafka.messages"),
-        [ConsumingCounterType.ConsumeCriticalErrorsCounter] = meter.CreateCounter<long>("consume.kafka.messages.critical.errors"),
+        [ConsumingCounterType.ConsumedCounter] = Meter!.CreateCounter<long>("consumed.kafka.messages"),
+        [ConsumingCounterType.ConsumeCriticalErrorsCounter] = Meter.CreateCounter<long>("consume.kafka.messages.critical.errors"),
       });
 }

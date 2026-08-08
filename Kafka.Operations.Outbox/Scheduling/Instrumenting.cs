@@ -20,7 +20,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogScheduleOutboxMessageRetry(services.GetLogger(), messageId, retryCount, error);
-    AddMetricCounter(services.GetMetricCounters<SchedulingCounterType>(), ScheduleOutboxRetryCounter);
+    AddMetricCounter(SchedulingCounters[ScheduleOutboxRetryCounter]);
     AddActivityTag(Activity.Current, "schedule.outbox.retryCount", retryCount);
     AddActivityTag(Activity.Current, "schedule.outbox.error", error);
     AddActivityEvent(Activity.Current, "schedule.outbox.retry",
@@ -35,7 +35,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogScheduleOutboxMessageExhausted(services.GetLogger(), messageId, retryCount, error);
-    AddMetricCounter(services.GetMetricCounters<SchedulingCounterType>(), ScheduleOutboxExhaustedCounter);
+    AddMetricCounter(SchedulingCounters[ScheduleOutboxExhaustedCounter]);
     AddActivityTag(Activity.Current, "schedule.outbox.retryCount", retryCount);
     AddActivityEvent(Activity.Current, "schedule.outbox.exhausted",
       [CreateActivityEventAttribute("schedule.error", error)]);
@@ -48,7 +48,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogScheduleOutboxMessageError(services.GetLogger(), messageId, ex);
-    AddMetricCounter(services.GetMetricCounters<SchedulingCounterType>(), ScheduleOutboxErrorCounter);
+    AddMetricCounter(SchedulingCounters[ScheduleOutboxErrorCounter]);
     AddActivityTag(Activity.Current, "schedule.outbox.error", ex);
     AddActivityEvent(Activity.Current, "schedule.outbox.error",
       [CreateActivityEventAttribute("schedule.error", ex)]);

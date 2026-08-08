@@ -15,10 +15,14 @@ global using Kafka.Utils;
 global using static Kafka.Clients.ClientsFuncs;
 global using static Kafka.Instrumentation.InstrumentationFuncs;
 global using static Kafka.Messages.MessagesFuncs;
+global using static Kafka.Operations.Inbox.InboxFuncs;
 using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("Kafka.StateMachines")]
 
 namespace Kafka.Operations.Inbox;
 
-public static partial class InboxFuncs;
+public static partial class InboxFuncs
+{
+  static readonly Meter Meter = new ("kafka.inbox");
+}

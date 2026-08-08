@@ -18,7 +18,7 @@ partial class InboxFuncs
     IInstrumentationServices services)
   {
     LogDispatchedDeadLetter(services.GetLogger(), messageId, deadLetterKey, deadLetterTopic, error);
-    AddMetricCounter(services.GetMetricCounters<DispatchingCounterType>(), DispatchedDeadLetterCounter);
+    AddMetricCounter(DispatchingCounters[DispatchedDeadLetterCounter]);
     AddActivityTag(Activity.Current, "dispatch.inbox.key", deadLetterKey);
     AddActivityTag(Activity.Current, "dispatch.inbox.topic", deadLetterTopic);
     AddActivityTag(Activity.Current, "dispatch.inbox.reason", error);
@@ -31,7 +31,7 @@ partial class InboxFuncs
     IInstrumentationServices services)
   {
     LogDispatchDeadLetterError(services.GetLogger(), messageId, ex);
-    AddMetricCounter(services.GetMetricCounters<DispatchingCounterType>(), DispatchDeadLetterErrorCounter);
+    AddMetricCounter(DispatchingCounters[DispatchDeadLetterErrorCounter]);
     AddActivityEvent(Activity.Current, "dispatch.inbox.error", [
       CreateActivityEventAttribute("dispatch.error", ex),
     ]);

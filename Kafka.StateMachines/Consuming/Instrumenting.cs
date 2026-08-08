@@ -15,7 +15,7 @@ partial class StateMachinesFuncs
     IInstrumentationServices services)
   {
     LogConsumedKafkaMessage(services.GetLogger(), state);
-    AddMetricCounter(services.GetMetricCounters<ConsumingCounterType>(), ConsumedCounter);
+    AddMetricCounter(ConsumingCounters[ConsumedCounter]);
   }
 
   static void InstrumentConsumeKafkaMessageCriticalError(
@@ -23,6 +23,6 @@ partial class StateMachinesFuncs
     IInstrumentationServices services)
   {
     LogConsumeKafkaMessageCriticalError(services.GetLogger(), state);
-    AddMetricCounter(services.GetMetricCounters<ConsumingCounterType>(), ConsumeCriticalErrorsCounter);
+    AddMetricCounter(ConsumingCounters[ConsumeCriticalErrorsCounter]);
   }
 }

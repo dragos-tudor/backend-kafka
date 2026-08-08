@@ -18,7 +18,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogDispatchedDeadLetter(services.GetLogger(), messageId, deadLetterKey, deadLetterTopic, error);
-    AddMetricCounter(services.GetMetricCounters<DispatchingCounterType>(), DispatchedDeadLetterCounter);
+    AddMetricCounter(DispatchingCounters[DispatchedDeadLetterCounter]);
     AddActivityTag(Activity.Current, "dispatch.outbox.key", deadLetterKey);
     AddActivityTag(Activity.Current, "dispatch.outbox.topic", deadLetterTopic);
     AddActivityTag(Activity.Current, "dispatch.outbox.reason", error);
@@ -31,7 +31,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogDispatchDeadLetterError(services.GetLogger(), messageId, ex);
-    AddMetricCounter(services.GetMetricCounters<DispatchingCounterType>(), DispatchDeadLetterErrorCounter);
+    AddMetricCounter(DispatchingCounters[DispatchDeadLetterErrorCounter]);
     AddActivityEvent(Activity.Current, "dispatch.outbox.error", [
       CreateActivityEventAttribute("dispatch.error", ex),
     ]);

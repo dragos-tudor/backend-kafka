@@ -12,11 +12,11 @@ public enum SchedulingCounterType
 
 partial class InboxFuncs
 {
-  internal static IImmutableDictionary<SchedulingCounterType, Counter<long>> CreateSchedulingCounters(Meter meter) =>
+  internal static IImmutableDictionary<SchedulingCounterType, Counter<long>> SchedulingCounters =>
     ImmutableDictionary<SchedulingCounterType, Counter<long>>.Empty
       .AddRange(new Dictionary<SchedulingCounterType, Counter<long>>() {
-        [ScheduleInboxRetryCounter] = meter.CreateCounter<long>("schedule.inbox.retry"),
-        [ScheduleInboxExhaustedCounter] = meter.CreateCounter<long>("schedule.inbox.exhausted"),
-        [ScheduleInboxErrorCounter] = meter.CreateCounter<long>("schedule.inbox.error")
+        [ScheduleInboxRetryCounter] = Meter.CreateCounter<long>("schedule.inbox.retry"),
+        [ScheduleInboxExhaustedCounter] = Meter.CreateCounter<long>("schedule.inbox.exhausted"),
+        [ScheduleInboxErrorCounter] = Meter.CreateCounter<long>("schedule.inbox.error")
       });
 }

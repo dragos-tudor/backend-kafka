@@ -11,10 +11,10 @@ public enum HandlingCounterType
 
 partial class InboxFuncs
 {
-  internal static IImmutableDictionary<HandlingCounterType, Counter<long>> CreateHandlingCounters(Meter meter) =>
+  internal static IImmutableDictionary<HandlingCounterType, Counter<long>> HandlingCounters =
     ImmutableDictionary<HandlingCounterType, Counter<long>>.Empty
       .AddRange(new Dictionary<HandlingCounterType, Counter<long>>() {
-        [HandledCounter] = meter.CreateCounter<long>("handled.inbox.messages"),
-        [HandleTechnicalErrorCounter] = meter.CreateCounter<long>("handle.inbox.messages.technical.error"),
+        [HandledCounter] = Meter.CreateCounter<long>("handled.inbox.messages"),
+        [HandleTechnicalErrorCounter] = Meter.CreateCounter<long>("handle.inbox.messages.technical.error"),
       });
 }

@@ -19,7 +19,7 @@ partial class StateMachinesFuncs
     IInstrumentationServices services)
   {
     LogRelayedOutboxMessage(services.GetLogger(), messageId, state);
-    AddMetricCounter(services.GetMetricCounters<RelayingCounterType>(), RelayedCounter);
+    AddMetricCounter(RelayingCounters[RelayedCounter]);
   }
 
   static void InstrumentRelayOutboxMessageCriticalError(
@@ -27,7 +27,7 @@ partial class StateMachinesFuncs
     IInstrumentationServices services)
   {
     LogRelayOutboxMessagesCriticalError(services.GetLogger(), state);
-    AddMetricCounter(services.GetMetricCounters<RelayingCounterType>(), RelayCriticalErrorsCounter);
+    AddMetricCounter(RelayingCounters[RelayCriticalErrorsCounter]);
   }
 
   internal static void InstrumentFetchOutboxMessageError(
@@ -35,6 +35,6 @@ partial class StateMachinesFuncs
     IInstrumentationServices services)
   {
     LogFetchOutboxMessagesError(services.GetLogger(), exception);
-    AddMetricCounter(services.GetMetricCounters<RelayingCounterType>(), FetchErrorCounter);
+    AddMetricCounter(RelayingCounters[FetchErrorCounter]);
   }
 }

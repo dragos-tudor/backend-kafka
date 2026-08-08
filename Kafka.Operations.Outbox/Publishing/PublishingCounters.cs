@@ -10,10 +10,10 @@ public enum PublishingCounterType
 
 partial class OutboxFuncs
 {
-  internal static IImmutableDictionary<PublishingCounterType, Counter<long>> CreatePublishingCounters(Meter meter) =>
+  internal static IImmutableDictionary<PublishingCounterType, Counter<long>> PublishingCounters =
     ImmutableDictionary<PublishingCounterType, Counter<long>>.Empty
       .AddRange(new Dictionary<PublishingCounterType, Counter<long>>() {
-        [PublishedOutboxCounter] = meter.CreateCounter<long>("published.outbox.messages"),
-        [PublishOutboxErrorCounter] = meter.CreateCounter<long>("published.outbox.messages.error")
+        [PublishedOutboxCounter] = Meter.CreateCounter<long>("published.outbox.messages"),
+        [PublishOutboxErrorCounter] = Meter.CreateCounter<long>("published.outbox.messages.error")
       });
 }

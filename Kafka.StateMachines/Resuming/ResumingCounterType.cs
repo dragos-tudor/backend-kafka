@@ -8,13 +8,13 @@ public enum ResumingCounterType
   FetchErrorCounter
 }
 
-partial class ResumingFuncs
+partial class StateMachinesFuncs
 {
-  internal static ImmutableDictionary<ResumingCounterType, Counter<long>> CreateResumingCounters(Meter meter) =>
+  internal static ImmutableDictionary<ResumingCounterType, Counter<long>> ResumingCounters =
     ImmutableDictionary<ResumingCounterType, Counter<long>>.Empty
       .AddRange(new Dictionary<ResumingCounterType, Counter<long>>() {
-        [ResumingCounterType.ResumedCounter] = meter.CreateCounter<long>("resumed.inbox.messages"),
-        [ResumingCounterType.ResumeCriticalErrorsCounter] = meter.CreateCounter<long>("resume.inbox.messages.critical.errors"),
-        [ResumingCounterType.FetchErrorCounter] = meter.CreateCounter<long>("fetch.inbox.messages.error")
+        [ResumingCounterType.ResumedCounter] = Meter.CreateCounter<long>("resumed.inbox.messages"),
+        [ResumingCounterType.ResumeCriticalErrorsCounter] = Meter.CreateCounter<long>("resume.inbox.messages.critical.errors"),
+        [ResumingCounterType.FetchErrorCounter] = Meter.CreateCounter<long>("fetch.inbox.messages.error")
       });
 }

@@ -8,13 +8,13 @@ public enum RelayingCounterType
   FetchErrorCounter
 }
 
-partial class RelayingFuncs
+partial class StateMachinesFuncs
 {
-  internal static ImmutableDictionary<RelayingCounterType, Counter<long>> CreateRelayingCounters(Meter meter) =>
+  internal static ImmutableDictionary<RelayingCounterType, Counter<long>> RelayingCounters =
     ImmutableDictionary<RelayingCounterType, Counter<long>>.Empty
       .AddRange(new Dictionary<RelayingCounterType, Counter<long>>() {
-        [RelayingCounterType.RelayedCounter] = meter.CreateCounter<long>("relayed.outbox.messages"),
-        [RelayingCounterType.RelayCriticalErrorsCounter] = meter.CreateCounter<long>("relay.outbox.messages.critical.errors"),
-        [RelayingCounterType.FetchErrorCounter] = meter.CreateCounter<long>("fetch.outbox.messages.error")
+        [RelayingCounterType.RelayedCounter] = Meter.CreateCounter<long>("relayed.outbox.messages"),
+        [RelayingCounterType.RelayCriticalErrorsCounter] = Meter.CreateCounter<long>("relay.outbox.messages.critical.errors"),
+        [RelayingCounterType.FetchErrorCounter] = Meter.CreateCounter<long>("fetch.outbox.messages.error")
       });
 }

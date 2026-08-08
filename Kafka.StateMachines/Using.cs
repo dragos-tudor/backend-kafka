@@ -20,4 +20,7 @@ using System.Runtime.CompilerServices;
 
 namespace Kafka.StateMachines;
 
-public static partial class StateMachinesFuncs;
+public static partial class StateMachinesFuncs
+{
+  static readonly Meter Meter = new ("kafka.state.machines");
+}

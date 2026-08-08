@@ -12,11 +12,11 @@ public enum CapturingCounterType
 
 partial class InboxFuncs
 {
-  internal static IImmutableDictionary<CapturingCounterType, Counter<long>> CreateCapturingCounters(Meter meter) =>
+  internal static ImmutableDictionary<CapturingCounterType, Counter<long>> CapturingCounters =
     ImmutableDictionary<CapturingCounterType, Counter<long>>.Empty
       .AddRange(new Dictionary<CapturingCounterType, Counter<long>>() {
-        [CapturedCounter] = meter.CreateCounter<long>("captured.kafka.messages"),
-        [CaptureErrorCounter] = meter.CreateCounter<long>("capture.kafka.messages.error"),
-        [NotCapturedCounter] = meter.CreateCounter<long>("not.captured.kafka.messages"),
+        [CapturedCounter] = Meter!.CreateCounter<long>("captured.kafka.messages"),
+        [CaptureErrorCounter] = Meter.CreateCounter<long>("capture.kafka.messages.error"),
+        [NotCapturedCounter] = Meter.CreateCounter<long>("not.captured.kafka.messages"),
       });
 }

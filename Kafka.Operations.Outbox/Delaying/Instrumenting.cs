@@ -20,7 +20,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogDelayOutboxMessageRetry(services.GetLogger(), messageId, retryCount, error);
-    AddMetricCounter(services.GetMetricCounters<DelayingCounterType>(), DelayDeadLetterRetryCounter);
+    AddMetricCounter(DelayingCounters[DelayDeadLetterRetryCounter]);
     AddActivityTag(Activity.Current, "delay.outbox.retryCount", retryCount);
     AddActivityTag(Activity.Current, "delay.outbox.error", error);
     AddActivityEvent(Activity.Current, "delay.outbox.retry",
@@ -35,7 +35,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogDelayOutboxMessageExhausted(services.GetLogger(), messageId, retryCount, error);
-    AddMetricCounter(services.GetMetricCounters<DelayingCounterType>(), DelayDeadLetterExhaustedCounter);
+    AddMetricCounter(DelayingCounters[DelayDeadLetterExhaustedCounter]);
     AddActivityTag(Activity.Current, "delay.outbox.retryCount", retryCount);
     AddActivityEvent(Activity.Current, "delay.outbox.exhausted",
       [CreateActivityEventAttribute("delay.error", error)]);
@@ -48,7 +48,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogDelayOutboxMessageError(services.GetLogger(), messageId, ex);
-    AddMetricCounter(services.GetMetricCounters<DelayingCounterType>(), DelayDeadLetterErrorCounter);
+    AddMetricCounter(DelayingCounters[DelayDeadLetterErrorCounter]);
     AddActivityTag(Activity.Current, "delay.outbox.error", ex);
     AddActivityEvent(Activity.Current, "delay.outbox.error",
       [CreateActivityEventAttribute("delay.error", ex)]);

@@ -12,11 +12,11 @@ public enum DelayingCounterType
 
 partial class InboxFuncs
 {
-  internal static IImmutableDictionary<DelayingCounterType, Counter<long>> CreateDelayingCounters(Meter meter) =>
+  internal static IImmutableDictionary<DelayingCounterType, Counter<long>> DelayingCounters =
     ImmutableDictionary<DelayingCounterType, Counter<long>>.Empty
       .AddRange(new Dictionary<DelayingCounterType, Counter<long>>() {
-        [DelayDeadLetterRetryCounter] = meter.CreateCounter<long>("delay.deadletter.retry"),
-        [DelayDeadLetterExhaustedCounter] = meter.CreateCounter<long>("delay.deadletter.exhausted"),
-        [DelayDeadLetterErrorCounter] = meter.CreateCounter<long>("delay.deadletter.error")
+        [DelayDeadLetterRetryCounter] = Meter.CreateCounter<long>("delay.deadletter.retry"),
+        [DelayDeadLetterExhaustedCounter] = Meter.CreateCounter<long>("delay.deadletter.exhausted"),
+        [DelayDeadLetterErrorCounter] = Meter.CreateCounter<long>("delay.deadletter.error")
       });
 }

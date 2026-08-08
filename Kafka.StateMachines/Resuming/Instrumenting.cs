@@ -19,7 +19,7 @@ partial class StateMachinesFuncs
     IInstrumentationServices services)
   {
     LogResumedInboxMessage(services.GetLogger(), messageId, state);
-    AddMetricCounter(services.GetMetricCounters<ResumingCounterType>(), ResumedCounter);
+    AddMetricCounter(ResumingCounters[ResumedCounter]);
   }
 
   static void InstrumentResumeInboxMessageCriticalError(
@@ -27,7 +27,7 @@ partial class StateMachinesFuncs
     IInstrumentationServices services)
   {
     LogResumeInboxMessagesCriticalError(services.GetLogger(), state);
-    AddMetricCounter(services.GetMetricCounters<ResumingCounterType>(), ResumeCriticalErrorsCounter);
+    AddMetricCounter(ResumingCounters[ResumeCriticalErrorsCounter]);
   }
 
   internal static void InstrumentFetchInboxMessageError(
@@ -35,6 +35,6 @@ partial class StateMachinesFuncs
     IInstrumentationServices services)
   {
     LogFetchInboxMessagesError(services.GetLogger(), exception);
-    AddMetricCounter(services.GetMetricCounters<ResumingCounterType>(), FetchErrorCounter);
+    AddMetricCounter(ResumingCounters[FetchErrorCounter]);
   }
 }

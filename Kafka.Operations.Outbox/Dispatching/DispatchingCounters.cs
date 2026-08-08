@@ -11,10 +11,10 @@ public enum DispatchingCounterType
 
 partial class OutboxFuncs
 {
-  internal static IImmutableDictionary<DispatchingCounterType, Counter<long>> CreateDispatchingCounters(Meter meter) =>
+  internal static IImmutableDictionary<DispatchingCounterType, Counter<long>> DispatchingCounters =
     ImmutableDictionary<DispatchingCounterType, Counter<long>>.Empty
       .AddRange(new Dictionary<DispatchingCounterType, Counter<long>>() {
-        [DispatchedDeadLetterCounter] = meter.CreateCounter<long>("dispatched.deadletter"),
-        [DispatchDeadLetterErrorCounter] = meter.CreateCounter<long>("dispatch.deadletter.error")
+        [DispatchedDeadLetterCounter] = Meter.CreateCounter<long>("dispatched.deadletter"),
+        [DispatchDeadLetterErrorCounter] = Meter.CreateCounter<long>("dispatch.deadletter.error")
       });
 }
