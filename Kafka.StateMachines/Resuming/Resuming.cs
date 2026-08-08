@@ -18,7 +18,8 @@ partial class StateMachinesFuncs
       var utcDate = services.GetUtcDate();
       messages = await services.GetInboxMessagesAsync(utcDate, batchSize, ct);
     }
-    catch (Exception exception)
+    catch(OperationCanceledException) { return default; }
+    catch(Exception exception)
     {
       LogFetchInboxMessagesError(services.GetLogger(), exception);
       AddMetricCounter(services.GetMetricCounters<ResumingCounterType>(), ResumingCriticalErrorsCounter);
@@ -35,18 +36,14 @@ partial class StateMachinesFuncs
       var currentData = CreateResumingStepData<TKey, TValue, TPayload>(message);
       currentData.InboxMessage = message;
 
-      try
+      await foreach (var (newData, newState) in RunStateMachineAsync(services, (TData)currentData, currentState, stateActions, ct))
       {
-        await foreach (var (newData, newState) in RunStateMachineAsync(services, (TData)currentData, currentState, stateActions, ct))
-        {
-          currentData = newData;
-          currentState = newState;
-        }
-
-        LogResumedInboxMessage(services.GetLogger(), currentState);
-        AddMetricCounter(services.GetMetricCounters<ResumingCounterType>(), ResumedCounter);
+        currentData = newData;
+        currentState = newState;
       }
-      catch (OperationCanceledException) { return default; }
+
+      LogResumedInboxMessage(services.GetLogger(), currentState);
+      AddMetricCounter(services.GetMetricCounters<ResumingCounterType>(), ResumedCounter);
     }
     return default;
   }

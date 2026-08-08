@@ -34,6 +34,7 @@ partial class InboxFuncs
       return (data, state);
 
     }
+    catch (OperationCanceledException) { return default; }
     catch (Exception ex)
     {
       data.HandleError = ex.Message;

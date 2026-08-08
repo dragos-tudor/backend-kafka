@@ -26,6 +26,7 @@ partial class InboxFuncs
       InstrumentCapturedKafkaMessage(messageId, correlationId, result.TopicPartitionOffset, services);
       return new((data, CapturedKafkaMessageState));
     }
+    catch (OperationCanceledException) { return default; }
     catch (Exception ex) {
       InstrumentCaptureKafkaMessageError(ex, services);
       return new((data, CaptureKafkaMessageErrorState));

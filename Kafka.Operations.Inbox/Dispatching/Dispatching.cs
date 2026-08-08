@@ -29,6 +29,7 @@ partial class InboxFuncs
       await services.UpdateIntegrationMessageAsync(message, InboxMessageStatus.DeadLettered, ct);
       return (data, DispatchedDeadLetterState);
     }
+    catch (OperationCanceledException) { return default; }
     catch (Exception ex) {
       InstrumentDispatchDeadLetterError(message.MessageId, ex, services);
       return (data, DispatchDeadLetterErrorState);

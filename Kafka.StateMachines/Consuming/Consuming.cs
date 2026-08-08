@@ -18,21 +18,18 @@ partial class StateMachinesFuncs
 
       var currentData = CreateConsumingStepData<TKey, TValue, TPayload>();
       var currentState = NotStartedConsumeState;
-      try
+
+      await foreach (var (newData, newState) in RunStateMachineAsync(services, (TData)currentData, currentState, stateActions, ct))
       {
-        await foreach (var (newData, newState) in RunStateMachineAsync(services, (TData)currentData, currentState, stateActions, ct))
+        if (ConsumingCriticalStates.Contains(newState))
         {
-          if (ConsumingCriticalStates.Contains(newState))
-          {
-            InstrumentConsumeKafkaMessageCriticalError(newState, services);
-            return CriticalErrorConsumeState;
-          }
-          currentData = newData;
-          currentState = newState;
+          InstrumentConsumeKafkaMessageCriticalError(newState, services);
+          return CriticalErrorConsumeState;
         }
-        InstrumentConsumeKafkaMessage(currentState, services);
+        currentData = newData;
+        currentState = newState;
       }
-      catch (OperationCanceledException) { return default; }
+      InstrumentConsumeKafkaMessage(currentState, services);
     }
     return default;
   }

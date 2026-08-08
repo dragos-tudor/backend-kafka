@@ -33,6 +33,7 @@ partial class InboxFuncs
         InstrumentDelayDeadLetterExhausted(message.MessageId, currentRetryCount, data.HandleError!, services);
       return (data, state);
     }
+    catch (OperationCanceledException) { return default; }
     catch (Exception ex) {
       InstrumentDelayDeadLetterError(message.MessageId, ex, services);
       return (data, DelayDeadLetterErrorState);

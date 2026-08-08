@@ -28,6 +28,7 @@ partial class InboxFuncs
       InstrumentInsertedInboxMessage(inboxMessage.MessageId, services);
       return (data, InsertedInboxMessageState);
     }
+    catch (OperationCanceledException) { return default; }
     catch (Exception ex) {
       InstrumentInsertInboxMessageError(messageKey?.ToString(), ex, services);
       return (data, InsertInboxMessageErrorState);

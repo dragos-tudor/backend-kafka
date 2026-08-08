@@ -33,6 +33,7 @@ partial class InboxFuncs
         InstrumentScheduleInboxMessageExhausted(message.MessageId, currentRetryCount, data.HandleError!, services);
       return (data, state);
     }
+    catch (OperationCanceledException) { return default; }
     catch (Exception ex) {
       InstrumentScheduleInboxMessageError(message.MessageId, ex, services);
       return (data, ScheduleInboxMessageErrorState);
