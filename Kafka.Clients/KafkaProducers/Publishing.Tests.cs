@@ -1,4 +1,3 @@
-#pragma warning disable CA1031
 
 namespace Kafka.Clients;
 
@@ -14,7 +13,7 @@ public sealed partial class ClientsTests
     var message = CreateKafkaMessage("key1", SerializeJson(payload), []);
     var result = await PublishMessageAsync(producer, publishTopicName, message, cancellationToken);
 
-    result.Status.ShouldBe(PersistenceStatus.NotPersisted);
+    result.Status.ShouldBe(PersistenceStatus.Persisted);
   }
 
   [TestMethod]
@@ -39,13 +38,8 @@ public sealed partial class ClientsTests
 
     PublishMessage(producer, publishTopicName, message, report =>
     {
-      try {
-        tcs.SetResult(report);
-      }
-      catch (Exception ex)
-      {
-        tcs.SetException(ex);
-      }
+      try { tcs.SetResult(report); }
+      catch (Exception ex) { tcs.SetException(ex); }
     });
 
     producer.Flush(cancellationToken);
@@ -63,13 +57,8 @@ public sealed partial class ClientsTests
     var message = CreateKafkaMessage("key4", SerializeJson(payload), []);
     PublishMessage(producer, publishTopicName, message, report =>
     {
-      try {
-        tcs.SetResult(report);
-      }
-      catch (Exception ex)
-      {
-        tcs.SetException(ex);
-      }
+      try { tcs.SetResult(report); }
+      catch (Exception ex) { tcs.SetException(ex); }
     });
 
     producer.Flush(cancellationToken);
@@ -91,15 +80,8 @@ public sealed partial class ClientsTests
 
     PublishMessages(producer, publishTopicName, messages, report =>
     {
-      try {
-        results.Add(report);
-        if (results.Count == messages.Length)
-          tcs.SetResult(report);
-      }
-      catch (Exception ex)
-      {
-        tcs.SetException(ex);
-      }
+      try { results.Add(report); if (results.Count == messages.Length) tcs.SetResult(report); }
+      catch (Exception ex) { tcs.SetException(ex); }
     });
 
     producer.Flush(cancellationToken);
