@@ -9,9 +9,9 @@ global using Microsoft.Extensions.Logging;
 global using Confluent.Kafka;
 global using Kafka.Instrumentation;
 global using Kafka.Messages;
-global using Kafka.Inbox;
+global using Kafka.Operations.Inbox;
 global using static Kafka.Instrumentation.InstrumentationFuncs;
-global using static Kafka.Inbox.InboxFuncs;
+global using static Kafka.Operations.Inbox.InboxFuncs;
 using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("Kafka.Resiliency")]

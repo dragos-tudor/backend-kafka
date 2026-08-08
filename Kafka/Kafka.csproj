@@ -27,6 +27,8 @@
       <BuildOutputInPackage Include="$(OutputPath)Kafka.StateMachines.pdb" />
       <BuildOutputInPackage Include="$(OutputPath)Kafka.Messages.dll" />
       <BuildOutputInPackage Include="$(OutputPath)Kafka.Messages.pdb" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Operations.Inbox.dll" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Operations.Inbox.pdb" />
       <BuildOutputInPackage Include="$(OutputPath)Kafka.Resiliency.dll" />
       <BuildOutputInPackage Include="$(OutputPath)Kafka.Resiliency.pdb" />
       <BuildOutputInPackage Include="$(OutputPath)Kafka.Utils.dll" />

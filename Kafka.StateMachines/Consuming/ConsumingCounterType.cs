@@ -12,7 +12,7 @@ partial class ConsumingFuncs
   public static ImmutableDictionary<ConsumingCounterType, Counter<long>> CreateConsumingCounters(Meter meter) =>
     ImmutableDictionary<ConsumingCounterType, Counter<long>>.Empty
       .AddRange(new Dictionary<ConsumingCounterType, Counter<long>>() {
-        [ConsumingCounterType.ConsumedCounter] = meter.CreateCounter<long>("kafka.inbox.consumed"),
-        [ConsumingCounterType.ConsumeCriticalErrorsCounter] = meter.CreateCounter<long>("kafka.inbox.consume.critical.errors"),
+        [ConsumingCounterType.ConsumedCounter] = meter.CreateCounter<long>("Kafka.Operations.Inbox.consumed"),
+        [ConsumingCounterType.ConsumeCriticalErrorsCounter] = meter.CreateCounter<long>("Kafka.Operations.Inbox.consume.critical.errors"),
       });
 }

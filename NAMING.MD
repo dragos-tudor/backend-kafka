@@ -1,6 +1,6 @@
 ## Design Note: Naming as an Iterative Revealing Process
 
-The project structure and operation naming in this library — particularly the split between `Kafka.Inbox` and `Kafka.Outbox`, and the vocabulary used for retry/recovery operations — wasn't arrived at in a single pass. It came out of an iterative back-and-forth between the author and an AI assistant (Claude), and is documented here deliberately, because the *process* is as instructive as the *result* for anyone studying this codebase.
+The project structure and operation naming in this library — particularly the split between `Kafka.Operations.Inbox` and `Kafka.Outbox`, and the vocabulary used for retry/recovery operations — wasn't arrived at in a single pass. It came out of an iterative back-and-forth between the author and an AI assistant (Claude), and is documented here deliberately, because the *process* is as instructive as the *result* for anyone studying this codebase.
 
 ### Starting point
 
@@ -27,7 +27,7 @@ A few structural options were explored and rejected, each for a specific, docume
 
 The breakthrough wasn't a new naming scheme — it was noticing that the four-state-machine view had displaced an earlier, simpler mental model: **there are only two pipelines here, incoming and outgoing. (author)** The move to four flows (consuming/resuming/publishing/relaying) was necessary for implementing the state machines, but it wasn't the right axis for organizing the *operations* underneath them.
 
-Splitting `Kafka.Operations` into **`Kafka.Inbox`** and **`Kafka.Outbox`** — grouping by which pattern-half an operation belongs to, transactional inbox or transactional outbox — resolved every open problem at once:
+Splitting `Kafka.Operations` into **`Kafka.Operations.Inbox`** and **`Kafka.Outbox`** — grouping by which pattern-half an operation belongs to, transactional inbox or transactional outbox — resolved every open problem at once:
 - Naming collisions disappeared, since inbox-side and outbox-side operations are naturally distinct namespaces.
 - The wrapper dependency problem disappeared, since e.g. handling and its retry variant now live in the *same* project.
 - No third axis was needed for dead letters — inbox dead letters live with inbox operations, outbox dead letters live with outbox operations.
@@ -35,7 +35,7 @@ Splitting `Kafka.Operations` into **`Kafka.Inbox`** and **`Kafka.Outbox`** — g
 
 ### Final operation vocabulary
 
-**`Kafka.Inbox`**
+**`Kafka.Operations.Inbox`**
 
 | Operation | Meaning | Used by |
 |---|---|---|
@@ -62,9 +62,9 @@ Same names, same shapes, in both projects — disambiguated entirely by which pr
 
 ### One more collision, found late
 
-Even after the inbox/outbox split, one collision slipped through: in `Kafka.Outbox`, the primary operation (`Publishing` the outbox message) and the dead-letter operation (`Publishing` the dead letter) shared the same name inside the same project — the exact kind of problem the split was meant to eliminate. `Kafka.Inbox` didn't have this issue, since its primary operation is `Handling`, not `Publishing`.
+Even after the inbox/outbox split, one collision slipped through: in `Kafka.Outbox`, the primary operation (`Publishing` the outbox message) and the dead-letter operation (`Publishing` the dead letter) shared the same name inside the same project — the exact kind of problem the split was meant to eliminate. `Kafka.Operations.Inbox` didn't have this issue, since its primary operation is `Handling`, not `Publishing`.
 
-The dead-letter operation was renamed to `Dispatching` in both projects — not just Outbox, where the collision actually was. `Kafka.Inbox` didn't strictly need the rename, but keeping `Dispatching` (dead letter) consistent across both projects avoids a reader wondering whether `Publishing` (dead letter) in one project and a differently-named operation in the other represent the same concept. This mirrors the earlier decision to unify `deferring`/`postponing` into a single `Delaying`: once a project-local fix is needed, symmetry across the sibling project is worth the small unforced rename.
+The dead-letter operation was renamed to `Dispatching` in both projects — not just Outbox, where the collision actually was. `Kafka.Operations.Inbox` didn't strictly need the rename, but keeping `Dispatching` (dead letter) consistent across both projects avoids a reader wondering whether `Publishing` (dead letter) in one project and a differently-named operation in the other represent the same concept. This mirrors the earlier decision to unify `deferring`/`postponing` into a single `Delaying`: once a project-local fix is needed, symmetry across the sibling project is worth the small unforced rename.
 
 ### From wrapper to merge: *Retrying* disappears
 

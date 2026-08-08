@@ -4,7 +4,7 @@ global using System.Threading.Tasks;
 global using Microsoft.Extensions.Logging;
 global using Confluent.Kafka;
 global using Kafka.Clients;
-global using Kafka.Inbox;
+global using Kafka.Operations.Inbox;
 global using Kafka.Instrumentation;
 global using Kafka.StateMachines;
 global using static Kafka.Clients.ClientsFuncs;

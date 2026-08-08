@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 [assembly:InternalsVisibleTo("Kafka.Clients")]
 [assembly:InternalsVisibleTo("Kafka.StateMachines")]
 [assembly:InternalsVisibleTo("Kafka.Instrumentation")]
-[assembly:InternalsVisibleTo("Kafka.Inbox")]
+[assembly:InternalsVisibleTo("Kafka.Operations.Inbox")]
 
 namespace Kafka.Messages;
 

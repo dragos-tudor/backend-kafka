@@ -10,7 +10,7 @@ global using static Kafka.Messages.MessagesFuncs;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Kafka.StateMachines")]
-[assembly: InternalsVisibleTo("Kafka.Inbox")]
+[assembly: InternalsVisibleTo("Kafka.Operations.Inbox")]
 
 namespace Kafka.Instrumentation;
 
