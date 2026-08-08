@@ -21,8 +21,8 @@ partial class InboxFuncs
   {
     LogDelayInboxMessageRetry(services.GetLogger(), messageId, retryCount, error);
     AddMetricCounter(services.GetMetricCounters<InboxCounterType>(), DelayDeadLetterRetryCounter);
-    AddActivityTag(Activity.Current, "delay.retryCount", retryCount);
-    AddActivityTag(Activity.Current, "delay.error", error);
+    AddActivityTag(Activity.Current, "delay.inbox.retryCount", retryCount);
+    AddActivityTag(Activity.Current, "delay.inbox.error", error);
     AddActivityEvent(Activity.Current, "delay.inbox.retry",
       [CreateActivityEventAttribute("delay.error", error)]);
     return Activity.Current;
@@ -36,7 +36,7 @@ partial class InboxFuncs
   {
     LogDelayInboxMessageExhausted(services.GetLogger(), messageId, retryCount, error);
     AddMetricCounter(services.GetMetricCounters<InboxCounterType>(), DelayDeadLetterExhaustedCounter);
-    AddActivityTag(Activity.Current, "delay.retryCount", retryCount);
+    AddActivityTag(Activity.Current, "delay.inbox.retryCount", retryCount);
     AddActivityEvent(Activity.Current, "delay.inbox.exhausted",
       [CreateActivityEventAttribute("delay.error", error)]);
     return Activity.Current;
@@ -49,7 +49,7 @@ partial class InboxFuncs
   {
     LogDelayInboxMessageError(services.GetLogger(), messageId, ex);
     AddMetricCounter(services.GetMetricCounters<InboxCounterType>(), DelayDeadLetterErrorCounter);
-    AddActivityTag(Activity.Current, "delay.error", ex);
+    AddActivityTag(Activity.Current, "delay.inbox.error", ex);
     AddActivityEvent(Activity.Current, "delay.inbox.error",
       [CreateActivityEventAttribute("delay.error", ex)]);
     return Activity.Current;

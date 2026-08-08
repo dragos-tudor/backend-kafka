@@ -1,10 +1,10 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Kafka.Operations.Inbox;
+namespace Kafka.Operations.Outbox;
 
 [TestClass]
-public partial class OperationsTests
+public partial class OutboxTests
 {
   [TestMethod]
   public void FakeTest() {}

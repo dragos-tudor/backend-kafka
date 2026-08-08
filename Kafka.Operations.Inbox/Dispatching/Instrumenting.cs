@@ -19,10 +19,10 @@ partial class InboxFuncs
   {
     LogDispatchedDeadLetter(services.GetLogger(), messageId, deadLetterKey, deadLetterTopic, error);
     AddMetricCounter(services.GetMetricCounters<InboxCounterType>(), DispatchedDeadLetterCounter);
-    AddActivityTag(Activity.Current, "dispatch.deadletter.key", deadLetterKey);
-    AddActivityTag(Activity.Current, "dispatch.deadletter.topic", deadLetterTopic);
-    AddActivityTag(Activity.Current, "dispatch.deadletter.reason", error);
-    AddActivityEvent(Activity.Current, "dispatched.deadletter");
+    AddActivityTag(Activity.Current, "dispatch.inbox.key", deadLetterKey);
+    AddActivityTag(Activity.Current, "dispatch.inbox.topic", deadLetterTopic);
+    AddActivityTag(Activity.Current, "dispatch.inbox.reason", error);
+    AddActivityEvent(Activity.Current, "dispatched.inbox");
   }
 
   static void InstrumentDispatchDeadLetterError(
@@ -32,8 +32,8 @@ partial class InboxFuncs
   {
     LogDispatchDeadLetterError(services.GetLogger(), messageId, ex);
     AddMetricCounter(services.GetMetricCounters<InboxCounterType>(), DispatchDeadLetterErrorCounter);
-    AddActivityEvent(Activity.Current, "dispatch.deadletter.error", [
-      CreateActivityEventAttribute("dispatch.deadletter.error", ex),
+    AddActivityEvent(Activity.Current, "dispatch.inbox.error", [
+      CreateActivityEventAttribute("dispatch.error", ex),
     ]);
   }
 }

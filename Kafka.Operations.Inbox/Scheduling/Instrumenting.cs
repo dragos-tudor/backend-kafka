@@ -21,8 +21,8 @@ partial class InboxFuncs
   {
     LogScheduleInboxMessageRetry(services.GetLogger(), messageId, retryCount, error);
     AddMetricCounter(services.GetMetricCounters<InboxCounterType>(), ScheduleInboxRetryCounter);
-    AddActivityTag(Activity.Current, "schedule.retryCount", retryCount);
-    AddActivityTag(Activity.Current, "schedule.error", error);
+    AddActivityTag(Activity.Current, "schedule.inbox.retryCount", retryCount);
+    AddActivityTag(Activity.Current, "schedule.inbox.error", error);
     AddActivityEvent(Activity.Current, "schedule.inbox.retry",
       [CreateActivityEventAttribute("schedule.error", error)]);
     return Activity.Current;
@@ -36,7 +36,7 @@ partial class InboxFuncs
   {
     LogScheduleInboxMessageExhausted(services.GetLogger(), messageId, retryCount, error);
     AddMetricCounter(services.GetMetricCounters<InboxCounterType>(), ScheduleInboxExhaustedCounter);
-    AddActivityTag(Activity.Current, "schedule.retryCount", retryCount);
+    AddActivityTag(Activity.Current, "schedule.inbox.retryCount", retryCount);
     AddActivityEvent(Activity.Current, "schedule.inbox.exhausted",
       [CreateActivityEventAttribute("schedule.error", error)]);
     return Activity.Current;
@@ -49,7 +49,7 @@ partial class InboxFuncs
   {
     LogScheduleInboxMessageError(services.GetLogger(), messageId, ex);
     AddMetricCounter(services.GetMetricCounters<InboxCounterType>(), ScheduleInboxErrorCounter);
-    AddActivityTag(Activity.Current, "schedule.error", ex);
+    AddActivityTag(Activity.Current, "schedule.inbox.error", ex);
     AddActivityEvent(Activity.Current, "schedule.inbox.error",
       [CreateActivityEventAttribute("schedule.error", ex)]);
     return Activity.Current;
