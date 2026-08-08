@@ -19,13 +19,13 @@ partial class InboxFuncs
 
       var nextRetryCount = currentRetryCount + 1;
       var nextAttemptAt = CalculateNextAttemptAt(nextRetryCount, services.GetUtcDate(), retryOptions);
-      var messageError = CreateInboxMessageError(
-        nextRetryCount,
-        data.HandleError!,
-        nextAttemptAt,
-        status);
 
-      await services.UpdateIntegrationMessageAsync(message, messageError, ct);
+      await services.UpdateIntegrationMessageAsync(message, message =>
+        message
+          .SetInboxMessageLastError(data.HandleError!)
+          .SetInboxMessageNextAttemptAt(nextAttemptAt)
+          .SetInboxMessageRetryCount(nextRetryCount)
+          .SetInboxMessageStatus(status), ct);
 
       if (state == ScheduleInboxMessageRetryState)
         InstrumentScheduleInboxMessageRetry(message.MessageId, currentRetryCount, data.HandleError!, services);

@@ -26,7 +26,8 @@ partial class InboxFuncs
       await services.TransactSessionAsync(
         session,
         (session) => services.StoreModelAsync(session, model),
-        (session) => services.UpdateIntegrationMessageAsync(session, message, InboxMessageStatus.Handled),
+        (session) => services.UpdateIntegrationMessageAsync(session, message,
+          message => message.SetInboxMessageStatus(InboxMessageStatus.Handled)),
         ct
       );
 

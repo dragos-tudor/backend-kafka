@@ -14,4 +14,5 @@ public abstract record IntegrationMessage<TKey, TPayload>
   public DateTimeOffset? NextAttemptAt { get; set; }
   public string? LastError { get; set; }
   public Guid? CorrelationId { get; init; }
+  public int? PublishRetryCount { get; set; }
 }

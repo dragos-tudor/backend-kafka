@@ -20,13 +20,15 @@ partial class InboxFuncs
       data.DeadLetter = deadLetter;
 
       if (message.Status != InboxMessageStatus.DeadLettering)
-        await services.UpdateIntegrationMessageAsync(message, InboxMessageStatus.DeadLettering, ct);
+        await services.UpdateIntegrationMessageAsync(message, message =>
+          message.SetInboxMessageStatus(InboxMessageStatus.DeadLettering), ct);
 
       InjectTraceParentActivity(Activity.Current, deadLetter.Headers);
       await PublishMessageAsync(services.GetProducer(), deadLetterTopic, deadLetter, ct);
       InstrumentDispatchedDeadLetter(message.MessageId, deadLetter.Key?.ToString(), deadLetterTopic, handleError, services);
 
-      await services.UpdateIntegrationMessageAsync(message, InboxMessageStatus.DeadLettered, ct);
+      await services.UpdateIntegrationMessageAsync(message, message =>
+        message.SetInboxMessageStatus(InboxMessageStatus.DeadLettered), ct);
       return (data, DispatchedDeadLetterState);
     }
     catch (OperationCanceledException) { return default; }

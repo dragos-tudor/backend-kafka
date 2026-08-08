@@ -19,13 +19,13 @@ partial class InboxFuncs
 
       var nextRetryCount = currentRetryCount + 1;
       var nextAttemptAt = CalculateNextAttemptAt(nextRetryCount, services.GetUtcDate(), retryOptions);
-      var messageError = CreateInboxMessageError(
-        nextRetryCount,
-        data.DispatchError!,
-        nextAttemptAt,
-        status);
 
-      await services.UpdateIntegrationMessageAsync(message, messageError, ct);
+      await services.UpdateIntegrationMessageAsync(message, message =>
+        message
+          .SetInboxMessageLastError(data.DispatchError!)
+          .SetInboxMessageNextAttemptAt(nextAttemptAt)
+          .SetInboxMessagePublishRetryCount(nextRetryCount)
+          .SetInboxMessageStatus(status), ct);
 
       if (state == DelayDeadLetterRetryState)
         InstrumentDelayDeadLetterRetry(message.MessageId, currentRetryCount, data.DispatchError!, services);

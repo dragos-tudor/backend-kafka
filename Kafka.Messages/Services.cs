@@ -20,19 +20,29 @@ public interface IIntegrationPayloadMapperService<TValue, TPayload> { TPayload T
 
 public interface IKafkaValueMapperService<TPayload, TValue> { TValue ToKafkaValue(TPayload value); }
 
+public interface IGetOutboxMessagesService<TKey, TPayload>
+{
+  Task<IReadOnlyList<OutboxMessage<TKey, TPayload>>> GetOutboxMessagesAsync(
+    DateTime dueAt,
+    int batchSize,
+    CancellationToken ct = default);
+}
+
+public interface IOutboxTopicService<TKey, TPayload> { string GetOutboxTopic(IntegrationMessage<TKey, TPayload> message); }
+
 public interface IUpdateIntegrationMessageService<TKey, TPayload>
 {
-  Task UpdateIntegrationMessageAsync<TMessage, TState>(
+  Task UpdateIntegrationMessageAsync<TMessage>(
     TMessage message,
-    TState state,
+    Func<TMessage, TMessage> update,
     CancellationToken ct = default) where TMessage : IntegrationMessage<TKey, TPayload>;
 }
 
 public interface IUpdateIntegrationMessageSessionService<TKey, TPayload, TSession> where TSession: IDisposable
 {
-  Task UpdateIntegrationMessageAsync<TMessage, TState>(
+  Task UpdateIntegrationMessageAsync<TMessage>(
     TSession session,
     TMessage message,
-    TState state,
+    Func<TMessage, TMessage> update,
     CancellationToken ct = default) where TMessage : IntegrationMessage<TKey, TPayload>;
 }
