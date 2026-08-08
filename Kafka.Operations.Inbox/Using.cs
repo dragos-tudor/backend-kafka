@@ -15,7 +15,6 @@ global using Kafka.Utils;
 global using static Kafka.Clients.ClientsFuncs;
 global using static Kafka.Instrumentation.InstrumentationFuncs;
 global using static Kafka.Messages.MessagesFuncs;
-global using InboxCounters = System.Collections.Immutable.IImmutableDictionary<Kafka.Operations.Inbox.InboxCounterType, System.Diagnostics.Metrics.Counter<long>>;
 using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("Kafka.StateMachines")]

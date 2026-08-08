@@ -1,4 +1,4 @@
-using static Kafka.Operations.Outbox.OutboxCounterType;
+using static Kafka.Operations.Outbox.DispatchingCounterType;
 
 namespace Kafka.Operations.Outbox;
 
@@ -18,7 +18,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogDispatchedDeadLetter(services.GetLogger(), messageId, deadLetterKey, deadLetterTopic, error);
-    AddMetricCounter(services.GetMetricCounters<OutboxCounterType>(), DispatchedDeadLetterCounter);
+    AddMetricCounter(services.GetMetricCounters<DispatchingCounterType>(), DispatchedDeadLetterCounter);
     AddActivityTag(Activity.Current, "dispatch.outbox.key", deadLetterKey);
     AddActivityTag(Activity.Current, "dispatch.outbox.topic", deadLetterTopic);
     AddActivityTag(Activity.Current, "dispatch.outbox.reason", error);
@@ -31,7 +31,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogDispatchDeadLetterError(services.GetLogger(), messageId, ex);
-    AddMetricCounter(services.GetMetricCounters<OutboxCounterType>(), DispatchDeadLetterErrorCounter);
+    AddMetricCounter(services.GetMetricCounters<DispatchingCounterType>(), DispatchDeadLetterErrorCounter);
     AddActivityEvent(Activity.Current, "dispatch.outbox.error", [
       CreateActivityEventAttribute("dispatch.error", ex),
     ]);

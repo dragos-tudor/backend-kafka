@@ -1,4 +1,4 @@
-using static Kafka.Operations.Inbox.InboxCounterType;
+using static Kafka.Operations.Inbox.DelayingCounterType;
 
 namespace Kafka.Operations.Inbox;
 
@@ -20,7 +20,7 @@ partial class InboxFuncs
     IInstrumentationServices services)
   {
     LogDelayInboxMessageRetry(services.GetLogger(), messageId, retryCount, error);
-    AddMetricCounter(services.GetMetricCounters<InboxCounterType>(), DelayDeadLetterRetryCounter);
+    AddMetricCounter(services.GetMetricCounters<DelayingCounterType>(), DelayDeadLetterRetryCounter);
     AddActivityTag(Activity.Current, "delay.inbox.retryCount", retryCount);
     AddActivityTag(Activity.Current, "delay.inbox.error", error);
     AddActivityEvent(Activity.Current, "delay.inbox.retry",
@@ -35,7 +35,7 @@ partial class InboxFuncs
     IInstrumentationServices services)
   {
     LogDelayInboxMessageExhausted(services.GetLogger(), messageId, retryCount, error);
-    AddMetricCounter(services.GetMetricCounters<InboxCounterType>(), DelayDeadLetterExhaustedCounter);
+    AddMetricCounter(services.GetMetricCounters<DelayingCounterType>(), DelayDeadLetterExhaustedCounter);
     AddActivityTag(Activity.Current, "delay.inbox.retryCount", retryCount);
     AddActivityEvent(Activity.Current, "delay.inbox.exhausted",
       [CreateActivityEventAttribute("delay.error", error)]);
@@ -48,7 +48,7 @@ partial class InboxFuncs
     IInstrumentationServices services)
   {
     LogDelayInboxMessageError(services.GetLogger(), messageId, ex);
-    AddMetricCounter(services.GetMetricCounters<InboxCounterType>(), DelayDeadLetterErrorCounter);
+    AddMetricCounter(services.GetMetricCounters<DelayingCounterType>(), DelayDeadLetterErrorCounter);
     AddActivityTag(Activity.Current, "delay.inbox.error", ex);
     AddActivityEvent(Activity.Current, "delay.inbox.error",
       [CreateActivityEventAttribute("delay.error", ex)]);

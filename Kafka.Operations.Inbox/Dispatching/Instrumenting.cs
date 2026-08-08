@@ -1,4 +1,4 @@
-using static Kafka.Operations.Inbox.InboxCounterType;
+using static Kafka.Operations.Inbox.DispatchingCounterType;
 
 namespace Kafka.Operations.Inbox;
 
@@ -18,7 +18,7 @@ partial class InboxFuncs
     IInstrumentationServices services)
   {
     LogDispatchedDeadLetter(services.GetLogger(), messageId, deadLetterKey, deadLetterTopic, error);
-    AddMetricCounter(services.GetMetricCounters<InboxCounterType>(), DispatchedDeadLetterCounter);
+    AddMetricCounter(services.GetMetricCounters<DispatchingCounterType>(), DispatchedDeadLetterCounter);
     AddActivityTag(Activity.Current, "dispatch.inbox.key", deadLetterKey);
     AddActivityTag(Activity.Current, "dispatch.inbox.topic", deadLetterTopic);
     AddActivityTag(Activity.Current, "dispatch.inbox.reason", error);
@@ -31,7 +31,7 @@ partial class InboxFuncs
     IInstrumentationServices services)
   {
     LogDispatchDeadLetterError(services.GetLogger(), messageId, ex);
-    AddMetricCounter(services.GetMetricCounters<InboxCounterType>(), DispatchDeadLetterErrorCounter);
+    AddMetricCounter(services.GetMetricCounters<DispatchingCounterType>(), DispatchDeadLetterErrorCounter);
     AddActivityEvent(Activity.Current, "dispatch.inbox.error", [
       CreateActivityEventAttribute("dispatch.error", ex),
     ]);
