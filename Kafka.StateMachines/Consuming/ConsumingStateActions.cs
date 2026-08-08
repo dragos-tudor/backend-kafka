@@ -8,7 +8,7 @@ partial class StateMachinesFuncs
     where TData : IConsumingStepData<TKey, TValue, TPayload>
     where TSession : IDisposable =>
       ImmutableDictionary<string, StepAsync<TServices, TData, string>>.Empty
-        .Add(NotStartedConsumeState, CaptureKafkaMessage<TServices, TData, TKey, TValue, TPayload>)
+        .Add(ConsumingNotStartedState, CaptureKafkaMessage<TServices, TData, TKey, TValue, TPayload>)
         .Add(CapturedKafkaMessageState, InsertInboxMessageAsync<TServices, TData, TKey, TValue, TPayload>)
         .Add(InsertedInboxMessageState, OffsetConsumer<TServices, TData, TKey, TValue, TPayload>)
         .Add(IdempotentInboxMessageState, OffsetConsumer<TServices, TData, TKey, TValue, TPayload>)

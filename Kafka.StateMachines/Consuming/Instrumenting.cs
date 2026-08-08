@@ -4,10 +4,10 @@ namespace Kafka.StateMachines;
 
 partial class StateMachinesFuncs
 {
-  [LoggerMessage(20, LogLevel.Information, "Consumed kafka message. State: {state}")]
+  [LoggerMessage(30, LogLevel.Information, "Consumed kafka message. State: {state}")]
   static partial void LogConsumedKafkaMessage(ILogger logger, string state);
 
-  [LoggerMessage(21, LogLevel.Error, "Consuming kafka message critical error. State: {state}.")]
+  [LoggerMessage(31, LogLevel.Error, "Consuming kafka message critical error. State: {state}.")]
   static partial void LogConsumeKafkaMessageCriticalError(ILogger logger, string state);
 
   static void InstrumentConsumeKafkaMessage(
@@ -25,5 +25,4 @@ partial class StateMachinesFuncs
     LogConsumeKafkaMessageCriticalError(services.GetLogger(), state);
     AddMetricCounter(services.GetMetricCounters<ConsumingCounterType>(), ConsumeCriticalErrorsCounter);
   }
-
 }

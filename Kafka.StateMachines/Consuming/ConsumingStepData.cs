@@ -6,7 +6,7 @@ public interface IConsumingStepData<TKey, TValue, TPayload>:
   IHandleInboxMessageData<TKey, TValue, TPayload>,
   IInsertInboxMessageData<TKey, TValue, TPayload>,
   IOffsetConsumerData<TKey, TPayload>,
-  IDispatchDeadLetterData<TKey, TValue, TPayload>;
+  Operations.Inbox.IDispatchDeadLetterData<TKey, TValue, TPayload>;
 
 public sealed class ConsumingStepData<TKey, TValue, TPayload>:
   IConsumingStepData<TKey, TValue, TPayload>

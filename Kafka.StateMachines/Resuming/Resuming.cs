@@ -1,4 +1,3 @@
-using static Kafka.StateMachines.ResumingCounterType;
 
 namespace Kafka.StateMachines;
 
@@ -21,16 +20,15 @@ partial class StateMachinesFuncs
     catch(OperationCanceledException) { return default; }
     catch(Exception exception)
     {
-      LogFetchInboxMessagesError(services.GetLogger(), exception);
-      AddMetricCounter(services.GetMetricCounters<ResumingCounterType>(), ResumingCriticalErrorsCounter);
-      return CriticalErrorResumeState;
+      InstrumentFetchInboxMessageError(exception, services);
+      return ResumingCriticalErrorState;
     }
 
     var stateActions = GetResumingStateActions<TServices, TData, TKey, TValue, TPayload, TSession>();
     foreach (var message in messages)
     {
-      using var activity = CreateComponentActivity(services.GetActivitySource(), "resume-inbox-message", ActivityKind.Internal);
-      using var logScope = CreateComponentLogScope(services.GetLogger(), activity, "resume-inbox-message");
+      using var activity = CreateComponentActivity(services.GetActivitySource(), "resume.inbox.message", ActivityKind.Internal);
+      using var logScope = CreateComponentLogScope(services.GetLogger(), activity, "resume.inbox.message");
 
       var currentState = GetResumingEntryState(message.Status);
       var currentData = CreateResumingStepData<TKey, TValue, TPayload>(message);
@@ -41,9 +39,12 @@ partial class StateMachinesFuncs
         currentData = newData;
         currentState = newState;
       }
-
-      LogResumedInboxMessage(services.GetLogger(), currentState);
-      AddMetricCounter(services.GetMetricCounters<ResumingCounterType>(), ResumedCounter);
+      if (ResumingCriticalStates.Contains(currentState))
+      {
+        InstrumentResumeInboxMessageCriticalError(currentState, services);
+        return ResumingCriticalErrorState;
+      }
+      InstrumentResumedInboxMessage(message.MessageId, currentState, services);
     }
     return default;
   }

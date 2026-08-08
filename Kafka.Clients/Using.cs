@@ -11,6 +11,7 @@ global using static Kafka.Utils.UtilsFuncs;
 using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("Kafka.Operations.Inbox")]
+[assembly:InternalsVisibleTo("Kafka.Operations.Outbox")]
 [assembly:InternalsVisibleTo("Kafka.Resiliency")]
 
 namespace Kafka.Clients;

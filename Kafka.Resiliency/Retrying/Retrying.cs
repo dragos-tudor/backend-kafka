@@ -9,10 +9,10 @@ partial class ResiliencyFuncs
     CancellationToken cancellationToken = default)
   where TSession : IDisposable =>
       RunPeriodicJobAsync(
-        "resume-inbox-messages",
+        "resume.inbox.messages",
         options.ResumeInboxInterval,
         options.ResumeInboxLockInterval,
-        token => ResumeInboxMessagesAsync<IResumeInboxMessageServices<TKey, TValue, TPayload, TSession>, IResumingStepData<TKey, TValue, TPayload>, TKey, TValue, TPayload, TSession>(services, token),
+        ct => ResumeInboxMessagesAsync<IResumeInboxMessageServices<TKey, TValue, TPayload, TSession>, IResumingStepData<TKey, TValue, TPayload>, TKey, TValue, TPayload, TSession>(services, ct),
         services,
         cancellationToken);
 
@@ -21,10 +21,10 @@ partial class ResiliencyFuncs
     IRetryOutboxMessagesServices<TKey, TValue, TPayload> services,
     CancellationToken cancellationToken = default) =>
       RunPeriodicJobAsync(
-        "relay-outbox-messages",
+        "relay.outbox.messages",
         options.RelayOutboxInterval,
         options.RelayOutboxLockInterval,
-        token => RelayOutboxMessagesAsync(services, token),
+        ct => RelayOutboxMessagesAsync<IRelayOutboxMessagesServices<TKey, TValue, TPayload>, IRelayingStepData<TKey, TValue, TPayload>, TKey, TValue, TPayload>(services, ct),
         services,
         cancellationToken);
 }

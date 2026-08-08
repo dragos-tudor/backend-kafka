@@ -13,21 +13,21 @@ partial class StateMachinesFuncs
     var stateActions = GetConsumingStateActions<TServices, TData, TKey, TValue, TPayload, TSession>();
     while (!ct.IsCancellationRequested)
     {
-      using var activity = CreateComponentActivity(services.GetActivitySource(), "consuming-kafka-message", ActivityKind.Consumer);
-      using var logScope = CreateComponentLogScope(services.GetLogger(), activity, "consuming-kafka-message");
+      using var activity = CreateComponentActivity(services.GetActivitySource(), "consuming.kafka.message", ActivityKind.Consumer);
+      using var logScope = CreateComponentLogScope(services.GetLogger(), activity, "consuming.kafka.message");
 
       var currentData = CreateConsumingStepData<TKey, TValue, TPayload>();
-      var currentState = NotStartedConsumeState;
+      var currentState = ConsumingNotStartedState;
 
       await foreach (var (newData, newState) in RunStateMachineAsync(services, (TData)currentData, currentState, stateActions, ct))
       {
-        if (ConsumingCriticalStates.Contains(newState))
-        {
-          InstrumentConsumeKafkaMessageCriticalError(newState, services);
-          return CriticalErrorConsumeState;
-        }
         currentData = newData;
         currentState = newState;
+      }
+      if (ConsumingCriticalStates.Contains(currentState))
+      {
+        InstrumentConsumeKafkaMessageCriticalError(currentState, services);
+        return ConsumingCriticalErrorState;
       }
       InstrumentConsumeKafkaMessage(currentState, services);
     }

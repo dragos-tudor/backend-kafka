@@ -6,6 +6,6 @@ public interface IConsumeKafkaMessageServices<TKey, TValue, TPayload, TSession> 
   IHandleInboxMessageServices<TKey, TValue, TPayload, TSession>,
   IInsertInboxMessageServices<TKey, TValue, TPayload>,
   IOffsetConsumerServices<TKey, TValue>,
-  IDispatchDeadLetterServices<TKey, TValue, TPayload>
+  Operations.Inbox.IDispatchDeadLetterServices<TKey, TValue, TPayload>
   where TSession : IDisposable;
 

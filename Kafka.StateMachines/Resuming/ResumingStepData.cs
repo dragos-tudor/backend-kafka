@@ -4,8 +4,8 @@ namespace Kafka.StateMachines;
 internal interface IResumingStepData<TKey, TValue, TPayload>:
   IHandleInboxMessageData<TKey, TValue, TPayload>,
   IScheduleInboxMessageData<TKey, TPayload>,
-  IDispatchDeadLetterData<TKey, TValue, TPayload>,
-  IDelayDeadLetterData<TKey, TValue, TPayload>;
+  Operations.Inbox.IDispatchDeadLetterData<TKey, TValue, TPayload>,
+  Operations.Inbox.IDelayDeadLetterData<TKey, TValue, TPayload>;
 
 internal sealed class ResumingStepData<TKey, TValue, TPayload>:
   IResumingStepData<TKey, TValue, TPayload>

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../Kafka.Operations.Inbox/Kafka.Operations.Inbox.csproj" />
+    <ProjectReference Include="../Kafka.Operations.Outbox/Kafka.Operations.Outbox.csproj" />
   </ItemGroup>
 
 </Project>
