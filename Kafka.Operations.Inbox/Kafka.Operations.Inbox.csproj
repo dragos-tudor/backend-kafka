@@ -3,7 +3,7 @@
   <Import Project="../Directory.Testing.props" />
 
   <PropertyGroup>
-    <Description>Kafka operations.</Description>
+    <Description>Kafka inbox operations.</Description>
   </PropertyGroup>
 
   <ItemGroup>

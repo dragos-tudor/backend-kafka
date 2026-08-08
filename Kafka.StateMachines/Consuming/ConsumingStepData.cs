@@ -16,6 +16,7 @@ public sealed class ConsumingStepData<TKey, TValue, TPayload>:
   public TopicPartitionOffset? TopicPartitionOffset { get; set; }
   public Message<TKey, TValue>? DeadLetter { get; set; }
   public string? HandleError { get; set; }
+  public string? DispatchError { get; set; }
 }
 
 partial class StateMachinesFuncs

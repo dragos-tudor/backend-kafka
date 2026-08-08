@@ -2,5 +2,5 @@
 namespace Kafka.Operations.Inbox;
 
 public interface IDelayDeadLetterData<TKey, TValue, TPayload>:
-  IHandleErrorProp,
+  IDispatchErrorProp,
   IInboxMessageProp<TKey, TPayload>;

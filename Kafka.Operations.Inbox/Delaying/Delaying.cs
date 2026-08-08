@@ -21,16 +21,16 @@ partial class InboxFuncs
       var nextAttemptAt = CalculateNextAttemptAt(nextRetryCount, services.GetUtcDate(), retryOptions);
       var messageError = CreateInboxMessageError(
         nextRetryCount,
-        data.HandleError!,
+        data.DispatchError!,
         nextAttemptAt,
         status);
 
       await services.UpdateIntegrationMessageAsync(message, messageError, ct);
 
       if (state == DelayDeadLetterRetryState)
-        InstrumentDelayDeadLetterRetry(message.MessageId, currentRetryCount, data.HandleError!, services);
+        InstrumentDelayDeadLetterRetry(message.MessageId, currentRetryCount, data.DispatchError!, services);
       if (state == DelayDeadLetterExhaustedState)
-        InstrumentDelayDeadLetterExhausted(message.MessageId, currentRetryCount, data.HandleError!, services);
+        InstrumentDelayDeadLetterExhausted(message.MessageId, currentRetryCount, data.DispatchError!, services);
       return (data, state);
     }
     catch (OperationCanceledException) { return default; }

@@ -31,6 +31,7 @@ partial class InboxFuncs
     }
     catch (OperationCanceledException) { return default; }
     catch (Exception ex) {
+      data.DispatchError = ex.Message;
       InstrumentDispatchDeadLetterError(message.MessageId, ex, services);
       return (data, DispatchDeadLetterErrorState);
     }
