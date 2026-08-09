@@ -17,7 +17,7 @@ global using static Kafka.Operations.Outbox.OutboxFuncs;
 global using static Kafka.StateMachines.StateMachinesFuncs;
 using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("Resiliency")]
+[assembly:InternalsVisibleTo("Kafka.Resiliency")]
 
 namespace Kafka.StateMachines;
 

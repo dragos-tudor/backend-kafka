@@ -8,9 +8,9 @@ global using Confluent.Kafka;
 global using static Kafka.Messages.MessagesFuncs;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("StateMachines")]
-[assembly: InternalsVisibleTo("Inbox")]
-[assembly: InternalsVisibleTo("Outbox")]
+[assembly: InternalsVisibleTo("Kafka.StateMachines")]
+[assembly: InternalsVisibleTo("Kafka.Operations.Inbox")]
+[assembly: InternalsVisibleTo("Kafka.Operations.Outbox")]
 
 namespace Kafka.Instrumentation;
 

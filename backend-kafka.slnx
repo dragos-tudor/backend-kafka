@@ -1,11 +1,11 @@
 <Solution>
   <Project Path="Kafka/Kafka.csproj" />
-  <Project Path="Kafka.Operations.Inbox/Inbox.csproj" />
-  <Project Path="Kafka.Operations.Outbox/Outbox.csproj" />
-  <Project Path="Kafka.Resiliency/Resiliency.csproj" />
-  <Project Path="Kafka.StateMachines/StateMachines.csproj" />
-  <Project Path="Kafka.Clients/Clients.csproj" />
-  <Project Path="Kafka.Instrumentation/Instrumentation.csproj" />
-  <Project Path="Kafka.Messages/Messages.csproj" />
-  <Project Path="Kafka.Utils/Utils.csproj" />
+  <Project Path="Kafka.Operations.Inbox/Kafka.Operations.Inbox.csproj" />
+  <Project Path="Kafka.Operations.Outbox/Kafka.Operations.Outbox.csproj" />
+  <Project Path="Kafka.Resiliency/Kafka.Resiliency.csproj" />
+  <Project Path="Kafka.StateMachines/Kafka.StateMachines.csproj" />
+  <Project Path="Kafka.Clients/Kafka.Clients.csproj" />
+  <Project Path="Kafka.Instrumentation/Kafka.Instrumentation.csproj" />
+  <Project Path="Kafka.Messages/Kafka.Messages.csproj" />
+  <Project Path="Kafka.Utils/Kafka.Utils.csproj" />
 </Solution>

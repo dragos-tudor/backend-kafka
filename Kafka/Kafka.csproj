@@ -11,7 +11,7 @@
   	<None Include="../README.md" Pack="true" PackagePath="\"/>
     <None Include="../LICENSE" Pack="true" PackagePath="\"/>
 
-    <ProjectReference Include="../Kafka.Resiliency/Resiliency.csproj" />
+    <ProjectReference Include="../Kafka.Resiliency/Kafka.Resiliency.csproj" />
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
 
@@ -21,20 +21,20 @@
   <Target Name="IncludeReferencedProjectInPackage">
     <ItemGroup>
       <!-- Include both DLL and PDB in the package output -->
-      <BuildOutputInPackage Include="$(OutputPath)Clients.dll" />
-      <BuildOutputInPackage Include="$(OutputPath)Clients.pdb" />
-      <BuildOutputInPackage Include="$(OutputPath)StateMachines.dll" />
-      <BuildOutputInPackage Include="$(OutputPath)StateMachines.pdb" />
-      <BuildOutputInPackage Include="$(OutputPath)Messages.dll" />
-      <BuildOutputInPackage Include="$(OutputPath)Messages.pdb" />
-      <BuildOutputInPackage Include="$(OutputPath)Inbox.dll" />
-      <BuildOutputInPackage Include="$(OutputPath)Inbox.pdb" />
-      <BuildOutputInPackage Include="$(OutputPath)Outbox.dll" />
-      <BuildOutputInPackage Include="$(OutputPath)Outbox.pdb" />
-      <BuildOutputInPackage Include="$(OutputPath)Resiliency.dll" />
-      <BuildOutputInPackage Include="$(OutputPath)Resiliency.pdb" />
-      <BuildOutputInPackage Include="$(OutputPath)Utils.dll" />
-      <BuildOutputInPackage Include="$(OutputPath)Utils.pdb" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Clients.dll" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Clients.pdb" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.StateMachines.dll" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.StateMachines.pdb" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Messages.dll" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Messages.pdb" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Operations.Inbox.dll" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Operations.Inbox.pdb" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Operations.Outbox.dll" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Operations.Outbox.pdb" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Resiliency.dll" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Resiliency.pdb" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Utils.dll" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Utils.pdb" />
     </ItemGroup>
   </Target>
 
