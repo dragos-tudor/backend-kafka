@@ -10,7 +10,7 @@ static class RelayingStates
     status switch
     {
       OutboxMessageStatus.Pending => RelayingNotStartedState,
-      OutboxMessageStatus.DeadLettering => Operations.Outbox.SchedulingStates.ScheduleOutboxMessageExhaustedState,
+      OutboxMessageStatus.Dispatching => Operations.Outbox.SchedulingStates.ScheduleOutboxMessageExhaustedState,
       _ => throw new InvalidOperationException($"Invalid relaying outbox message status: {status}.")
     };
 }

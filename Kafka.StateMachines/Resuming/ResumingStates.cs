@@ -10,7 +10,7 @@ static class ResumingStates
     status switch
     {
       InboxMessageStatus.Pending => ResumingNotStartedState,
-      InboxMessageStatus.DeadLettering => Operations.Inbox.SchedulingStates.ScheduleInboxMessageExhaustedState,
+      InboxMessageStatus.Dispatching => Operations.Inbox.SchedulingStates.ScheduleInboxMessageExhaustedState,
       _ => throw new InvalidOperationException($"Invalid resuming inbox message status: {status}.")
     };
 }

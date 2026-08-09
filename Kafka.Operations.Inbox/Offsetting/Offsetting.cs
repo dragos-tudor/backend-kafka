@@ -25,6 +25,10 @@ partial class InboxFuncs
       return new ((data, OffsetConsumedState));
     }
     catch (OperationCanceledException) { return default; }
+    catch (KafkaException ex) {
+      InstrumentOffsetConsumerError(ex, inboxMessage?.MessageId, topicPartitionOffset!, services);
+      return new((data, OffsetConsumeCriticalErrorState));
+    }
     catch (Exception ex) {
       InstrumentOffsetConsumerError(ex, inboxMessage?.MessageId, topicPartitionOffset!, services);
       return new((data, OffsetConsumeErrorState));

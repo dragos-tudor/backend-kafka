@@ -20,19 +20,23 @@ partial class InboxFuncs
       var deadLetter = ToKafkaDeadLetter(message, topicPartitionOffset, handleError, services.GetUtcDate(), services.ToKafkaValue);
       data.DeadLetter = deadLetter;
 
-      if (message.Status != InboxMessageStatus.DeadLettering)
+      if (message.Status != InboxMessageStatus.Dispatching)
         await services.UpdateIntegrationMessageAsync(message, message =>
-          message.SetInboxMessageStatus(InboxMessageStatus.DeadLettering), ct);
+          message.SetInboxMessageStatus(InboxMessageStatus.Dispatching), ct);
 
       InjectTraceParentActivity(Activity.Current, deadLetter.Headers);
       await PublishMessageAsync(services.GetProducer(), deadLetterTopic, deadLetter, ct);
       InstrumentDispatchedDeadLetter(message.MessageId, deadLetter.Key?.ToString(), deadLetterTopic, handleError, services);
 
       await services.UpdateIntegrationMessageAsync(message, message =>
-        message.SetInboxMessageStatus(InboxMessageStatus.DeadLettered), ct);
+        message.SetInboxMessageStatus(InboxMessageStatus.Dispatched), ct);
       return (data, DispatchedDeadLetterState);
     }
     catch (OperationCanceledException) { return default; }
+    catch (KafkaException ex) {
+      InstrumentDispatchDeadLetterError(message.MessageId, ex, services);
+      return (data, DispatchDeadLetterCriticalErrorState);
+    }
     catch (Exception ex) {
       data.DispatchError = ex.Message;
       InstrumentDispatchDeadLetterError(message.MessageId, ex, services);

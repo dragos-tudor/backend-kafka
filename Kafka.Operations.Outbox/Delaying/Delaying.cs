@@ -13,7 +13,7 @@ partial class OutboxFuncs
   {
     var message = data.OutboxMessage!;
     try {
-      var currentRetryCount = message.PublishRetryCount ?? 0;
+      var currentRetryCount = message.DispatchRetryCount ?? 0;
       var retryOptions = services.GetDelayRetryOptions();
 
       var nextRetryCount = currentRetryCount + 1;
@@ -24,10 +24,10 @@ partial class OutboxFuncs
         message
           .SetOutboxMessageLastError(data.DispatchError!)
           .SetOutboxMessageNextAttemptAt(nextAttemptAt)
-          .SetOutboxMessagePublishRetryCount(nextRetryCount)
+          .SetOutboxMessageDispatchRetryCount(nextRetryCount)
           .SetOutboxMessageStatus(status), ct);
 
-      if (status == OutboxMessageStatus.DeadLettering) {
+      if (status == OutboxMessageStatus.Dispatching) {
         InstrumentDelayDeadLetterRetry(message.MessageId, currentRetryCount, data.DispatchError!, services);
         return (data, DelayDeadLetterRetryState);
       }

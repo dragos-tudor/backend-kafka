@@ -5,8 +5,8 @@ partial class StateMachinesFuncs
 {
   static readonly HashSet<string> ConsumingCriticalStates =
   [
-    CapturingStates.CaptureKafkaMessageErrorState,
-    InsertingStates.InsertInboxMessageErrorState,
-    OffsettingStates.OffsetConsumeErrorState
+    CapturingStates.CaptureKafkaMessageCrticalErrorState,
+    OffsettingStates.OffsetConsumeCriticalErrorState,
+    Operations.Inbox.DispatchingStates.DispatchDeadLetterCriticalErrorState
   ];
 }

@@ -36,13 +36,13 @@ partial class StateMachinesFuncs
 
       await foreach (var (newData, newState) in RunStateMachineAsync(services, (TData)currentData, currentState, stateActions, ct))
       {
+        if (RelayingCriticalStates.Contains(newState))
+        {
+          InstrumentRelayOutboxMessageCriticalError(newState, services);
+          return RelayingCriticalErrorState;
+        }
         currentData = newData;
         currentState = newState;
-      }
-      if (RelayingCriticalStates.Contains(currentState))
-      {
-        InstrumentRelayOutboxMessageCriticalError(currentState, services);
-        return RelayingCriticalErrorState;
       }
       InstrumentRelayedOutboxMessage(message.MessageId, currentState, services);
     }

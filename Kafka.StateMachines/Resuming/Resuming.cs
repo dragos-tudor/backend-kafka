@@ -37,13 +37,13 @@ partial class StateMachinesFuncs
 
       await foreach (var (newData, newState) in RunStateMachineAsync(services, (TData)currentData, currentState, stateActions, ct))
       {
+        if (ResumingCriticalStates.Contains(newState))
+        {
+          InstrumentResumeInboxMessageCriticalError(newState, services);
+          return ResumingCriticalErrorState;
+        }
         currentData = newData;
         currentState = newState;
-      }
-      if (ResumingCriticalStates.Contains(currentState))
-      {
-        InstrumentResumeInboxMessageCriticalError(currentState, services);
-        return ResumingCriticalErrorState;
       }
       InstrumentResumedInboxMessage(message.MessageId, currentState, services);
     }

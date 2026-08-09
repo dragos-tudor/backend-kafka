@@ -22,13 +22,13 @@ partial class StateMachinesFuncs
 
       await foreach (var (newData, newState) in RunStateMachineAsync(services, (TData)currentData, currentState, stateActions, ct))
       {
+        if (ConsumingCriticalStates.Contains(newState))
+        {
+          InstrumentConsumeKafkaMessageCriticalError(newState, services);
+          return ConsumingCriticalErrorState;
+        }
         currentData = newData;
         currentState = newState;
-      }
-      if (ConsumingCriticalStates.Contains(currentState))
-      {
-        InstrumentConsumeKafkaMessageCriticalError(currentState, services);
-        return ConsumingCriticalErrorState;
       }
       InstrumentConsumeKafkaMessage(currentState, services);
     }

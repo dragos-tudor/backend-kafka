@@ -5,4 +5,5 @@ static class PublishingStates
 {
   internal static string PublishedOutboxMessageState = "PublishedOutboxMessageState";
   internal static string PublishOutboxMessageErrorState = "PublishOutboxMessageErrorState";
+  internal static string PublishOutboxMessageCriticalErrorState = "PublishOutboxMessageCriticalErrorState";
 }

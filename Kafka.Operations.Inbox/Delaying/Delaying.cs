@@ -13,7 +13,7 @@ partial class InboxFuncs
   {
     var message = data.InboxMessage!;
     try {
-      var currentRetryCount = message.PublishRetryCount ?? 0;
+      var currentRetryCount = message.DispatchRetryCount ?? 0;
       var retryOptions = services.GetDelayRetryOptions();
 
       var nextRetryCount = currentRetryCount + 1;
@@ -24,10 +24,10 @@ partial class InboxFuncs
         message
           .SetInboxMessageLastError(data.DispatchError!)
           .SetInboxMessageNextAttemptAt(nextAttemptAt)
-          .SetInboxMessagePublishRetryCount(nextRetryCount)
+          .SetInboxMessageDispatchRetryCount(nextRetryCount)
           .SetInboxMessageStatus(status), ct);
 
-      if (status == InboxMessageStatus.DeadLettering) {
+      if (status == InboxMessageStatus.Dispatching) {
         InstrumentDelayDeadLetterRetry(message.MessageId, currentRetryCount, data.DispatchError!, services);
         return (data, DelayDeadLetterRetryState);
       }

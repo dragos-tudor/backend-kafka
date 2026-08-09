@@ -14,10 +14,10 @@ partial class InboxFuncs
   {
     var message = data.InboxMessage!;
     try {
-      var (model, error)  = await services.HandleInboxMessageAsync(message, ct);
-      if (error is not null) {
-        data.HandleError = error;
-        InstrumentHandleInboxMessageDomainError(message.MessageId, error, services);
+      var (model, domainError)  = await services.HandleInboxMessageAsync(message, ct);
+      if (domainError is not null) {
+        data.HandleError = domainError;
+        InstrumentHandleInboxMessageDomainError(message.MessageId, domainError, services);
         return (data, HandleInboxMessageDomainErrorState);
       }
 

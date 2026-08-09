@@ -24,6 +24,10 @@ partial class OutboxFuncs
       return new (state, PublishedOutboxMessageState);
     }
     catch (OperationCanceledException) { return default; }
+    catch (KafkaException ex) {
+      InstrumentPublishOutboxMessageError(message.MessageId, ex, services);
+      return new (state, PublishOutboxMessageCriticalErrorState);
+    }
     catch (Exception ex)
     {
       InstrumentPublishOutboxMessageError(message.MessageId, ex, services);
