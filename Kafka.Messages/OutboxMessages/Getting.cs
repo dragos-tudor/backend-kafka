@@ -10,13 +10,13 @@ partial class MessagesFuncs
     int maxRetries = MaxOutboxRetries) =>
       currentRetryCount + 1 < maxRetries
           ? OutboxMessageStatus.Pending
-          : OutboxMessageStatus.DeadLettering;
+          : OutboxMessageStatus.Dispatching;
 
   internal static OutboxMessageStatus GetOutboxDeadLetterRetryStatus(
     int currentRetryCount,
     int maxRetries = MaxOutboxRetries) =>
       currentRetryCount + 1 < maxRetries
-          ? OutboxMessageStatus.DeadLettered
+          ? OutboxMessageStatus.Dispatching
           : OutboxMessageStatus.Abandoned;
 
 }

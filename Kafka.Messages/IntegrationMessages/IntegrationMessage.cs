@@ -10,9 +10,9 @@ public abstract record IntegrationMessage<TKey, TPayload>
   public string? Type { get; init; }
   public int? Version { get; init; } = 1;
   public string? Metadata { get; init; }
+  public Guid? CorrelationId { get; init; }
   public int? RetryCount { get; set; }
   public DateTimeOffset? NextAttemptAt { get; set; }
   public string? LastError { get; set; }
-  public Guid? CorrelationId { get; init; }
-  public int? PublishRetryCount { get; set; }
+  public int? DispatchRetryCount { get; set; }
 }
