@@ -28,13 +28,11 @@ partial class InboxFuncs
       return new((data, CapturedKafkaMessageState));
     }
     catch (OperationCanceledException) { return default; }
-    catch (KafkaException ex) {
-      InstrumentCaptureKafkaMessageError(ex, services);
-      return new((data, CaptureKafkaMessageCrticalErrorState));
-    }
     catch (Exception ex) {
       InstrumentCaptureKafkaMessageError(ex, services);
-      return new((data, CaptureKafkaMessageErrorState));
+      return ex is KafkaException
+        ? new((data, CaptureKafkaMessageCriticalErrorState))
+        : new((data, CaptureKafkaMessageErrorState));
     }
   }
 }

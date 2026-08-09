@@ -33,14 +33,12 @@ partial class InboxFuncs
       return (data, DispatchedDeadLetterState);
     }
     catch (OperationCanceledException) { return default; }
-    catch (KafkaException ex) {
-      InstrumentDispatchDeadLetterError(message.MessageId, ex, services);
-      return (data, DispatchDeadLetterCriticalErrorState);
-    }
     catch (Exception ex) {
       data.DispatchError = ex.Message;
       InstrumentDispatchDeadLetterError(message.MessageId, ex, services);
-      return (data, DispatchDeadLetterErrorState);
+      return ex is KafkaException
+        ? (data, DispatchDeadLetterCriticalErrorState)
+        : (data, DispatchDeadLetterErrorState);
     }
   }
 }
