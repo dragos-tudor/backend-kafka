@@ -14,6 +14,7 @@ global using Kafka.Operations.Outbox;
 global using static Kafka.Instrumentation.InstrumentationFuncs;
 global using static Kafka.Operations.Inbox.InboxFuncs;
 global using static Kafka.Operations.Outbox.OutboxFuncs;
+global using static Kafka.StateMachines.StateMachinesFuncs;
 using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("Kafka.Resiliency")]
@@ -22,5 +23,5 @@ namespace Kafka.StateMachines;
 
 public static partial class StateMachinesFuncs
 {
-  static readonly Meter Meter = new ("kafka.state.machines");
+  static readonly internal Meter StateMachinesMeter = new ("kafka.state.machines");
 }

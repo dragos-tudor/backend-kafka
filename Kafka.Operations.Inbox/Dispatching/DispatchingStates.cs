@@ -1,7 +1,7 @@
 
 namespace Kafka.Operations.Inbox;
 
-partial class InboxFuncs
+static class DispatchingStates
 {
   internal const string DispatchedDeadLetterState = "DispatchedDeadLetterState";
   internal const string DispatchDeadLetterErrorState = "DispatchDeadLetterErrorState";

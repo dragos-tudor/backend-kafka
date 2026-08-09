@@ -1,3 +1,4 @@
+using static Kafka.Operations.Inbox.HandlingStates;
 
 namespace Kafka.Operations.Inbox;
 
@@ -14,12 +15,10 @@ partial class InboxFuncs
     var message = data.InboxMessage!;
     try {
       var (model, error)  = await services.HandleInboxMessageAsync(message, ct);
-      var state = GetHandleInboxMessageState(model, error);
-
-      if (state == HandleInboxMessageDomainErrorState) {
+      if (error is not null) {
         data.HandleError = error;
-        InstrumentHandleInboxMessageDomainError(message.MessageId, error!, services);
-        return (data, state);
+        InstrumentHandleInboxMessageDomainError(message.MessageId, error, services);
+        return (data, HandleInboxMessageDomainErrorState);
       }
 
       using var session = services.GetSession();
@@ -32,7 +31,7 @@ partial class InboxFuncs
       );
 
       InstrumentHandledInboxMessage(message.MessageId, services);
-      return (data, state);
+      return (data, HandledInboxMessageState);
 
     }
     catch (OperationCanceledException) { return default; }

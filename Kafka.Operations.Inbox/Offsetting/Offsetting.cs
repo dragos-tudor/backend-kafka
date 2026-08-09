@@ -1,3 +1,4 @@
+using static Kafka.Operations.Inbox.OffsettingStates;
 
 namespace Kafka.Operations.Inbox;
 

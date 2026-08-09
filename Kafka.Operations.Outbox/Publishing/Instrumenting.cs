@@ -1,4 +1,4 @@
-using static Kafka.Operations.Outbox.PublishingCounterType;
+using static Kafka.Operations.Outbox.PublishingCounters;
 
 namespace Kafka.Operations.Outbox;
 
@@ -17,7 +17,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogPublishedOutboxMessage(services.GetLogger(), messageId, messageKey, messageTopic, null);
-    AddMetricCounter(PublishingCounters[PublishedOutboxCounter]);
+    AddMetricCounter(PublishedOutboxCounter);
     AddActivityTag(Activity.Current, "publish.outbox.key", messageKey);
     AddActivityTag(Activity.Current, "publish.outbox.topic", messageTopic);
     AddActivityEvent(Activity.Current, "published.outbox");
@@ -29,7 +29,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogPublishOutboxMessageError(services.GetLogger(), messageId, ex);
-    AddMetricCounter(PublishingCounters[PublishOutboxErrorCounter]);
+    AddMetricCounter(PublishOutboxErrorCounter);
     AddActivityEvent(Activity.Current, "publish.outbox.error", [
       CreateActivityEventAttribute("publish.error", ex),
     ]);

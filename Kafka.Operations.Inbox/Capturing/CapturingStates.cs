@@ -1,7 +1,7 @@
 
 namespace Kafka.Operations.Inbox;
 
-partial class InboxFuncs
+static class CapturingStates
 {
   internal const string NotCapturedKafkaMessageState = "NotCapturedKafkaMessageState";
   internal const string CapturedKafkaMessageState = "CapturedKafkaMessageState";

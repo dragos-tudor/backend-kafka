@@ -1,3 +1,4 @@
+using static Kafka.StateMachines.ResumingStates;
 
 namespace Kafka.StateMachines;
 

@@ -1,4 +1,4 @@
-using static Kafka.Operations.Inbox.HandlingCounterType;
+using static Kafka.Operations.Inbox.HandlingCounters;
 
 namespace Kafka.Operations.Inbox;
 
@@ -19,7 +19,7 @@ partial class InboxFuncs
     IInstrumentationServices services)
   {
     LogHandledInboxMessage(services.GetLogger(), messageId);
-    AddMetricCounter(HandlingCounters[HandledCounter]);
+    AddMetricCounter(HandledCounter);
     AddActivityEvent(Activity.Current, "message.handled");
     return Activity.Current;
   }
@@ -42,7 +42,7 @@ partial class InboxFuncs
     IInstrumentationServices services)
   {
     LogHandleInboxMessageTechnicalError(services.GetLogger(), messageId, technicalError);
-    AddMetricCounter(HandlingCounters[HandleTechnicalErrorCounter]);
+    AddMetricCounter(HandleTechnicalErrorCounter);
     AddActivityTag(Activity.Current, "handle.message.technical.error", technicalError);
     AddActivityEvent(Activity.Current, "handle.message.error",
       [CreateActivityEventAttribute("technical.error", technicalError)]);

@@ -1,20 +1,8 @@
 
-using static Kafka.Operations.Outbox.DispatchingCounterType;
-
 namespace Kafka.Operations.Outbox;
 
-public enum DispatchingCounterType
+static class DispatchingCounters
 {
-  DispatchedDeadLetterCounter,
-  DispatchDeadLetterErrorCounter,
-}
-
-partial class OutboxFuncs
-{
-  internal static IImmutableDictionary<DispatchingCounterType, Counter<long>> DispatchingCounters =
-    ImmutableDictionary<DispatchingCounterType, Counter<long>>.Empty
-      .AddRange(new Dictionary<DispatchingCounterType, Counter<long>>() {
-        [DispatchedDeadLetterCounter] = Meter.CreateCounter<long>("dispatched.deadletter"),
-        [DispatchDeadLetterErrorCounter] = Meter.CreateCounter<long>("dispatch.deadletter.error")
-      });
+  internal static readonly Counter<long> DispatchedDeadLetterCounter = OutboxMeter.CreateCounter<long>("dispatched.deadletter");
+  internal static readonly Counter<long> DispatchDeadLetterErrorCounter = OutboxMeter.CreateCounter<long>("dispatch.deadletter.error");
 }

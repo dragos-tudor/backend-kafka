@@ -1,3 +1,4 @@
+using static Kafka.Operations.Inbox.InsertingStates;
 
 namespace Kafka.Operations.Inbox;
 

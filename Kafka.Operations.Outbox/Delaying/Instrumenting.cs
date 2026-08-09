@@ -1,4 +1,4 @@
-using static Kafka.Operations.Outbox.DelayingCounterType;
+using static Kafka.Operations.Outbox.DelayingCounters;
 
 namespace Kafka.Operations.Outbox;
 
@@ -20,7 +20,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogDelayOutboxMessageRetry(services.GetLogger(), messageId, retryCount, error);
-    AddMetricCounter(DelayingCounters[DelayDeadLetterRetryCounter]);
+    AddMetricCounter(DelayDeadLetterRetryCounter);
     AddActivityTag(Activity.Current, "delay.outbox.retryCount", retryCount);
     AddActivityTag(Activity.Current, "delay.outbox.error", error);
     AddActivityEvent(Activity.Current, "delay.outbox.retry",
@@ -35,7 +35,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogDelayOutboxMessageExhausted(services.GetLogger(), messageId, retryCount, error);
-    AddMetricCounter(DelayingCounters[DelayDeadLetterExhaustedCounter]);
+    AddMetricCounter(DelayDeadLetterExhaustedCounter);
     AddActivityTag(Activity.Current, "delay.outbox.retryCount", retryCount);
     AddActivityEvent(Activity.Current, "delay.outbox.exhausted",
       [CreateActivityEventAttribute("delay.error", error)]);
@@ -48,7 +48,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogDelayOutboxMessageError(services.GetLogger(), messageId, ex);
-    AddMetricCounter(DelayingCounters[DelayDeadLetterErrorCounter]);
+    AddMetricCounter(DelayDeadLetterErrorCounter);
     AddActivityTag(Activity.Current, "delay.outbox.error", ex);
     AddActivityEvent(Activity.Current, "delay.outbox.error",
       [CreateActivityEventAttribute("delay.error", ex)]);

@@ -24,5 +24,5 @@ namespace Kafka.Operations.Inbox;
 
 public static partial class InboxFuncs
 {
-  static readonly Meter Meter = new ("kafka.inbox");
+  static readonly internal Meter InboxMeter = new ("kafka.inbox");
 }

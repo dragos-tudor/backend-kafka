@@ -1,22 +1,9 @@
 
-using static Kafka.Operations.Outbox.DelayingCounterType;
-
 namespace Kafka.Operations.Outbox;
 
-public enum DelayingCounterType
+static class DelayingCounters
 {
-  DelayDeadLetterRetryCounter,
-  DelayDeadLetterExhaustedCounter,
-  DelayDeadLetterErrorCounter
-}
-
-partial class OutboxFuncs
-{
-  internal static IImmutableDictionary<DelayingCounterType, Counter<long>> DelayingCounters =
-    ImmutableDictionary<DelayingCounterType, Counter<long>>.Empty
-      .AddRange(new Dictionary<DelayingCounterType, Counter<long>>() {
-        [DelayDeadLetterRetryCounter] = Meter!.CreateCounter<long>("delay.deadletter.retry"),
-        [DelayDeadLetterExhaustedCounter] = Meter.CreateCounter<long>("delay.deadletter.exhausted"),
-        [DelayDeadLetterErrorCounter] = Meter.CreateCounter<long>("delay.deadletter.error")
-      });
+  internal static readonly Counter<long> DelayDeadLetterRetryCounter = OutboxMeter.CreateCounter<long>("delay.deadletter.retry");
+  internal static readonly Counter<long> DelayDeadLetterExhaustedCounter = OutboxMeter.CreateCounter<long>("delay.deadletter.exhausted");
+  internal static readonly Counter<long> DelayDeadLetterErrorCounter = OutboxMeter.CreateCounter<long>("delay.deadletter.error");
 }

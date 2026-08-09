@@ -1,4 +1,4 @@
-using static Kafka.StateMachines.ResumingCounterType;
+using static Kafka.StateMachines.ResumingCounters;
 
 namespace Kafka.StateMachines;
 
@@ -19,7 +19,7 @@ partial class StateMachinesFuncs
     IInstrumentationServices services)
   {
     LogResumedInboxMessage(services.GetLogger(), messageId, state);
-    AddMetricCounter(ResumingCounters[ResumedCounter]);
+    AddMetricCounter(ResumedCounter);
   }
 
   static void InstrumentResumeInboxMessageCriticalError(
@@ -27,7 +27,7 @@ partial class StateMachinesFuncs
     IInstrumentationServices services)
   {
     LogResumeInboxMessagesCriticalError(services.GetLogger(), state);
-    AddMetricCounter(ResumingCounters[ResumeCriticalErrorsCounter]);
+    AddMetricCounter(ResumeCriticalErrorsCounter);
   }
 
   internal static void InstrumentFetchInboxMessageError(
@@ -35,6 +35,6 @@ partial class StateMachinesFuncs
     IInstrumentationServices services)
   {
     LogFetchInboxMessagesError(services.GetLogger(), exception);
-    AddMetricCounter(ResumingCounters[FetchErrorCounter]);
+    AddMetricCounter(FetchErrorCounter);
   }
 }

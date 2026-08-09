@@ -1,7 +1,7 @@
 
 namespace Kafka.Operations.Inbox;
 
-partial class InboxFuncs
+static class InsertingStates
 {
   internal const string InsertedInboxMessageState = "InsertedInboxMessageState";
   internal const string InsertInboxMessageErrorState = "InsertInboxMessageErrorState";

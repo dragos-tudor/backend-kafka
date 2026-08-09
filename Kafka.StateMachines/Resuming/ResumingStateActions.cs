@@ -8,9 +8,9 @@ partial class StateMachinesFuncs
     where TData : IResumingStepData<TKey, TValue, TPayload>
     where TSession : IDisposable =>
       ImmutableDictionary<string, StepAsync<TServices, TData, string>>.Empty
-        .Add(ResumingNotStartedState, HandleInboxMessageAsync<TServices, TData, TKey, TValue, TPayload, TSession>)
-        .Add(HandleInboxMessageTechnicalErrorState, ScheduleInboxMessageAsync<TServices, TData, TKey, TValue, TPayload>)
-        .Add(HandleInboxMessageDomainErrorState, DispatchDeadLetterAsync<TServices, TData, TKey, TValue, TPayload>)
-        .Add(ScheduleInboxMessageExhaustedState, DispatchDeadLetterAsync<TServices, TData, TKey, TValue, TPayload>)
-        .Add(InboxFuncs.DispatchDeadLetterErrorState, DelayDeadLetterAsync<TServices, TData, TKey, TValue, TPayload>);
+        .Add(ResumingStates.ResumingNotStartedState, HandleInboxMessageAsync<TServices, TData, TKey, TValue, TPayload, TSession>)
+        .Add(HandlingStates.HandleInboxMessageTechnicalErrorState, ScheduleInboxMessageAsync<TServices, TData, TKey, TValue, TPayload>)
+        .Add(HandlingStates.HandleInboxMessageDomainErrorState, DispatchDeadLetterAsync<TServices, TData, TKey, TValue, TPayload>)
+        .Add(Operations.Inbox.SchedulingStates.ScheduleInboxMessageExhaustedState, DispatchDeadLetterAsync<TServices, TData, TKey, TValue, TPayload>)
+        .Add(Operations.Inbox.DispatchingStates.DispatchDeadLetterErrorState, DelayDeadLetterAsync<TServices, TData, TKey, TValue, TPayload>);
 }

@@ -1,4 +1,4 @@
-using static Kafka.Operations.Inbox.InsertingCounterType;
+using static Kafka.Operations.Inbox.InsertingCounters;
 
 namespace Kafka.Operations.Inbox;
 
@@ -18,7 +18,7 @@ partial class InboxFuncs
     IInstrumentationServices services)
   {
     LogInsertedInboxMessage(services.GetLogger(), messageId);
-    AddMetricCounter(InsertingCounters[InsertedCounter]);
+    AddMetricCounter(InsertedCounter);
     AddActivityEvent(Activity.Current, "inserted.message");
   }
 
@@ -28,7 +28,7 @@ partial class InboxFuncs
     IInstrumentationServices services)
   {
     LogInsertInboxMessageError(services.GetLogger(), messageKey, ex);
-    AddMetricCounter(InsertingCounters[InsertErrorCounter]);
+    AddMetricCounter(InsertErrorCounter);
     AddActivityEvent(Activity.Current, "insert.message.error");
   }
 

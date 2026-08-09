@@ -1,7 +1,7 @@
 
 namespace Kafka.Operations.Outbox;
 
-partial class OutboxFuncs
+static class PublishingStates
 {
   internal static string PublishedOutboxMessageState = "PublishedOutboxMessageState";
   internal static string PublishOutboxMessageErrorState = "PublishOutboxMessageErrorState";

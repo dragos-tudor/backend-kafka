@@ -1,4 +1,4 @@
-using static Kafka.StateMachines.RelayingCounterType;
+using static Kafka.StateMachines.RelayingCounters;
 
 namespace Kafka.StateMachines;
 
@@ -19,7 +19,7 @@ partial class StateMachinesFuncs
     IInstrumentationServices services)
   {
     LogRelayedOutboxMessage(services.GetLogger(), messageId, state);
-    AddMetricCounter(RelayingCounters[RelayedCounter]);
+    AddMetricCounter(RelayedCounter);
   }
 
   static void InstrumentRelayOutboxMessageCriticalError(
@@ -27,7 +27,7 @@ partial class StateMachinesFuncs
     IInstrumentationServices services)
   {
     LogRelayOutboxMessagesCriticalError(services.GetLogger(), state);
-    AddMetricCounter(RelayingCounters[RelayCriticalErrorsCounter]);
+    AddMetricCounter(RelayCriticalErrorsCounter);
   }
 
   internal static void InstrumentFetchOutboxMessageError(
@@ -35,6 +35,6 @@ partial class StateMachinesFuncs
     IInstrumentationServices services)
   {
     LogFetchOutboxMessagesError(services.GetLogger(), exception);
-    AddMetricCounter(RelayingCounters[FetchErrorCounter]);
+    AddMetricCounter(FetchErrorCounter);
   }
 }

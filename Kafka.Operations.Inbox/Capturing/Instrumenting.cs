@@ -1,4 +1,4 @@
-using static Kafka.Operations.Inbox.CapturingCounterType;
+using static Kafka.Operations.Inbox.CapturingCounters;
 
 namespace Kafka.Operations.Inbox;
 
@@ -25,7 +25,7 @@ partial class InboxFuncs
     AddActivityTag(Activity.Current, "capture.offset", topicOffsetPartition.Offset);
     AddActivityTag(Activity.Current, "message.id", messageId);
     AddActivityTag(Activity.Current, "correlation.id", correlationId);
-    AddMetricCounter(CapturingCounters[CapturedCounter]);
+    AddMetricCounter(CapturedCounter);
     AddActivityEvent(Activity.Current, "captured.message");
   }
 
@@ -34,7 +34,7 @@ partial class InboxFuncs
     IInstrumentationServices services)
   {
     LogCaptureKafkaMessageError(services.GetLogger(), ex);
-    AddMetricCounter(CapturingCounters[CaptureErrorCounter]);
+    AddMetricCounter(CaptureErrorCounter);
     AddActivityEvent(Activity.Current, "capture.message.error");
   }
 
@@ -42,7 +42,7 @@ partial class InboxFuncs
     IInstrumentationServices services)
   {
     LogNotCapturedKafkaMessageError(services.GetLogger());
-    AddMetricCounter(CapturingCounters[NotCapturedCounter]);
+    AddMetricCounter(NotCapturedCounter);
     AddActivityEvent(Activity.Current, "not.captured.message");
   }
 

@@ -1,20 +1,8 @@
 
-using static Kafka.Operations.Inbox.InsertingCounterType;
-
 namespace Kafka.Operations.Inbox;
 
-public enum InsertingCounterType
+static class InsertingCounters
 {
-  InsertedCounter,
-  InsertErrorCounter,
-}
-
-partial class InboxFuncs
-{
-  internal static IImmutableDictionary<InsertingCounterType, Counter<long>> InsertingCounters =
-    ImmutableDictionary<InsertingCounterType, Counter<long>>.Empty
-      .AddRange(new Dictionary<InsertingCounterType, Counter<long>>() {
-        [InsertedCounter] = Meter.CreateCounter<long>("inserted.inbox.messages"),
-        [InsertErrorCounter] = Meter.CreateCounter<long>("insert.inbox.messages.error")
-      });
+  internal static readonly Counter<long> InsertedCounter = InboxMeter.CreateCounter<long>("inserted.inbox.messages");
+  internal static readonly Counter<long> InsertErrorCounter = InboxMeter.CreateCounter<long>("insert.inbox.messages.error");
 }

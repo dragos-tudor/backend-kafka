@@ -1,3 +1,4 @@
+using static Kafka.Operations.Inbox.DelayingStates;
 
 namespace Kafka.Operations.Inbox;
 
@@ -14,11 +15,10 @@ partial class InboxFuncs
     try {
       var currentRetryCount = message.PublishRetryCount ?? 0;
       var retryOptions = services.GetDelayRetryOptions();
-      var state = GetDelayDeadLetterState(currentRetryCount, retryOptions.MaxRetryAttempts);
-      var status = GetDelayDeadLetterStatus(state);
 
       var nextRetryCount = currentRetryCount + 1;
       var nextAttemptAt = CalculateNextAttemptAt(nextRetryCount, services.GetUtcDate(), retryOptions);
+      var status = GetInboxDeadLetterRetryStatus(currentRetryCount, retryOptions.MaxRetryAttempts);
 
       await services.UpdateIntegrationMessageAsync(message, message =>
         message
@@ -27,11 +27,14 @@ partial class InboxFuncs
           .SetInboxMessagePublishRetryCount(nextRetryCount)
           .SetInboxMessageStatus(status), ct);
 
-      if (state == DelayDeadLetterRetryState)
+      if (status == InboxMessageStatus.DeadLettering) {
         InstrumentDelayDeadLetterRetry(message.MessageId, currentRetryCount, data.DispatchError!, services);
-      if (state == DelayDeadLetterExhaustedState)
-        InstrumentDelayDeadLetterExhausted(message.MessageId, currentRetryCount, data.DispatchError!, services);
-      return (data, state);
+        return (data, DelayDeadLetterRetryState);
+      }
+
+      InstrumentDelayDeadLetterExhausted(message.MessageId, currentRetryCount, data.DispatchError!, services);
+      return (data, DelayDeadLetterExhaustedState);
+
     }
     catch (OperationCanceledException) { return default; }
     catch (Exception ex) {

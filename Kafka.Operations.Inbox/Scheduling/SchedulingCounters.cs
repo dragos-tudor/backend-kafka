@@ -1,22 +1,9 @@
 
-using static Kafka.Operations.Inbox.SchedulingCounterType;
-
 namespace Kafka.Operations.Inbox;
 
-public enum SchedulingCounterType
+static class SchedulingCounters
 {
-  ScheduleInboxRetryCounter,
-  ScheduleInboxExhaustedCounter,
-  ScheduleInboxErrorCounter
-}
-
-partial class InboxFuncs
-{
-  internal static IImmutableDictionary<SchedulingCounterType, Counter<long>> SchedulingCounters =>
-    ImmutableDictionary<SchedulingCounterType, Counter<long>>.Empty
-      .AddRange(new Dictionary<SchedulingCounterType, Counter<long>>() {
-        [ScheduleInboxRetryCounter] = Meter.CreateCounter<long>("schedule.inbox.retry"),
-        [ScheduleInboxExhaustedCounter] = Meter.CreateCounter<long>("schedule.inbox.exhausted"),
-        [ScheduleInboxErrorCounter] = Meter.CreateCounter<long>("schedule.inbox.error")
-      });
+  internal static readonly Counter<long> ScheduleInboxRetryCounter = InboxMeter.CreateCounter<long>("schedule.inbox.retry");
+  internal static readonly Counter<long> ScheduleInboxExhaustedCounter = InboxMeter.CreateCounter<long>("schedule.inbox.exhausted");
+  internal static readonly Counter<long> ScheduleInboxErrorCounter = InboxMeter.CreateCounter<long>("schedule.inbox.error");
 }

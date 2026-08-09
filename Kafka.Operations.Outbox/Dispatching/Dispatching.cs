@@ -1,3 +1,4 @@
+using static Kafka.Operations.Outbox.DispatchingStates;
 
 namespace Kafka.Operations.Outbox;
 

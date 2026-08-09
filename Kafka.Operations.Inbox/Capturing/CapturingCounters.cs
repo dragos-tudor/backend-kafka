@@ -1,22 +1,9 @@
 
-using static Kafka.Operations.Inbox.CapturingCounterType;
-
 namespace Kafka.Operations.Inbox;
 
-public enum CapturingCounterType
+static class CapturingCounters
 {
-  CapturedCounter,
-  CaptureErrorCounter,
-  NotCapturedCounter,
-}
-
-partial class InboxFuncs
-{
-  internal static ImmutableDictionary<CapturingCounterType, Counter<long>> CapturingCounters =
-    ImmutableDictionary<CapturingCounterType, Counter<long>>.Empty
-      .AddRange(new Dictionary<CapturingCounterType, Counter<long>>() {
-        [CapturedCounter] = Meter!.CreateCounter<long>("captured.kafka.messages"),
-        [CaptureErrorCounter] = Meter.CreateCounter<long>("capture.kafka.messages.error"),
-        [NotCapturedCounter] = Meter.CreateCounter<long>("not.captured.kafka.messages"),
-      });
+  internal static readonly Counter<long> CapturedCounter = InboxMeter.CreateCounter<long>("captured.kafka.messages");
+  internal static readonly Counter<long> CaptureErrorCounter = InboxMeter.CreateCounter<long>("capture.kafka.messages.error");
+  internal static readonly Counter<long> NotCapturedCounter = InboxMeter.CreateCounter<long>("not.captured.kafka.messages");
 }

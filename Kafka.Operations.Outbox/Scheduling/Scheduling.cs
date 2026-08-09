@@ -1,3 +1,4 @@
+using static Kafka.Operations.Outbox.SchedulingStates;
 
 namespace Kafka.Operations.Outbox;
 
@@ -14,11 +15,10 @@ partial class OutboxFuncs
     try {
       var currentRetryCount = message.RetryCount ?? 0;
       var retryOptions = services.GetScheduleRetryOptions();
-      var state = GetScheduleOutboxMessageState(currentRetryCount, retryOptions.MaxRetryAttempts);
-      var status = GetScheduleOutboxMessageStatus(state);
 
       var nextRetryCount = currentRetryCount + 1;
       var nextAttemptAt = CalculateNextAttemptAt(nextRetryCount, services.GetUtcDate(), retryOptions);
+      var status = GetOutboxMessageRetryStatus(currentRetryCount, retryOptions.MaxRetryAttempts);
 
       await services.UpdateIntegrationMessageAsync(message, message =>
         message
@@ -27,11 +27,13 @@ partial class OutboxFuncs
           .SetOutboxMessageRetryCount(nextRetryCount)
           .SetOutboxMessageStatus(status), ct);
 
-      if (state == ScheduleOutboxMessageRetryState)
+      if (status == OutboxMessageStatus.Pending) {
         InstrumentScheduleOutboxMessageRetry(message.MessageId, currentRetryCount, data.PublishError!, services);
-      if (state == ScheduleOutboxMessageExhaustedState)
-        InstrumentScheduleOutboxMessageExhausted(message.MessageId, currentRetryCount, data.PublishError!, services);
-      return (data, state);
+        return (data, ScheduleOutboxMessageRetryState);
+      }
+
+      InstrumentScheduleOutboxMessageExhausted(message.MessageId, currentRetryCount, data.PublishError!, services);
+      return (data, ScheduleOutboxMessageExhaustedState);
     }
     catch (OperationCanceledException) { return default; }
     catch (Exception ex) {

@@ -1,7 +1,7 @@
 
 namespace Kafka.Operations.Outbox;
 
-partial class OutboxFuncs
+static class DispatchingStates
 {
   internal const string DispatchedDeadLetterState = "DispatchedDeadLetterState";
   internal const string DispatchDeadLetterErrorState = "DispatchDeadLetterErrorState";

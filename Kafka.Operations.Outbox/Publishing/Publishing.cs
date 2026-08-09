@@ -1,3 +1,4 @@
+using static Kafka.Operations.Outbox.PublishingStates;
 
 namespace Kafka.Operations.Outbox;
 

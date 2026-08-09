@@ -1,4 +1,4 @@
-using static Kafka.StateMachines.ConsumingCounterType;
+using static Kafka.StateMachines.ConsumingCounters;
 
 namespace Kafka.StateMachines;
 
@@ -15,7 +15,7 @@ partial class StateMachinesFuncs
     IInstrumentationServices services)
   {
     LogConsumedKafkaMessage(services.GetLogger(), state);
-    AddMetricCounter(ConsumingCounters[ConsumedCounter]);
+    AddMetricCounter(ConsumedCounter);
   }
 
   static void InstrumentConsumeKafkaMessageCriticalError(
@@ -23,6 +23,6 @@ partial class StateMachinesFuncs
     IInstrumentationServices services)
   {
     LogConsumeKafkaMessageCriticalError(services.GetLogger(), state);
-    AddMetricCounter(ConsumingCounters[ConsumeCriticalErrorsCounter]);
+    AddMetricCounter(ConsumeCriticalErrorsCounter);
   }
 }

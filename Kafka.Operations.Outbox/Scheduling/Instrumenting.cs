@@ -1,4 +1,4 @@
-using static Kafka.Operations.Outbox.SchedulingCounterType;
+using static Kafka.Operations.Outbox.SchedulingCounters;
 
 namespace Kafka.Operations.Outbox;
 
@@ -20,7 +20,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogScheduleOutboxMessageRetry(services.GetLogger(), messageId, retryCount, error);
-    AddMetricCounter(SchedulingCounters[ScheduleOutboxRetryCounter]);
+    AddMetricCounter(ScheduleOutboxRetryCounter);
     AddActivityTag(Activity.Current, "schedule.outbox.retryCount", retryCount);
     AddActivityTag(Activity.Current, "schedule.outbox.error", error);
     AddActivityEvent(Activity.Current, "schedule.outbox.retry",
@@ -35,7 +35,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogScheduleOutboxMessageExhausted(services.GetLogger(), messageId, retryCount, error);
-    AddMetricCounter(SchedulingCounters[ScheduleOutboxExhaustedCounter]);
+    AddMetricCounter(ScheduleOutboxExhaustedCounter);
     AddActivityTag(Activity.Current, "schedule.outbox.retryCount", retryCount);
     AddActivityEvent(Activity.Current, "schedule.outbox.exhausted",
       [CreateActivityEventAttribute("schedule.error", error)]);
@@ -48,7 +48,7 @@ partial class OutboxFuncs
     IInstrumentationServices services)
   {
     LogScheduleOutboxMessageError(services.GetLogger(), messageId, ex);
-    AddMetricCounter(SchedulingCounters[ScheduleOutboxErrorCounter]);
+    AddMetricCounter(ScheduleOutboxErrorCounter);
     AddActivityTag(Activity.Current, "schedule.outbox.error", ex);
     AddActivityEvent(Activity.Current, "schedule.outbox.error",
       [CreateActivityEventAttribute("schedule.error", ex)]);

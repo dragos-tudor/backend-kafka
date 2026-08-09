@@ -1,3 +1,4 @@
+using static Kafka.StateMachines.ConsumingStates;
 
 namespace Kafka.StateMachines;
 

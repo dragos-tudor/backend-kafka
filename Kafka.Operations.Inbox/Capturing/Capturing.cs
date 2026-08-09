@@ -1,3 +1,4 @@
+using static Kafka.Operations.Inbox.CapturingStates;
 
 namespace Kafka.Operations.Inbox;
 
