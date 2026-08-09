@@ -9,11 +9,11 @@ global using static Kafka.Messages.MessagesFuncs;
 global using static Kafka.Utils.UtilsFuncs;
 using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("Kafka.Clients")]
-[assembly:InternalsVisibleTo("Kafka.StateMachines")]
-[assembly:InternalsVisibleTo("Kafka.Instrumentation")]
-[assembly:InternalsVisibleTo("Kafka.Operations.Inbox")]
-[assembly:InternalsVisibleTo("Kafka.Operations.Outbox")]
+[assembly:InternalsVisibleTo("Clients")]
+[assembly:InternalsVisibleTo("StateMachines")]
+[assembly:InternalsVisibleTo("Instrumentation")]
+[assembly:InternalsVisibleTo("Inbox")]
+[assembly:InternalsVisibleTo("Outbox")]
 
 namespace Kafka.Messages;
 

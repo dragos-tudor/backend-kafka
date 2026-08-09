@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Confluent.Kafka" />
-    <ProjectReference Include="../Kafka.Utils/Kafka.Utils.csproj" />
+    <ProjectReference Include="../Kafka.Utils/Utils.csproj" />
   </ItemGroup>
 
 </Project>

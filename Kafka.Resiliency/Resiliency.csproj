@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Kafka.StateMachines/Kafka.StateMachines.csproj" />
+    <ProjectReference Include="../Kafka.StateMachines/StateMachines.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(PackOnly)' != 'true'">

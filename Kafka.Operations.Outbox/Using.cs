@@ -16,7 +16,7 @@ global using static Kafka.Messages.MessagesFuncs;
 global using static Kafka.Operations.Outbox.OutboxFuncs;
 using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("Kafka.StateMachines")]
+[assembly:InternalsVisibleTo("StateMachines")]
 
 namespace Kafka.Operations.Outbox;
 

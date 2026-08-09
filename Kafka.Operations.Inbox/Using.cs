@@ -1,7 +1,5 @@
 
 global using System;
-global using System.Collections.Generic;
-global using System.Collections.Immutable;
 global using System.Diagnostics;
 global using System.Diagnostics.Metrics;
 global using System.Threading;
@@ -18,7 +16,7 @@ global using static Kafka.Messages.MessagesFuncs;
 global using static Kafka.Operations.Inbox.InboxFuncs;
 using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("Kafka.StateMachines")]
+[assembly:InternalsVisibleTo("StateMachines")]
 
 namespace Kafka.Operations.Inbox;
 
