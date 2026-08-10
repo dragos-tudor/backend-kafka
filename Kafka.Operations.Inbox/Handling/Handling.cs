@@ -8,8 +8,8 @@ partial class InboxFuncs
     TServices services,
     TData data,
     CancellationToken ct = default)
-  where TServices : IHandleInboxMessageServices<TKey, TValue, TPayload, TSession>
-  where TData : IHandleInboxMessageData<TKey, TValue, TPayload>
+  where TServices : IHandlingServices<TKey, TValue, TPayload, TSession>
+  where TData : IHandlingData<TKey, TValue, TPayload>
   where TSession : IDisposable
   {
     var message = data.InboxMessage!;

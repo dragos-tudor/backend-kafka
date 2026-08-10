@@ -8,8 +8,8 @@ partial class OutboxFuncs
     TServices services,
     TData data,
     CancellationToken ct)
-  where TServices : IDelayDeadLetterServices<TKey, TValue, TPayload>
-  where TData : IDelayDeadLetterData<TKey, TValue, TPayload>
+  where TServices : IDelayingServices<TKey, TValue, TPayload>
+  where TData : IDelayingData<TKey, TValue, TPayload>
   {
     var message = data.OutboxMessage!;
     try {

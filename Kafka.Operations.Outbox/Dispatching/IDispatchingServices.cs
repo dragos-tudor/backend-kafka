@@ -1,7 +1,7 @@
 
 namespace Kafka.Operations.Outbox;
 
-public interface IDispatchDeadLetterServices<TKey, TValue, TPayload> :
+public interface IDispatchingServices<TKey, TValue, TPayload> :
   IDeadLetterTopicService<TKey, TPayload>,
   IProducerService<TKey, TValue>,
   IUtcDateService,

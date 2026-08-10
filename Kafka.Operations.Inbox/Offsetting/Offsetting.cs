@@ -8,25 +8,26 @@ partial class InboxFuncs
     TService services,
     TData data,
     CancellationToken ct = default)
-  where TService : IOffsetConsumerServices<TKey, TValue>
-  where TData : IOffsetConsumerData<TKey, TPayload>
+  where TService : IOffsettingServices<TKey, TValue>
+  where TData : IOffsettingData<TKey, TPayload>
   {
-    var topicPartitionOffset = data.TopicPartitionOffset!;
-    var inboxMessage = data.InboxMessage;
+    var offset = data.TopicPartitionOffset!;
     try {
-      var offsetApplied = ClientsFuncs.OffsetConsumer(services.GetConsumer(), topicPartitionOffset, services.GetKafkaOptions());
+      var offsetApplied = ClientsFuncs.OffsetConsumer(services.GetConsumer(), offset, services.GetKafkaOptions());
 
-      if (inboxMessage is null) {
-        InstrumentOffsetConsumerMissingMessage(topicPartitionOffset, services);
+      var hasMessage = data.InboxMessage is not null;
+      if (!hasMessage) {
+        InstrumentOffsetConsumerMissingMessage(offset, services);
         return new((data, MissingInboxMessageState));
       }
 
-      InstrumentOffsetConsumer(inboxMessage.MessageId, topicPartitionOffset, services);
+      data.TopicPartitionOffsetApplied = true;
+      InstrumentOffsetConsumer(offset, services);
       return new ((data, OffsetConsumedState));
     }
     catch (OperationCanceledException) { return default; }
     catch (Exception ex) {
-      InstrumentOffsetConsumerError(ex, inboxMessage?.MessageId, topicPartitionOffset!, services);
+      InstrumentOffsetConsumerError(ex, offset!, services);
       return ex is KafkaException
         ? new((data, OffsetConsumeCriticalErrorState))
         : new((data, OffsetConsumeErrorState));

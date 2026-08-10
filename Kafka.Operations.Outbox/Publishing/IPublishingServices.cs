@@ -1,7 +1,7 @@
 
 namespace Kafka.Operations.Outbox;
 
-public interface IPublishOutboxMessageServices<TKey, TValue, TPayload>:
+public interface IPublishingServices<TKey, TValue, TPayload>:
   IInstrumentationServices,
   IKafkaValueMapperService<TPayload, TValue>,
   IProducerService<TKey, TValue>,

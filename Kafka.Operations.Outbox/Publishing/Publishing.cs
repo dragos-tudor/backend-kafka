@@ -8,8 +8,8 @@ partial class OutboxFuncs
     TServices services,
     TState state,
     CancellationToken ct = default)
-  where TServices : IPublishOutboxMessageServices<TKey, TValue, TPayload>
-  where TState : IPublishOutboxMessageData<TKey, TValue, TPayload>
+  where TServices : IPublishingServices<TKey, TValue, TPayload>
+  where TState : IPublishingData<TKey, TValue, TPayload>
   {
     var message = state.OutboxMessage!;
     try

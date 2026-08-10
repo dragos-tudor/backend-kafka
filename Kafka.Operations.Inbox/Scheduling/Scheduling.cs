@@ -8,8 +8,8 @@ partial class InboxFuncs
     TServices services,
     TData data,
     CancellationToken ct)
-  where TServices : IScheduleInboxMessageServices<TKey, TPayload>
-  where TData : IScheduleInboxMessageData<TKey, TPayload>
+  where TServices : ISchedulingServices<TKey, TPayload>
+  where TData : ISchedulingData<TKey, TPayload>
   {
     var message = data.InboxMessage!;
     try {

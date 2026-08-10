@@ -1,6 +1,7 @@
 
 namespace Kafka.Operations.Inbox;
 
-public interface IOffsetConsumerData<TKey, TPayload>:
+public interface IOffsettingData<TKey, TPayload>:
   IInboxMessageProp<TKey, TPayload>,
+  ITopicPartitionOffsetAppliedProp,
   ITopicPartitionOffsetProp;

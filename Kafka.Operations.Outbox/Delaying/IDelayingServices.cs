@@ -1,7 +1,7 @@
 
-namespace Kafka.Operations.Inbox;
+namespace Kafka.Operations.Outbox;
 
-public interface IDelayDeadLetterServices<TKey, TValue, TPayload> :
+public interface IDelayingServices<TKey, TValue, TPayload> :
   IDelayOptionsService,
   IInstrumentationServices,
   IUpdateIntegrationMessageService<TKey, TPayload>,

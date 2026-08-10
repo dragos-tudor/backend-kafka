@@ -1,6 +1,6 @@
 
 namespace Kafka.Operations.Inbox;
 
-public interface ICaptureKafkaMessageServices<TKey, TValue> :
+public interface ICapturingServices<TKey, TValue> :
   IInstrumentationServices,
   IConsumerService<TKey, TValue>;

@@ -1,6 +1,6 @@
 
 namespace Kafka.Operations.Outbox;
 
-public interface IDelayDeadLetterData<TKey, TValue, TPayload>:
+public interface IDelayingData<TKey, TValue, TPayload>:
   IDispatchErrorProp,
   IOutboxMessageProp<TKey, TPayload>;

@@ -4,12 +4,12 @@ namespace Kafka.Operations.Inbox;
 
 partial class InboxFuncs
 {
-  internal static ValueTask<(TData, string)> CaptureKafkaMessage<TServices, TData, TKey, TValue, TPayload>(
+  internal static ValueTask<(TData, string)> CaptureKafkaMessage<TServices, TData, TKey, TValue>(
     TServices services,
     TData data,
     CancellationToken ct = default)
-  where TServices: ICaptureKafkaMessageServices<TKey, TValue>
-  where TData : ICaptureKafkaMessageData<TKey, TValue, TPayload>
+  where TServices: ICapturingServices<TKey, TValue>
+  where TData : ICapturingData<TKey, TValue>
   {
     try {
       var result = ConsumeMessage(services.GetConsumer(), ct);

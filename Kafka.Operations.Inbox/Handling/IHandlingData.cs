@@ -1,6 +1,6 @@
 
 namespace Kafka.Operations.Inbox;
 
-public interface IHandleInboxMessageData<TKey, TValue, TPayload>:
+public interface IHandlingData<TKey, TValue, TPayload>:
   IInboxMessageProp<TKey, TPayload>,
   IHandleErrorProp;

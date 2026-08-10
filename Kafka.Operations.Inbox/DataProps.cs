@@ -11,4 +11,6 @@ public interface IInboxMessageProp<TKey, TPayload> { InboxMessage<TKey, TPayload
 
 public interface IKafkaMessageProp<TKey, TValue> { Message<TKey, TValue>? KafkaMessage { get; set; } }
 
+public interface ITopicPartitionOffsetAppliedProp { bool TopicPartitionOffsetApplied { get; set; } }
+
 public interface ITopicPartitionOffsetProp { TopicPartitionOffset? TopicPartitionOffset { get; set; } }

@@ -12,7 +12,7 @@ partial class ResiliencyFuncs
         "resume.inbox.messages",
         options.ResumeInboxInterval,
         options.ResumeInboxLockInterval,
-        ct => ResumeInboxMessagesAsync<IResumeInboxMessageServices<TKey, TValue, TPayload, TSession>, IResumingStepData<TKey, TValue, TPayload>, TKey, TValue, TPayload, TSession>(services, ct),
+        ct => ResumeInboxMessagesAsync<IResumingServices<TKey, TValue, TPayload, TSession>, IResumingData<TKey, TValue, TPayload>, TKey, TValue, TPayload, TSession>(services, ct),
         services,
         cancellationToken);
 }

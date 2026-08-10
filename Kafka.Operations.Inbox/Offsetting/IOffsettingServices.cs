@@ -1,7 +1,7 @@
 
 namespace Kafka.Operations.Inbox;
 
-public interface IOffsetConsumerServices<TKey, TValue> :
+public interface IOffsettingServices<TKey, TValue> :
   IConsumerService<TKey, TValue>,
   IInstrumentationServices,
   IKafkaOptionsService;

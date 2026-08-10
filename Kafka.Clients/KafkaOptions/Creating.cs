@@ -26,17 +26,17 @@ partial class ClientsFuncs
       User = user ?? string.Empty,
       Password = password ?? string.Empty,
       DefaultTopic = defaultTopic ?? string.Empty,
-      GroupId = groupId ?? "storing-kafka-group",
-      ClientId = clientId ?? "storing-kafka-client",
+      GroupId = groupId ?? "kafka-group",
+      ClientId = clientId ?? "kafka-client",
       SecurityProtocol = securityProtocol,
       SaslMechanism = saslMechanism,
       AutoOffsetReset = autoOffsetReset,
       EnableAutoCommit = enableAutoCommit,
       ConnectTimeout = connectTimeout ?? TimeSpan.FromSeconds(15),
-      OperationTimeout = operationTimeout ?? TimeSpan.FromSeconds(1),
+      OperationTimeout = operationTimeout ?? TimeSpan.FromSeconds(5),
       DeadLetterTopicSuffix = deadLetterTopicSuffix,
       MaxPollRecords = maxPollRecords ?? 500,
-      SessionTimeout = sessionTimeout ?? TimeSpan.FromMilliseconds(30000),
+      SessionTimeout = sessionTimeout ?? TimeSpan.FromSeconds(30),
       IsolationLevel = isolationlevel ?? IsolationLevel.ReadCommitted
     };
 

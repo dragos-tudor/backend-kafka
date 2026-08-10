@@ -1,7 +1,7 @@
 
 namespace Kafka.Operations.Outbox;
 
-public interface IScheduleOutboxMessageServices<TKey, TPayload>:
+public interface ISchedulingServices<TKey, TPayload>:
   IScheduleOptionsService,
   IInstrumentationServices,
   IUpdateIntegrationMessageService<TKey, TPayload>,

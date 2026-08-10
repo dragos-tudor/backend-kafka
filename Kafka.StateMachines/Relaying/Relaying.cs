@@ -8,7 +8,7 @@ partial class StateMachinesFuncs
     TServices services,
     CancellationToken ct = default)
   where TServices : IRelayOutboxMessagesServices<TKey, TValue, TPayload>
-  where TData : IRelayingStepData<TKey, TValue, TPayload>
+  where TData : IRelayingData<TKey, TValue, TPayload>
   {
     IReadOnlyList<OutboxMessage<TKey, TPayload>> messages;
     try
@@ -24,17 +24,16 @@ partial class StateMachinesFuncs
       return RelayingCriticalErrorState;
     }
 
-    var stateActions = GetRelayingStateActions<TServices, TData, TKey, TValue, TPayload>();
     foreach (var message in messages)
     {
       using var activity = CreateComponentActivity(services.GetActivitySource(), "relay.outbox.message", ActivityKind.Internal);
       using var logScope = CreateComponentLogScope(services.GetLogger(), activity, "relay.outbox.message");
 
+      var currentData = (TData)CreateRelayingData<TKey, TValue, TPayload>(message);
       var currentState = GetRelayingEntryState(message.Status);
-      var currentData = CreateRelayingStepData<TKey, TValue, TPayload>(message);
-      currentData.OutboxMessage = message;
+      var stateAction = GetRelayingStateAction<TServices, TData, TKey, TValue, TPayload>;
 
-      await foreach (var (newData, newState) in RunStateMachineAsync(services, (TData)currentData, currentState, stateActions, ct))
+      await foreach (var (newData, newState) in RunStateMachineAsync(services, currentData, currentState, stateAction, ct))
       {
         if (RelayingCriticalStates.Contains(newState))
         {

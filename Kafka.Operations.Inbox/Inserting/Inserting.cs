@@ -8,8 +8,8 @@ partial class InboxFuncs
     TServices services,
     TData data,
     CancellationToken ct = default)
-  where TServices : IInsertInboxMessageServices<TKey, TValue, TPayload>
-  where TData : IInsertInboxMessageData<TKey, TValue, TPayload>
+  where TServices : IInsertingServices<TKey, TValue, TPayload>
+  where TData : IInsertingData<TKey, TValue, TPayload>
   {
     var messageKey = data.KafkaMessage!.Key;
     try {
@@ -18,8 +18,8 @@ partial class InboxFuncs
       var status = InboxMessageStatus.Pending;
 
       var inboxMessage = ToInboxMessage(kafkaMessage, topicPartitionOffset, services.ToIntegrationPayload, services.GetUtcDate(), status);
-      var messageSaved = await services.InsertInboxMessageAsync(inboxMessage, ct);
-      if (messageSaved)
+      var inboxMessageInserted = await services.InsertInboxMessageAsync(inboxMessage, ct);
+      if (!inboxMessageInserted)
       {
         InstrumentIdempotentInboxMessage(inboxMessage.MessageId, services);
         return (data, IdempotentInboxMessageState);

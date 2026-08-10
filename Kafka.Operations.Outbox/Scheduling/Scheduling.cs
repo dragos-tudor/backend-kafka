@@ -8,8 +8,8 @@ partial class OutboxFuncs
     TServices services,
     TData data,
     CancellationToken ct)
-  where TServices : IScheduleOutboxMessageServices<TKey, TPayload>
-  where TData : IScheduleOutboxMessageData<TKey, TPayload>
+  where TServices : ISchedulingServices<TKey, TPayload>
+  where TData : ISchedulingData<TKey, TPayload>
   {
     var message = data.OutboxMessage!;
     try {
