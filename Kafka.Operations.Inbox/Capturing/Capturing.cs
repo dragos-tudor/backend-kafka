@@ -12,7 +12,7 @@ partial class InboxFuncs
   where TData : ICapturingData<TKey, TValue>
   {
     try {
-      var result = ConsumeMessage(services.GetConsumer(), ct);
+      var result = ConsumeMessage(services.GetConsumer(data.Pipeline), ct);
       if (!IsValidConsumerMessage(result)) {
         InstrumentNotCapturedKafkaMessage(services);
         return new((data, NotCapturedKafkaMessageState));

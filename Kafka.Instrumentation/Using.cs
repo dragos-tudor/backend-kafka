@@ -8,7 +8,7 @@ global using Confluent.Kafka;
 global using static Kafka.Messages.MessagesFuncs;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Kafka.StateMachines")]
+[assembly: InternalsVisibleTo("Kafka.Pipelines")]
 [assembly: InternalsVisibleTo("Kafka.Operations.Inbox")]
 [assembly: InternalsVisibleTo("Kafka.Operations.Outbox")]
 

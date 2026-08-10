@@ -2,9 +2,10 @@
 namespace Kafka.Operations.Inbox;
 
 public interface IDispatchingData<TKey, TValue, TPayload>:
-  IKafkaMessageProp<TKey, TValue>,
-  IInboxMessageProp<TKey, TPayload>,
   IDeadLetterProp<TKey, TValue>,
   IDispatchErrorProp,
+  IInboxMessageProp<TKey, TPayload>,
+  IKafkaMessageProp<TKey, TValue>,
+  IPipelineProp,
   ITopicPartitionOffsetProp,
   IHandleErrorProp;

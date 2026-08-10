@@ -7,7 +7,7 @@ public interface IKafkaServices<TKey, TValue, TPayload, TSession> :
   IRetryInboxMessagesServices<TKey, TValue, TPayload, TSession>,
   IResumingServices<TKey, TValue, TPayload, TSession>,
   IRetryOutboxMessagesServices<TKey, TValue, TPayload>,
-  IRelayOutboxMessagesServices<TKey, TValue, TPayload>,
+  IRelayingServices<TKey, TValue, TPayload>,
   IRunPeriodicJobServices where TSession: IDisposable;
 
 public interface IRunPeriodicJobServices :
@@ -20,7 +20,7 @@ public interface IRetryInboxMessagesServices<TKey, TValue, TPayload, TSession> :
 
 public interface IRetryOutboxMessagesServices<TKey, TValue, TPayload> :
   IRunPeriodicJobServices,
-  IRelayOutboxMessagesServices<TKey, TValue, TPayload>;
+  IRelayingServices<TKey, TValue, TPayload>;
 
 public interface IDistributedLockService
 {

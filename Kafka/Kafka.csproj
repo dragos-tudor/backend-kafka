@@ -23,8 +23,8 @@
       <!-- Include both DLL and PDB in the package output -->
       <BuildOutputInPackage Include="$(OutputPath)Kafka.Clients.dll" />
       <BuildOutputInPackage Include="$(OutputPath)Kafka.Clients.pdb" />
-      <BuildOutputInPackage Include="$(OutputPath)Kafka.StateMachines.dll" />
-      <BuildOutputInPackage Include="$(OutputPath)Kafka.StateMachines.pdb" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Pipelines.dll" />
+      <BuildOutputInPackage Include="$(OutputPath)Kafka.Pipelines.pdb" />
       <BuildOutputInPackage Include="$(OutputPath)Kafka.Messages.dll" />
       <BuildOutputInPackage Include="$(OutputPath)Kafka.Messages.pdb" />
       <BuildOutputInPackage Include="$(OutputPath)Kafka.Operations.Inbox.dll" />

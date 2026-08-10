@@ -13,7 +13,7 @@ partial class InboxFuncs
   {
     var offset = data.TopicPartitionOffset!;
     try {
-      var offsetApplied = ClientsFuncs.OffsetConsumer(services.GetConsumer(), offset, services.GetKafkaOptions());
+      var offsetApplied = ClientsFuncs.OffsetConsumer(services.GetConsumer(data.Pipeline), offset, services.GetKafkaOptions());
 
       var hasMessage = data.InboxMessage is not null;
       if (!hasMessage) {

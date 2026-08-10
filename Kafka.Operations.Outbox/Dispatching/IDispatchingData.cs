@@ -5,4 +5,5 @@ public interface IDispatchingData<TKey, TValue, TPayload>:
   IOutboxMessageProp<TKey, TPayload>,
   IDeadLetterProp<TKey, TValue>,
   IDispatchErrorProp,
+  IPipelineProp,
   IPublishErrorProp;

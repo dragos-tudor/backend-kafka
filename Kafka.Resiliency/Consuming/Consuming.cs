@@ -11,8 +11,8 @@ partial class ResiliencyFuncs
   {
     while (!cancellationToken.IsCancellationRequested)
     {
-      using var consumer = services.GetConsumer();
-      using var producer = services.GetProducer();
+      using var consumer = services.GetConsumer(PipelineType.Consuming.ToString(), true);
+      using var producer = services.GetProducer(PipelineType.Consuming.ToString(), true);
       var error = await ConsumeKafkaMessagesAsync<
         IConsumingServices<TKey, TValue, TPayload, TSession>,
         IConsumingData<TKey, TValue, TPayload>,

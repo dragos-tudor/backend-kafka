@@ -7,12 +7,19 @@ partial class ResiliencyFuncs
     ResumeJobsOptions options,
     IRetryInboxMessagesServices<TKey, TValue, TPayload, TSession> services,
     CancellationToken cancellationToken = default)
-  where TSession : IDisposable =>
-      RunPeriodicJobAsync(
-        "resume.inbox.messages",
-        options.ResumeInboxInterval,
-        options.ResumeInboxLockInterval,
-        ct => ResumeInboxMessagesAsync<IResumingServices<TKey, TValue, TPayload, TSession>, IResumingData<TKey, TValue, TPayload>, TKey, TValue, TPayload, TSession>(services, ct),
-        services,
-        cancellationToken);
+  where TSession : IDisposable
+  {
+    using var producer = services.GetProducer(PipelineType.Resuming.ToString(), true);
+    var resuming = ResumeInboxMessagesAsync<
+      IResumingServices<TKey, TValue, TPayload, TSession>,
+      IResumingData<TKey, TValue, TPayload>,
+      TKey, TValue, TPayload, TSession>;
+    return RunPeriodicJobAsync(
+      "resume.inbox.messages",
+      options.ResumeInboxInterval,
+      options.ResumeInboxLockInterval,
+      ct => resuming(services, ct),
+      services,
+      cancellationToken);
+  }
 }

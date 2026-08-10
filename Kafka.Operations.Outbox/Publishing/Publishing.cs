@@ -4,19 +4,19 @@ namespace Kafka.Operations.Outbox;
 
 partial class OutboxFuncs
 {
-  internal static async ValueTask<(TState, string)> PublishOutboxMessageAsync<TServices, TState, TKey, TValue, TPayload>(
+  internal static async ValueTask<(TData, string)> PublishOutboxMessageAsync<TServices, TData, TKey, TValue, TPayload>(
     TServices services,
-    TState state,
+    TData state,
     CancellationToken ct = default)
   where TServices : IPublishingServices<TKey, TValue, TPayload>
-  where TState : IPublishingData<TKey, TValue, TPayload>
+  where TData : IPublishingData<TKey, TValue, TPayload>
   {
     var message = state.OutboxMessage!;
     try
     {
       var topic = services.GetOutboxTopic(message);
       var kafkaMessage = ToKafkaMessage(message, services.GetUtcDate(), services.ToKafkaValue);
-      await PublishMessageAsync(services.GetProducer(), topic, kafkaMessage, ct);
+      await PublishMessageAsync(services.GetProducer(state.Pipeline), topic, kafkaMessage, ct);
       InstrumentPublishedOutboxMessage(message.MessageId, kafkaMessage.Key!.ToString(), topic, services);
 
       await services.UpdateIntegrationMessageAsync(message, message =>

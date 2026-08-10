@@ -24,7 +24,7 @@ partial class OutboxFuncs
           message.SetOutboxMessageStatus(OutboxMessageStatus.Dispatching), ct);
 
       InjectTraceParentActivity(Activity.Current, deadLetter.Headers);
-      await PublishMessageAsync(services.GetProducer(), deadLetterTopic, deadLetter, ct);
+      await PublishMessageAsync(services.GetProducer(data.Pipeline), deadLetterTopic, deadLetter, ct);
       InstrumentDispatchedDeadLetter(message.MessageId, deadLetter.Key?.ToString(), deadLetterTopic, publishError, services);
 
       await services.UpdateIntegrationMessageAsync(message, message =>

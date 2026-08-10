@@ -25,7 +25,7 @@ partial class InboxFuncs
           message.SetInboxMessageStatus(InboxMessageStatus.Dispatching), ct);
 
       InjectTraceParentActivity(Activity.Current, deadLetter.Headers);
-      await PublishMessageAsync(services.GetProducer(), deadLetterTopic, deadLetter, ct);
+      await PublishMessageAsync(services.GetProducer(data.Pipeline), deadLetterTopic, deadLetter, ct);
       InstrumentDispatchedDeadLetter(message.MessageId, deadLetter.Key?.ToString(), deadLetterTopic, handleError, services);
 
       await services.UpdateIntegrationMessageAsync(message, message =>
