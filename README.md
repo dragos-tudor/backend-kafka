@@ -3,50 +3,23 @@
 - functional-style library [OOP-free].
 - podman-inside-of-podman.
 
-### Consumming Kafka Messages
+### Kafka pipelines (WIP)
 ---
-Consumes a single Kafka message and drives it through the transactional inbox pattern:
-- `capture kafka message`.
-  - on not captured is stopping.
-- `insert inbox message`.
-- `offset kafka consumer`.
-  - skip idempotent inbox message.
-- `handle business processing (transactional inbox pattern)`.
-  - on handling domain error dispatch dead letter.
-- `dispatch dead letter`.
+* consuming (kafka messages - incoming): capturing -> redirecting -> mapping -> validating -> inserting -> offsetting -> handling* -> converting -> inserting -> mapping** -> producing -> scheduling.
+* resuming (inbox messages - incoming): handling* -> converting -> inserting -> mapping** -> producing -> scheduling.
+* redelivering (dead letter messages - incoming): mapping** -> producing -> scheduling.
+* publishing (outbox messages - outgoing): validating ->  inserting -> mapping*** -> producing -> scheduling.
+* relaying (dead letter messages - outgoing): mapping*** -> producing -> scheduling.
 
-**Consuming messages avoided race conditions**
+#### Consuming messages avoided race conditions
  - durable-save-before-offset-commit (via commit offset for saved messages).
  - restart/resumer overlap (via the inserted check).
  - fresh-message/resumer-message overlap (via the relay/resume intervals).
  - resumer-vs-resumer overlap (via the sliding-lease lock). avoid compete consumer pattern.
 
-### Resuming Inbox Messages
----
-Resume a single pending/deadletting inbox message and drives it through the transactional inbox pattern:
-- `handle business processing for inbox messages` (transactional inbox pattern) - pending.
-  - on handling technical error schedule inbox message next retry - pending.
-  - on handling domain error dispatch dead letter - pending.
-- `schedule inbox message next retry`
-  - on scheduling exhausted inbox message retries dispatch dead letter - pending.
-- `dispatch dead letter` - deadlettering.
-  - on dispatching error delay dead letter next retry - deadlettering.
-- `delay dead letter next retry` - deadlettering.
-  - on delaying exhausted dead letter retires abandon dead letter (notify dead letter abandon) - deadlettering.
-
-### Retrying Outbox Messages
----
-Retry a single pending/deadletting outbox message:
-- `publish pending messages` - pending.
-  - on error schedule inbox message next retry - pending.
-- `schedule outbox message next retry` - pending.
-  - on scheduling exhausted inbox message retries dispatch dead letter - pending.
-- `dispatch dead letter` - deadlettering.
-  - on dispatching error delay dead letter next retry - deadlettering.
-- `delay dead letter next retry` - deadlettering.
-  - on delaying exhausted dead letter retires abandon dead letter (notify dead letter abandon) - deadlettering.
 
 ### Remarks
+---
 - all integration tests use podman containers [aspire testing NA].
 - dev container network is user-created. ensure isolation from host [kafka-netwok].
 - podman containers are isolated using dedicated network [dev-netwok].
@@ -55,3 +28,4 @@ Retry a single pending/deadletting outbox message:
   - when dev container is started podman containers are started (avoiding ghosts ports hanging).
   - when any, podman pull images from host registry images container.
   - coredns is using to resolve the kafka containers names inside containers network and from dev container.
+- this package was design specifically for Kafka. Having specific operations, pipelines, jobs interfaces based architecture moving to one general-purpose messaging client (to support RabbitMQ, NATS so) it wouldn't need for a totally rewrite.

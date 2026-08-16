@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Kafka.Messages/Kafka.Messages.csproj"/>
+    <PackageReference Include="Confluent.Kafka" />
+    <ProjectReference Include="../Kafka.Utils/Kafka.Utils.csproj" />
   </ItemGroup>
 
 </Project>

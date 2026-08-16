@@ -11,8 +11,8 @@ partial class MessagesFuncs
   internal static Guid? GetCorrelationIdKafkaHeader(Headers headers) =>
     Guid.TryParse(GetKafkaHeaderString(headers, CorrelationIdHeaderName), out var correlationId) ? correlationId : null;
 
-  internal static Guid? GetMessageIdKafkaHeader(Headers headers) =>
-    Guid.TryParse(GetKafkaHeaderString(headers, MessageIdHeaderName), out var messageId) ? messageId : null;
+  internal static Guid GetMessageIdKafkaHeader(Headers headers) =>
+    Guid.Parse(GetKafkaHeaderString(headers, MessageIdHeaderName)!);
 
   static string? GetSchemaTypeKafkaHeader(Headers headers) =>
     GetKafkaHeaderString(headers, SchemaTypeHeaderName);
@@ -20,6 +20,6 @@ partial class MessagesFuncs
   static int? GetSchemaVersionKafkaHeader(Headers headers) =>
     GetKafkaHeaderString(headers, SchemaVersionHeaderName) is string versionString ? int.Parse(versionString, CultureInfo.InvariantCulture) : default;
 
-  internal static string? GetTraceParentKafkaHeader(Headers headers) =>
-    GetKafkaHeaderString(headers, TraceParentHeaderName);
+  internal static string? GetTraceParentKafkaHeader(Headers? headers) =>
+    headers is null ? null : GetKafkaHeaderString(headers, TraceParentHeaderName);
 }

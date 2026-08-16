@@ -13,10 +13,10 @@ partial class PipelinesFuncs
   {
     while (!ct.IsCancellationRequested)
     {
-      using var activity = CreateComponentActivity(services.GetActivitySource(), "consuming.kafka.message", ActivityKind.Consumer);
+      using var activity = CreateDefaultActivity(services.GetActivitySource(), "consuming.kafka.message", ActivityKind.Consumer);
       using var logScope = CreateComponentLogScope(services.GetLogger(), activity, "consuming.kafka.message");
 
-      var currentData = (TData)CreateConsumingData<TKey, TValue, TPayload>(PipelineType.Consuming);
+      var currentData = (TData)CreateConsumingData<TKey, TValue, TPayload>();
       var currentState = ConsumingNotStartedState;
       var getStateAction = GetConsumingStateAction<TServices, TData, TKey, TValue, TPayload, TSession>;
 

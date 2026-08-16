@@ -2,5 +2,5 @@
 namespace Kafka.Operations.Inbox;
 
 internal interface ISchedulingData<TKey, TPayload>:
-  IHandleErrorProp,
+  IInboxMessageErrorProp,
   IInboxMessageProp<TKey, TPayload>;

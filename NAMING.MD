@@ -1,4 +1,4 @@
-## Design Note: Naming as an Iterative Revealing Process
+## Design Note: Naming as an Iterative Revealing Process (until 2026.08.16)
 
 The project structure and operation naming in this library — particularly the split between `Kafka.Operations.Inbox` and `Kafka.Outbox`, and the vocabulary used for retry/recovery operations — wasn't arrived at in a single pass. It came out of an iterative back-and-forth between the author and an AI assistant (Claude), and is documented here deliberately, because the *process* is as instructive as the *result* for anyone studying this codebase.
 

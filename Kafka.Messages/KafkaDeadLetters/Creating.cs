@@ -3,9 +3,9 @@ namespace Kafka.Messages;
 
 partial class MessagesFuncs
 {
-  internal static Message<TKey, TValue> CreateKafkaDeadLetter<TKey, TValue>(
+  internal static Message<TKey, TValue?> CreateKafkaDeadLetter<TKey, TValue>(
     TKey key,
-    TValue value,
+    TValue? value,
     Headers headers,
     TopicPartitionOffset? topicPartitionOffset,
     string failureReason,

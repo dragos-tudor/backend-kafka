@@ -27,14 +27,14 @@ partial class PipelinesFuncs
 
     foreach (var message in messages)
     {
-      using var activity = CreateComponentActivity(services.GetActivitySource(), "resume.inbox.message", ActivityKind.Internal);
+      using var activity = CreateDefaultActivity(services.GetActivitySource(), "resume.inbox.message", ActivityKind.Internal);
       using var logScope = CreateComponentLogScope(services.GetLogger(), activity, "resume.inbox.message");
 
-      var currentData = (TData)CreateResumingData<TKey, TValue, TPayload>(message, PipelineType.Resuming);
-      var currentState = GetResumingEntryState(message.Status);
-      var stateAction = GetResumingStateAction<TServices, TData, TKey, TValue, TPayload, TSession>;
+      var currentData = (TData)CreateResumingData<TKey, TValue, TPayload>(message);
+      var getStateAction = GetResumingStateAction<TServices, TData, TKey, TValue, TPayload, TSession>;
+      var currentState = ResumingNotStartedState;
 
-      await foreach (var (newData, newState) in RunStateMachineAsync(services, currentData, currentState, stateAction, ct))
+      await foreach (var (newData, newState) in RunStateMachineAsync(services, currentData, currentState, getStateAction, ct))
       {
         if (ResumingCriticalStates.Contains(newState))
         {

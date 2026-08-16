@@ -14,6 +14,7 @@ global using static Kafka.Clients.ClientsFuncs;
 global using static Kafka.Instrumentation.InstrumentationFuncs;
 global using static Kafka.Messages.MessagesFuncs;
 global using static Kafka.Operations.Inbox.InboxFuncs;
+global using static Kafka.Utils.UtilsFuncs;
 using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("Kafka.Pipelines")]
@@ -22,5 +23,5 @@ namespace Kafka.Operations.Inbox;
 
 public static partial class InboxFuncs
 {
-  static readonly internal Meter InboxMeter = new ("kafka.inbox");
+  static readonly internal Meter InboxMeter = new ("operations.inbox");
 }

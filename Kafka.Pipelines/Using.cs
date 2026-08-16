@@ -11,9 +11,11 @@ global using Kafka.Instrumentation;
 global using Kafka.Messages;
 global using Kafka.Operations.Inbox;
 global using Kafka.Operations.Outbox;
+global using Kafka.Operations.DeadLetter;
 global using static Kafka.Instrumentation.InstrumentationFuncs;
 global using static Kafka.Operations.Inbox.InboxFuncs;
 global using static Kafka.Operations.Outbox.OutboxFuncs;
+global using static Kafka.Operations.DeadLetter.DeadLetterFuncs;
 global using static Kafka.Pipelines.PipelinesFuncs;
 using System.Runtime.CompilerServices;
 

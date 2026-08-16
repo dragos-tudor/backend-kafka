@@ -11,33 +11,34 @@ partial class OutboxFuncs
   where TServices : ISchedulingServices<TKey, TPayload>
   where TData : ISchedulingData<TKey, TPayload>
   {
-    var message = data.OutboxMessage!;
     try {
+      var message = data.OutboxMessage;
+      var produceError = RequireProduceError(data.ProduceError);
       var currentRetryCount = message.RetryCount ?? 0;
-      var retryOptions = services.GetScheduleRetryOptions();
+      var retryOptions = services.GetRetryMessageOptions();
 
       var nextRetryCount = currentRetryCount + 1;
       var nextAttemptAt = CalculateNextAttemptAt(nextRetryCount, services.GetUtcDate(), retryOptions);
-      var status = GetOutboxMessageRetryStatus(currentRetryCount, retryOptions.MaxRetryAttempts);
+      var status = GetOutboxMessageStatus(currentRetryCount, retryOptions.MaxRetryAttempts);
 
-      await services.UpdateIntegrationMessageAsync(message, message =>
-        message
-          .SetOutboxMessageLastError(data.PublishError!)
+      await services.UpdateOutboxMessageAsync(message, message =>
+          SetOutboxMessageStatus(message, status)
+          .SetOutboxMessageLastError(produceError)
           .SetOutboxMessageNextAttemptAt(nextAttemptAt)
-          .SetOutboxMessageRetryCount(nextRetryCount)
-          .SetOutboxMessageStatus(status), ct);
+          .SetOutboxMessageRetryCount(nextRetryCount),
+          ct);
 
       if (status == OutboxMessageStatus.Pending) {
-        InstrumentScheduleOutboxMessageRetry(message.MessageId, currentRetryCount, data.PublishError!, services);
+        InstrumentScheduleOutboxMessageRetry(message.MessageId, currentRetryCount, produceError, services);
         return (data, ScheduleOutboxMessageRetryState);
       }
 
-      InstrumentScheduleOutboxMessageExhausted(message.MessageId, currentRetryCount, data.PublishError!, services);
+      InstrumentScheduleOutboxMessageExhausted(message.MessageId, currentRetryCount, produceError, services);
       return (data, ScheduleOutboxMessageExhaustedState);
     }
     catch (OperationCanceledException) { return default; }
     catch (Exception ex) {
-      InstrumentScheduleOutboxMessageError(message.MessageId, ex, services);
+      InstrumentScheduleOutboxMessageError(data.OutboxMessage.MessageId, ex, services);
       return (data, ScheduleOutboxMessageErrorState);
     }
   }

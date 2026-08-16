@@ -2,10 +2,12 @@
 namespace Kafka.Pipelines;
 
 public interface IResumingServices<TKey, TValue, TPayload, TSession> :
-  IGetInboxMessagesService<TKey, TPayload>,
+  IReadInboxMessagesService<TKey, TPayload>,
   IHandlingServices<TKey, TValue, TPayload, TSession>,
-  Operations.Inbox.ISchedulingServices<TKey, TPayload>,
-  Operations.Inbox.IDispatchingServices<TKey, TValue, TPayload>,
-  Operations.Inbox.IDelayingServices<TKey, TValue, TPayload>,
+  IConvertingServices<TKey, TValue, TPayload>,
+  Operations.DeadLetter.IInsertingServices<TKey, TPayload>,
+  Operations.DeadLetter.IMappingServices<TKey, TValue, TPayload>,
+  IProducingServices<TKey, TValue>,
+  Operations.DeadLetter.ISchedulingServices<TKey, TPayload>,
   IResumeBatchSizeService
   where TSession : IDisposable;

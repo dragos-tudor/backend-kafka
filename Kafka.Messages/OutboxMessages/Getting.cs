@@ -5,18 +5,15 @@ partial class MessagesFuncs
 {
   const int MaxOutboxRetries = 5;
 
-  internal static OutboxMessageStatus GetOutboxMessageRetryStatus(
+  internal static OutboxMessageStatus GetOutboxMessageStatus(
     int currentRetryCount,
     int maxRetries = MaxOutboxRetries) =>
-      currentRetryCount + 1 < maxRetries
+      currentRetryCount + 1 <= maxRetries
           ? OutboxMessageStatus.Pending
-          : OutboxMessageStatus.Dispatching;
-
-  internal static OutboxMessageStatus GetOutboxDeadLetterRetryStatus(
-    int currentRetryCount,
-    int maxRetries = MaxOutboxRetries) =>
-      currentRetryCount + 1 < maxRetries
-          ? OutboxMessageStatus.Dispatching
           : OutboxMessageStatus.Abandoned;
 
+  internal static string GetOutboxMessageValidationErrors<TKey, TPayload>(OutboxMessage<TKey, TPayload> message) =>
+    string.Join(
+      Environment.NewLine,
+      ValidateOutboxMessage(message));
 }

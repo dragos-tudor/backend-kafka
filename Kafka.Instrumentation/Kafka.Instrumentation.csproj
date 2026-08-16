@@ -6,10 +6,6 @@
     <Description>Kafka Instrumentation utility functions.</Description>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="../Kafka.Messages/Kafka.Messages.csproj" />
-  </ItemGroup>
-
   <ItemGroup Condition="'$(PackOnly)' != 'true'">
     <PackageReference Include="OpenTelemetry" />
   </ItemGroup>

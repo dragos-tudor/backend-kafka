@@ -4,13 +4,13 @@ namespace Kafka.Messages;
 partial class MessagesFuncs
 {
   internal static Message<TKey, TValue> ToKafkaMessage<TKey, TValue, TPayload>(
-    IntegrationMessage<TKey, TPayload> message,
-    DateTime date,
-    Func<TPayload, TValue> mapper)
+    OutboxMessage<TKey, TPayload> message,
+    TValue value,
+    DateTime date)
   =>
     CreateKafkaMessage(
       message.MessageKey,
-      mapper(message.Payload!),
+      value,
       SetKafkaMessageHeaders(
         [],
         message.MessageId,

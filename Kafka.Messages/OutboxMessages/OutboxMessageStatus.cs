@@ -1,4 +1,4 @@
 
 namespace Kafka.Messages;
 
-public enum OutboxMessageStatus { Pending, Published, Dispatching, Dispatched, Abandoned }
+public enum OutboxMessageStatus { Pending, Published, Abandoned }

@@ -3,16 +3,16 @@ namespace Kafka.Messages;
 
 partial class MessagesFuncs
 {
-  internal static Message<TKey, TValue> ToKafkaDeadLetter<TKey, TValue, TPayload>(
-    IntegrationMessage<TKey, TPayload> message,
+  internal static Message<TKey, TValue?> ToKafkaDeadLetter<TKey, TValue, TPayload>(
+    DeadLetterMessage<TKey, TPayload> message,
+    TValue? value,
     TopicPartitionOffset? topicPartitionOffset,
     string failureReason,
-    DateTime date,
-    Func<TPayload, TValue> mapper)
+    DateTime date)
   =>
     CreateKafkaDeadLetter(
       message.MessageKey,
-      mapper(message.Payload!),
+      value,
       SetKafkaMessageHeaders(
         [],
         message.MessageId,
@@ -22,4 +22,20 @@ partial class MessagesFuncs
       topicPartitionOffset,
       failureReason,
       date);
+
+  internal static Message<TKey, TValue> ToKafkaDeadLetter<TKey, TValue>(
+    Message<TKey, TValue> message,
+    TopicPartitionOffset? topicPartitionOffset,
+    string failureReason,
+    DateTime date)
+  =>
+    CreateKafkaMessage(
+      message.Key,
+      message.Value,
+      SetDeadLetterHeaders(
+        message.Headers,
+        topicPartitionOffset,
+        failureReason),
+      date
+    );
 }

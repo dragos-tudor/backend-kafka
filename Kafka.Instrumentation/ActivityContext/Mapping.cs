@@ -3,13 +3,14 @@ namespace Kafka.Instrumentation;
 
 partial class InstrumentationFuncs
 {
-  internal static ActivityContext? ToActivityContext(string traceParent)
+  internal static ActivityContext? ToActivityContext(string? traceParent)
   {
-    var parts = SplitTraceParent(traceParent);
-    if (!HasMinTraceParentParts(parts)) return null;
+    if (string.IsNullOrEmpty(traceParent)) return null;
 
-    try
-    {
+    try {
+      var parts = SplitTraceParent(traceParent);
+      if (!HasMinTraceParentParts(parts)) return null;
+
       return new ActivityContext(
         ActivityTraceId.CreateFromString(parts[1].AsSpan()),
         ActivitySpanId.CreateFromString(parts[2].AsSpan()),

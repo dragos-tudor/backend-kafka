@@ -24,13 +24,6 @@ partial class MessagesFuncs
   internal static Headers SetTraceParentKafkaHeader(Headers headers, string? traceParent) =>
     SetKafkaHeaderString(headers, TraceParentHeaderName, traceParent);
 
-  internal static Action<Headers, string, string> SetTraceParentKafkaHeader(string traceParent) =>
-    (headers, key, value) =>
-    {
-      if(!IsTraceParentHeaderName(key)) return;
-      SetTraceParentKafkaHeader(headers, traceParent);
-    };
-
   static Headers SetKafkaHeaderValue(this Headers headers, string headerName, byte[]? value)
   {
     headers.Add(headerName, value);

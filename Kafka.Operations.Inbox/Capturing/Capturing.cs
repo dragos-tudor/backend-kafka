@@ -12,8 +12,8 @@ partial class InboxFuncs
   where TData : ICapturingData<TKey, TValue>
   {
     try {
-      var result = ConsumeMessage(services.GetConsumer(data.Pipeline), ct);
-      if (!IsValidConsumerMessage(result)) {
+      var result = ConsumeMessage(services.GetConsumer(), ct);
+      if (IsValidConsumerMessage(result) is false) {
         InstrumentNotCapturedKafkaMessage(services);
         return new((data, NotCapturedKafkaMessageState));
       }
@@ -24,15 +24,18 @@ partial class InboxFuncs
       var messageId = GetMessageIdKafkaHeader(result.Message.Headers);
       var correlationId = GetCorrelationIdKafkaHeader(result.Message.Headers);
 
-      InstrumentCapturedKafkaMessage(messageId, correlationId, result.TopicPartitionOffset, services);
+      var traceParent = GetTraceParentKafkaHeader(result.Message.Headers);
+      InstrumentCapturedKafkaMessage(GetKafkaMessageKey(result.Message), result.TopicPartitionOffset, traceParent, services);
       return new((data, CapturedKafkaMessageState));
     }
     catch (OperationCanceledException) { return default; }
+    catch (KafkaException ex) when (ex.Error.IsFatal) {
+      InstrumentCaptureKafkaMessageCriticalError(ex, services);
+      return new((data, CaptureKafkaMessageCriticalErrorState));
+    }
     catch (Exception ex) {
       InstrumentCaptureKafkaMessageError(ex, services);
-      return ex is KafkaException
-        ? new((data, CaptureKafkaMessageCriticalErrorState))
-        : new((data, CaptureKafkaMessageErrorState));
+      return new((data, CaptureKafkaMessageErrorState));
     }
   }
 }

@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(PackOnly)' != 'true'">
-    <PackageReference Include="MsTest"/>
-    <PackageReference Include="Shouldly"/>
+    <PackageReference Include="MsTest" PrivateAssets="all"/>
+    <PackageReference Include="Shouldly" PrivateAssets="all"/>
   </ItemGroup>
 
   <Target Name="RemovePackOnlyItems" BeforeTargets="BeforeBuild" Condition="'$(PackOnly)' == 'true'">

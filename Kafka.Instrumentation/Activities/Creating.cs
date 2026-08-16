@@ -15,12 +15,12 @@ partial class InstrumentationFuncs
         EnsureActivitySourceListener(activitySource).StartActivity(activityName, activityKind, activityContext.Value)!:
         EnsureActivitySourceListener(activitySource).StartActivity(activityName, activityKind)!;
 
-  internal static Activity CreateComponentActivity(
+  internal static Activity CreateDefaultActivity(
     ActivitySource activitySource,
     string activityName,
     ActivityKind activityKind,
     string? component = default,
     string system = System) =>
       CreateActivity(activitySource, activityName, activityKind)
-        .SetComponentActivityTags(component ?? activityName, system);
+        .SetDefaultActivityTags(component ?? activityName, system);
 }

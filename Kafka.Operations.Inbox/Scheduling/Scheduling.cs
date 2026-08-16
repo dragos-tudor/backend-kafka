@@ -11,33 +11,33 @@ partial class InboxFuncs
   where TServices : ISchedulingServices<TKey, TPayload>
   where TData : ISchedulingData<TKey, TPayload>
   {
-    var message = data.InboxMessage!;
     try {
+      var message = RequireInboxMessage(data.InboxMessage);
+      var error = RequireInboxMessageError(data.InboxMessageError);
       var currentRetryCount = message.RetryCount ?? 0;
-      var retryOptions = services.GetScheduleRetryOptions();
+      var retryOptions = services.GetRetryMessageOptions();
 
       var nextRetryCount = currentRetryCount + 1;
       var nextAttemptAt = CalculateNextAttemptAt(nextRetryCount, services.GetUtcDate(), retryOptions);
-      var status = GetInboxMessageRetryStatus(currentRetryCount, retryOptions.MaxRetryAttempts);
+      var status = GetInboxMessageStatus(currentRetryCount, retryOptions.MaxRetryAttempts);
 
-      await services.UpdateIntegrationMessageAsync(message, message =>
-        message
-          .SetInboxMessageLastError(data.HandleError!)
+      await services.UpdateInboxMessageAsync(message, message =>
+        SetInboxMessageStatus(message, status)
+          .SetInboxMessageLastError(error)
           .SetInboxMessageNextAttemptAt(nextAttemptAt)
-          .SetInboxMessageRetryCount(nextRetryCount)
-          .SetInboxMessageStatus(status), ct);
+          .SetInboxMessageRetryCount(nextRetryCount), ct);
 
-      if (status == InboxMessageStatus.Pending) {
-        InstrumentScheduleInboxMessageRetry(message.MessageId, currentRetryCount, data.HandleError!, services);
+      if (status == InboxMessageStatus.Processing) {
+        InstrumentScheduleInboxMessageRetry(message.MessageId, currentRetryCount, error, services);
         return (data, ScheduleInboxMessageRetryState);
       }
 
-      InstrumentScheduleInboxMessageExhausted(message.MessageId, currentRetryCount, data.HandleError!, services);
+      InstrumentScheduleInboxMessageExhausted(message.MessageId, currentRetryCount, error, services);
       return (data, ScheduleInboxMessageExhaustedState);
     }
     catch (OperationCanceledException) { return default; }
     catch (Exception ex) {
-      InstrumentScheduleInboxMessageError(message.MessageId, ex, services);
+      InstrumentScheduleInboxMessageError(data.InboxMessage?.MessageId, ex, services);
       return (data, ScheduleInboxMessageErrorState);
     }
   }

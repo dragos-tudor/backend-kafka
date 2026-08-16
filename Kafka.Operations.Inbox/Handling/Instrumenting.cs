@@ -4,21 +4,22 @@ namespace Kafka.Operations.Inbox;
 
 partial class InboxFuncs
 {
-  [LoggerMessage(10, LogLevel.Information, "Handled inbox message. MessageId: {messageId}")]
-  static partial void LogHandledInboxMessage(ILogger logger, Guid? messageId);
+  [LoggerMessage(10, LogLevel.Information, "Handled inbox message. MessageId: {messageId}. Status: {status}")]
+  static partial void LogHandledInboxMessage(ILogger logger, Guid? messageId, InboxMessageStatus status);
 
   [LoggerMessage(11, LogLevel.Error, "Handle inbox message domain error. MessageId: {messageId}. Domain error: {domainError}")]
   static partial void LogHandleInboxMessageDomainError(ILogger logger, Guid? messageId, string domainError);
 
-  [LoggerMessage(12, LogLevel.Error, "Handle inbox message technical error. MessageId: {messageId}. Technical error: {technicalError}")]
-  static partial void LogHandleInboxMessageTechnicalError(ILogger logger, Guid? messageId, string technicalError);
+  [LoggerMessage(12, LogLevel.Error, "Handle inbox message technical error. MessageId: {messageId}.")]
+  static partial void LogHandleInboxMessageTechnicalError(ILogger logger, Guid? messageId, Exception exception);
 
 
   static Activity? InstrumentHandledInboxMessage(
     Guid? messageId,
+    InboxMessageStatus status,
     IInstrumentationServices services)
   {
-    LogHandledInboxMessage(services.GetLogger(), messageId);
+    LogHandledInboxMessage(services.GetLogger(), messageId, status);
     AddMetricCounter(HandledCounter);
     AddActivityEvent(Activity.Current, "message.handled");
     return Activity.Current;
@@ -38,14 +39,14 @@ partial class InboxFuncs
 
    static Activity? InstrumentHandleInboxMessageTechnicalError(
     Guid? messageId,
-    string technicalError,
+    Exception ex,
     IInstrumentationServices services)
   {
-    LogHandleInboxMessageTechnicalError(services.GetLogger(), messageId, technicalError);
+    LogHandleInboxMessageTechnicalError(services.GetLogger(), messageId, ex);
     AddMetricCounter(HandleTechnicalErrorCounter);
-    AddActivityTag(Activity.Current, "handle.message.technical.error", technicalError);
+    AddActivityTag(Activity.Current, "handle.message.technical.error", ex);
     AddActivityEvent(Activity.Current, "handle.message.error",
-      [CreateActivityEventAttribute("technical.error", technicalError)]);
+      [CreateActivityEventAttribute("technical.error", ex)]);
     return Activity.Current;
   }
 }

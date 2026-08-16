@@ -2,7 +2,7 @@
 namespace Kafka.Operations.Inbox;
 
 public interface ISchedulingServices<TKey, TPayload>:
-  IScheduleOptionsService,
+  IRetryMessageOptionsService,
   IInstrumentationServices,
-  IUpdateIntegrationMessageService<TKey, TPayload>,
+  IUpdateInboxMessageService<TKey, TPayload>,
   IUtcDateService;

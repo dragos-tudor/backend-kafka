@@ -12,33 +12,36 @@ partial class InboxFuncs
   where TData : IHandlingData<TKey, TValue, TPayload>
   where TSession : IDisposable
   {
-    var message = data.InboxMessage!;
-    try {
-      var (model, domainError)  = await services.HandleInboxMessageAsync(message, ct);
-      if (domainError is not null) {
-        data.HandleError = domainError;
+    try
+    {
+      var message = RequireInboxMessage(data.InboxMessage);
+      RequireInboxMessagePayload(message.Payload);
+      var (model, domainError) = await services.HandleInboxMessageAsync(message, ct);
+      if (domainError is not null)
+      {
+        data.InboxMessageError = domainError;
         InstrumentHandleInboxMessageDomainError(message.MessageId, domainError, services);
         return (data, HandleInboxMessageDomainErrorState);
       }
 
       using var session = services.GetSession();
+      var status = InboxMessageStatus.Handled;
       await services.TransactSessionAsync(
         session,
         (session) => services.StoreModelAsync(session, model),
-        (session) => services.UpdateIntegrationMessageAsync(session, message,
-          message => message.SetInboxMessageStatus(InboxMessageStatus.Handled)),
+        (session) => services.UpdateInboxMessageAsync(session, message,
+          message => SetInboxMessageStatus(message, status)),
         ct
       );
-
-      InstrumentHandledInboxMessage(message.MessageId, services);
+      InstrumentHandledInboxMessage(message.MessageId, status, services);
       return (data, HandledInboxMessageState);
 
     }
     catch (OperationCanceledException) { return default; }
     catch (Exception ex)
     {
-      data.HandleError = ex.Message;
-      InstrumentHandleInboxMessageTechnicalError(message.MessageId, ex.Message, services);
+      data.InboxMessageError = ex.Message;
+      InstrumentHandleInboxMessageTechnicalError(data.InboxMessage?.MessageId, ex, services);
       return (data, HandleInboxMessageTechnicalErrorState);
     }
   }

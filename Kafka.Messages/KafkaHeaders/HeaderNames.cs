@@ -13,4 +13,5 @@ partial class MessagesFuncs
   internal const string OriginalOffsetHeaderName = "x-original-offset";
   internal const string OriginalPartitionHeaderName = "x-original-partition";
   internal const string OriginalTopicHeaderName = "x-original-topic";
+  internal const string OriginalEpochLeaderHeaderName = "x-original-epoch-leader";
 }

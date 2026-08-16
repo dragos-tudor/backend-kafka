@@ -1,15 +1,17 @@
-#pragma warning disable CA1034
 
 namespace Kafka.Messages;
 
-public static class OutboxMessageExtenions
+partial class MessagesFuncs
 {
-  extension<TKey, TPayload>(OutboxMessage<TKey, TPayload> message)
-  {
-    public OutboxMessage<TKey, TPayload> SetOutboxMessageStatus(OutboxMessageStatus status) { message.Status = status; return message; }
-    public OutboxMessage<TKey, TPayload> SetOutboxMessageRetryCount(int retryCount) { message.RetryCount = retryCount; return message; }
-    public OutboxMessage<TKey, TPayload> SetOutboxMessageDispatchRetryCount(int retryCount) { message.DispatchRetryCount = retryCount; return message; }
-    public OutboxMessage<TKey, TPayload> SetOutboxMessageLastError(string error) { message.LastError = error; return message; }
-    public OutboxMessage<TKey, TPayload> SetOutboxMessageNextAttemptAt(DateTimeOffset? nextAttemptAt) { message.NextAttemptAt = nextAttemptAt; return message; }
-  }
+  public static OutboxMessage<TKey, TPayload> SetOutboxMessageRetryCount<TKey, TPayload>(this OutboxMessage<TKey, TPayload> message, int retryCount)
+    { message.RetryCount = retryCount; return message; }
+
+  public static OutboxMessage<TKey, TPayload> SetOutboxMessageLastError<TKey, TPayload>(this OutboxMessage<TKey, TPayload> message, string error)
+    { message.LastError = error; return message; }
+
+  public static OutboxMessage<TKey, TPayload> SetOutboxMessageNextAttemptAt<TKey, TPayload>(this OutboxMessage<TKey, TPayload> message, DateTimeOffset? nextAttemptAt)
+    { message.NextAttemptAt = nextAttemptAt; return message; }
+
+  public static OutboxMessage<TKey, TPayload> SetOutboxMessageStatus<TKey, TPayload>(OutboxMessage<TKey, TPayload> message, OutboxMessageStatus status)
+    { message.Status = status; return message; }
 }

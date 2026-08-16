@@ -4,34 +4,29 @@ namespace Kafka.Operations.Inbox;
 
 partial class InboxFuncs
 {
-  internal static async ValueTask<(TData, string)> InsertInboxMessageAsync<TServices, TData, TKey, TValue, TPayload>(
+  internal static async ValueTask<(TData, string)> InsertInboxMessageAsync<TServices, TData, TKey, TPayload>(
     TServices services,
     TData data,
     CancellationToken ct = default)
-  where TServices : IInsertingServices<TKey, TValue, TPayload>
-  where TData : IInsertingData<TKey, TValue, TPayload>
+  where TServices : IInsertingServices<TKey, TPayload>
+  where TData : IInsertingData<TKey, TPayload>
   {
-    var messageKey = data.KafkaMessage!.Key;
     try {
-      var kafkaMessage = data.KafkaMessage!;
-      var topicPartitionOffset = data.TopicPartitionOffset!;
-      var status = InboxMessageStatus.Pending;
-
-      var inboxMessage = ToInboxMessage(kafkaMessage, topicPartitionOffset, services.ToIntegrationPayload, services.GetUtcDate(), status);
-      var inboxMessageInserted = await services.InsertInboxMessageAsync(inboxMessage, ct);
-      if (!inboxMessageInserted)
+      var message = RequireInboxMessage(data.InboxMessage);
+      var messageInserted = await services.InsertInboxMessageAsync(message, ct);
+      if (messageInserted is false)
       {
-        InstrumentIdempotentInboxMessage(inboxMessage.MessageId, services);
+        data.InboxMessage = null;
+        InstrumentIdempotentInboxMessage(message.MessageId, services);
         return (data, IdempotentInboxMessageState);
       }
 
-      data.InboxMessage = inboxMessage;
-      InstrumentInsertedInboxMessage(inboxMessage.MessageId, services);
+      InstrumentInsertedInboxMessage(message.MessageId, services);
       return (data, InsertedInboxMessageState);
     }
     catch (OperationCanceledException) { return default; }
     catch (Exception ex) {
-      InstrumentInsertInboxMessageError(messageKey?.ToString(), ex, services);
+      InstrumentInsertInboxMessageError(data.InboxMessage?.MessageId, ex, services);
       return (data, InsertInboxMessageErrorState);
     }
   }

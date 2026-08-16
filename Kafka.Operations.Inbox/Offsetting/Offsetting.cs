@@ -11,26 +11,22 @@ partial class InboxFuncs
   where TService : IOffsettingServices<TKey, TValue>
   where TData : IOffsettingData<TKey, TPayload>
   {
-    var offset = data.TopicPartitionOffset!;
     try {
-      var offsetApplied = ClientsFuncs.OffsetConsumer(services.GetConsumer(data.Pipeline), offset, services.GetKafkaOptions());
+      var offset = RequireTopicPartitionOffset(data.TopicPartitionOffset);
+      var offsetApplied = ClientsFuncs.OffsetConsumer(services.GetConsumer(), offset, services.GetKafkaOptions());
+      data.TopicPartitionOffsetApplied = offsetApplied;
 
-      var hasMessage = data.InboxMessage is not null;
-      if (!hasMessage) {
-        InstrumentOffsetConsumerMissingMessage(offset, services);
-        return new((data, MissingInboxMessageState));
-      }
-
-      data.TopicPartitionOffsetApplied = true;
       InstrumentOffsetConsumer(offset, services);
       return new ((data, OffsetConsumedState));
     }
     catch (OperationCanceledException) { return default; }
+    catch (KafkaException ex) when (ex.Error.IsFatal) {
+      InstrumentOffsetConsumerCriticalError(ex, data.TopicPartitionOffset, services);
+      return new ((data, OffsetConsumeCriticalErrorState));
+    }
     catch (Exception ex) {
-      InstrumentOffsetConsumerError(ex, offset!, services);
-      return ex is KafkaException
-        ? new((data, OffsetConsumeCriticalErrorState))
-        : new((data, OffsetConsumeErrorState));
+      InstrumentOffsetConsumerError(ex, data.TopicPartitionOffset, services);
+      return new ((data, OffsetConsumeErrorState));
     }
   }
 }

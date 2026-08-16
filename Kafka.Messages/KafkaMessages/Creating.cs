@@ -3,11 +3,11 @@ namespace Kafka.Messages;
 
 partial class MessagesFuncs
 {
-  internal static Message<TKey, TPayload> CreateKafkaMessage<TKey, TPayload>(
+  internal static Message<TKey, TValue> CreateKafkaMessage<TKey, TValue>(
     TKey key,
-    TPayload value,
+    TValue value,
     Headers headers,
-    DateTime date = default)
+    DateTime? date = default)
   =>
     new()
     {

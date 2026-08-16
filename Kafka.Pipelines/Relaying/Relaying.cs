@@ -26,14 +26,14 @@ partial class PipelinesFuncs
 
     foreach (var message in messages)
     {
-      using var activity = CreateComponentActivity(services.GetActivitySource(), "relay.outbox.message", ActivityKind.Internal);
+      using var activity = CreateDefaultActivity(services.GetActivitySource(), "relay.outbox.message", ActivityKind.Internal);
       using var logScope = CreateComponentLogScope(services.GetLogger(), activity, "relay.outbox.message");
 
-      var currentData = (TData)CreateRelayingData<TKey, TValue, TPayload>(message, PipelineType.Relaying);
-      var currentState = GetRelayingEntryState(message.Status);
-      var stateAction = GetRelayingStateAction<TServices, TData, TKey, TValue, TPayload>;
+      var currentData = (TData)CreateRelayingData<TKey, TValue, TPayload>(message);
+      var currentState = RelayingNotStartedState;
+      var getStateAction = GetRelayingStateAction<TServices, TData, TKey, TValue, TPayload>;
 
-      await foreach (var (newData, newState) in RunStateMachineAsync(services, currentData, currentState, stateAction, ct))
+      await foreach (var (newData, newState) in RunStateMachineAsync(services, currentData, currentState, getStateAction, ct))
       {
         if (RelayingCriticalStates.Contains(newState))
         {

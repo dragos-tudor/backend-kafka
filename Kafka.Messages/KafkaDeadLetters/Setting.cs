@@ -12,6 +12,7 @@ partial class MessagesFuncs
     SetKafkaHeaderString(headers, OriginalOffsetHeaderName, topicPartitionOffset?.Offset.Value.ToString(CultureInfo.InvariantCulture));
     SetKafkaHeaderString(headers, OriginalPartitionHeaderName, topicPartitionOffset?.Partition.Value.ToString(CultureInfo.InvariantCulture));
     SetKafkaHeaderString(headers, OriginalTopicHeaderName, topicPartitionOffset?.Topic);
+    SetKafkaHeaderString(headers, OriginalEpochLeaderHeaderName, topicPartitionOffset?.LeaderEpoch?.ToString(CultureInfo.InvariantCulture));
     return headers;
   }
 }
