@@ -1,7 +1,9 @@
-## Backend kafka library.
-- convenient functions for Kafka distributed event streaming platform.
-- functional-style library [OOP-free].
-- podman-inside-of-podman.
+## Kafka client library.
+A production-grade implementation of the transactional inbox/outbox pattern built specifically for Confluent.Kafka, with a purpose-built failure taxonomy covering delivery ambiguity, retry exhaustion, and dead-lettering rather than a bolted-on afterthought.
+
+The library is Kafka-first by design, not broker-agnostic — but its internals are deliberately partitioned behind narrow, composable interfaces, keeping Kafka-specific concerns concentrated on specialized operations so a future multi-broker abstraction remains a realistic extension rather than a rewrite.
+
+Still pre-production and not yet battle-tested against a live cluster, but every operation in the pipeline has been individually designed, reviewed, and hardened against real edge cases before a single integration test has run.
 
 ### Kafka pipelines (WIP)
 ---
@@ -28,4 +30,5 @@
   - when dev container is started podman containers are started (avoiding ghosts ports hanging).
   - when any, podman pull images from host registry images container.
   - coredns is using to resolve the kafka containers names inside containers network and from dev container.
-- this package was design specifically for Kafka. Having specific operations, pipelines, jobs interfaces based architecture moving to one general-purpose messaging client (to support RabbitMQ, NATS so) it wouldn't need for a totally rewrite.
+- functional-style library [OOP-free].
+- podman-inside-of-podman.
