@@ -5,13 +5,16 @@ The library is Kafka-first by design, not broker-agnostic — but its internals 
 
 Still pre-production and not yet battle-tested against a live cluster, but every operation in the pipeline has been individually designed, reviewed, and hardened against real edge cases before a single integration test has run.
 
-### Kafka pipelines (WIP)
+### Kafka incoming pipelines
 ---
-* consuming (kafka messages - incoming): capturing -> redirecting -> mapping -> validating -> inserting -> offsetting -> handling* -> converting -> inserting -> mapping** -> producing -> scheduling.
-* resuming (inbox messages - incoming): handling* -> converting -> inserting -> mapping** -> producing -> scheduling.
-* redelivering (dead letter messages - incoming): mapping** -> producing -> scheduling.
-* publishing (outbox messages - outgoing): validating ->  inserting -> mapping*** -> producing -> scheduling.
-* relaying (dead letter messages - outgoing): mapping*** -> producing -> scheduling.
+* consuming (inbox messages): capturing -> mapping -> validating -> redirecting -> inserting -> offsetting -> handling* -> scheduling.
+* resuming (inbox messages): handling* -> scheduling.
+* deadlettering (dead letter messages): converting -> inserting.
+* redelivering (dead letter messages): mapping** -> producing -> scheduling.
+
+### Kafka outgoing pipelines
+* publishing (outbox messages): validating -> inserting -> mapping*** -> producing -> scheduling.
+* relaying (outbox messages): mapping*** -> producing -> scheduling.
 
 #### Consuming messages avoided race conditions
  - durable-save-before-offset-commit (via commit offset for saved messages).

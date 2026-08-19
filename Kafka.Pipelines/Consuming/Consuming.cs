@@ -1,3 +1,5 @@
+using static Kafka.Operations.Inbox.RedirectingStates;
+using static Kafka.Operations.Inbox.InsertingStates;
 using static Kafka.Pipelines.ConsumingStates;
 
 namespace Kafka.Pipelines;
@@ -16,21 +18,18 @@ partial class PipelinesFuncs
       using var activity = CreateDefaultActivity(services.GetActivitySource(), "consuming.kafka.message", ActivityKind.Consumer);
       using var logScope = CreateComponentLogScope(services.GetLogger(), activity, "consuming.kafka.message");
 
-      var currentData = (TData)CreateConsumingData<TKey, TValue, TPayload>();
-      var currentState = ConsumingNotStartedState;
-      var getStateAction = GetConsumingStateAction<TServices, TData, TKey, TValue, TPayload, TSession>;
+      var initialData = (TData)CreateConsumingData<TKey, TValue, TPayload>();
+      var initialState = ConsumingNotStartedState;
+      var kafkaOptions = services.GetKafkaOptions();
 
-      await foreach (var (newData, newState) in RunStateMachineAsync(services, currentData, currentState, getStateAction, ct))
-      {
-        if (ConsumingCriticalStates.Contains(newState))
-        {
-          InstrumentConsumeKafkaMessageCriticalError(newState, services);
-          return ConsumingCriticalErrorState;
-        }
-        currentData = newData;
-        currentState = newState;
+      var (_, lastState) = await RunConsumingStateMachineAsync<TServices, TData, TKey, TValue, TPayload, TSession>
+        (services, initialData, initialState, kafkaOptions, default, ct);
+
+      if (ConsumingCriticalStates.Contains(lastState ?? string.Empty)) {
+        InstrumentConsumeKafkaMessageCriticalError(lastState, services);
+        return lastState;
       }
-      InstrumentConsumeKafkaMessage(currentState, services);
+      InstrumentConsumeKafkaMessage(lastState, services);
     }
     return default;
   }

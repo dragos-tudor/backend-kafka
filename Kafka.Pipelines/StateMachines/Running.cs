@@ -1,28 +1,23 @@
 
-using System.Runtime.CompilerServices;
-
 namespace Kafka.Pipelines;
 
 partial class PipelinesFuncs
 {
-  internal static async IAsyncEnumerable<(TData, TState)> RunStateMachineAsync<TServices, TData, TState>(
+  internal static async Task<(TData, TState)> RunStateMachineAsync<TServices, TData, TState>(
     TServices services,
-    TData initialData,
-    TState initialState,
+    TData data,
+    TState state,
     Func<TState, StepAsync<TServices, TData, TState>?> getStateAction,
-    [EnumeratorCancellation] CancellationToken ct = default)
+    CancellationToken ct = default)
   {
-    var currentState = initialState;
-    var currentData = initialData;
-    while (getStateAction(currentState) is StepAsync<TServices, TData, TState> action &&
-          !ct.IsCancellationRequested)
-    {
-      var (newData, newState) = await action(services, currentData, ct);
+    if (ct.IsCancellationRequested) return (data, state);
 
-      currentData = newData;
-      currentState = newState;
-      yield return (currentData, currentState);
-    }
-    yield return (currentData, currentState);
+    var stateAction = getStateAction(state);
+    if (stateAction is null) return (data, state);
+
+    var (newData, newState) = await stateAction(services, data, ct);
+    if (state is null || state.Equals(newState)) return (newData, newState);
+
+    return await RunStateMachineAsync(services, newData, newState, getStateAction, ct);
   }
 }

@@ -4,16 +4,17 @@ namespace Kafka.Operations.DeadLetter;
 
 partial class DeadLetterFuncs
 {
-  internal static ValueTask<(TData, string)> ConvertDeadLetterMessage<TServices, TData, TKey, TValue, TPayload>(
+  internal static ValueTask<(TData, string)> ConvertDeadLetterMessage<TServices, TData, TKey, TPayload>(
     TServices services,
     TData data,
     CancellationToken ct = default)
-  where TServices : IConvertingServices<TKey, TValue, TPayload>
+  where TServices : IConvertingServices
   where TData : IConvertingData<TKey, TPayload>
   {
     try {
       var inboxMessage = RequireInboxMessage(data.InboxMessage);
       var inboxMessageError = RequireInboxMessageError(data.InboxMessageError);
+
       var deadLetterMessage = ToDeadLetterMessage(inboxMessage, inboxMessageError, services.GetUtcDate());
       data.DeadLetterMessage = deadLetterMessage;
 

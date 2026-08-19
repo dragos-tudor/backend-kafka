@@ -16,21 +16,17 @@ partial class PipelinesFuncs
     using var activity = CreateDefaultActivity(services.GetActivitySource(), "publish.outbox.message", ActivityKind.Internal);
     using var logScope = CreateComponentLogScope(services.GetLogger(), activity, "publish.outbox.message");
 
-    var currentData = (TData)CreatePublishingData<TKey, TValue, TPayload, TModel>(message, model);
-    var currentState = PublishingNotStartedState;
+    var initialData = (TData)CreatePublishingData<TKey, TValue, TPayload, TModel>(message, model);
+    var initialState = PublishingNotStartedState;
     var getStateAction = GetPublishingStateAction<TServices, TData, TKey, TValue, TPayload, TSession>;
 
-    await foreach (var (newData, newState) in RunStateMachineAsync(services, currentData, currentState, getStateAction, ct))
+    var (_, lastState) = await RunStateMachineAsync(services, initialData, initialState, getStateAction, ct);
+    if (PublishingCriticalStates.Contains(lastState))
     {
-      if (PublishingCriticalStates.Contains(newState))
-      {
-        InstrumentPublishOutboxMessageCriticalError(newState, services);
-        return PublishingCriticalErrorState;
-      }
-      currentData = newData;
-      currentState = newState;
+      InstrumentPublishOutboxMessageCriticalError(lastState, services);
+      return PublishingCriticalErrorState;
     }
-    InstrumentPublishedOutboxMessage(message.MessageId, currentState, services);
+    InstrumentPublishedOutboxMessage(message.MessageId, lastState, services);
     return null;
   }
 }

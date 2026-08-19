@@ -6,13 +6,9 @@ public interface IConsumingServices<TKey, TValue, TPayload, TSession> :
   IRedirectingServices<TKey, TValue, TPayload>,
   Operations.Inbox.IMappingServices<TKey, TValue, TPayload>,
   Operations.Inbox.IValidatingServices<TKey, TPayload>,
-  IInsertingServices<TKey, TPayload, TSession>,
+  Operations.Inbox.IInsertingServices<TKey, TPayload>,
   IOffsettingServices<TKey, TValue>,
-  IHandlingServices<TKey, TValue, TPayload, TSession>,
-  IConvertingServices<TKey, TValue, TPayload>,
-  Operations.DeadLetter.IInsertingServices<TKey, TPayload>,
-  Operations.DeadLetter.IMappingServices<TKey, TValue, TPayload>,
-  IProducingServices<TKey, TValue>,
-  Operations.DeadLetter.ISchedulingServices<TKey, TPayload>
+  IHandlingServices<TKey, TPayload, TSession>,
+  Operations.Inbox.ISchedulingServices<TKey, TPayload>
   where TSession : IDisposable;
 

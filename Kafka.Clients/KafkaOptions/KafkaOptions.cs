@@ -18,4 +18,9 @@ public record KafkaOptions: ConnectionOptions
   public TimeSpan SessionTimeout { get; init; } = TimeSpan.FromSeconds(30);
   public new TimeSpan ConnectTimeout { get; init; } = TimeSpan.FromSeconds(15);
   public TimeSpan OperationTimeout { get; init; } = TimeSpan.FromSeconds(5);
+
+  public int MaxRedirectRetries { get; init; } = 5;
+  public TimeSpan RedirectRetryDelay { get; init; } = TimeSpan.FromSeconds(5);
+  public int MaxInsertRetries { get; init; } = 5;
+  public TimeSpan InsertRetryDelay { get; init; } = TimeSpan.FromSeconds(5);
 }

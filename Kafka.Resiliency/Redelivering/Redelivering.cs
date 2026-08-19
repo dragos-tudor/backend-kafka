@@ -12,7 +12,7 @@ partial class ResiliencyFuncs
       "redeliver.dead.letter.messages",
       options.RedeliverDeadLetterInterval,
       options.RedeliverDeadLetterLockInterval,
-      ct => RedeliverDeadLetterMessagesAsync(services, ct),
+      ct => RedeliverDeadLetterMessagesAsync<IRedeliveringServices<TKey, TValue, TPayload>, IRedeliveringData<TKey, TValue, TPayload>, TKey, TValue, TPayload>(services, ct),
       services,
       cancellationToken);
   }

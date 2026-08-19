@@ -12,16 +12,21 @@ partial class DeadLetterFuncs
   where TData : IInsertingData<TKey, TPayload>
   {
     try {
-      var message = RequireDeadLetterMessage(data.DeadLetterMessage);
-      var messageInserted = await services.InsertDeadLetterMessageAsync(message, ct);
-      if (messageInserted is false)
+      var deadLetterMessage = RequireDeadLetterMessage(data.DeadLetterMessage);
+      var inboxMessage = RequireInboxMessage(data.InboxMessage);
+
+      var deadLetterIdempotent = await services.InsertDeadLetterMessageAsync(deadLetterMessage, ct);
+      await services.UpdateInboxMessageAsync(inboxMessage, message =>
+        SetInboxMessageStatus(message, InboxMessageStatus.DeadLettered), ct);
+
+      if (deadLetterIdempotent is false)
       {
         data.DeadLetterMessage = null;
-        InstrumentIdempotentDeadLetterMessage(message.MessageId, services);
+        InstrumentIdempotentDeadLetterMessage(deadLetterMessage.MessageId, services);
         return (data, IdempotentDeadLetterMessageState);
       }
 
-      InstrumentInsertedDeadLetterMessage(message.MessageId, services);
+      InstrumentInsertedDeadLetterMessage(deadLetterMessage.MessageId, services);
       return (data, InsertedDeadLetterMessageState);
     }
     catch (OperationCanceledException) { return default; }

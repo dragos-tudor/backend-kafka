@@ -15,11 +15,13 @@ partial class InboxFuncs
       var message = RequireInboxMessage(data.InboxMessage);
       var (valPayloadError, valPayloadException) = TryRun(message.Payload, services.ValidateInboxPayload);
       if (valPayloadError is not null) {
+        data.InboxMessage = null;
         data.InboxMessageError = valPayloadError;
         InstrumentValidateInboxMessagePayloadError(message.MessageId, valPayloadError, services);
         return new ((data, ValidateInboxMessagePayloadErrorState));
       }
       if (valPayloadException is not null) {
+        data.InboxMessage = null;
         data.InboxMessageError = valPayloadException.Message;
         InstrumentValidateInboxMessagePayloadError(message.MessageId, valPayloadException.Message, services);
         return new ((data, ValidateInboxMessagePayloadErrorState));
@@ -28,6 +30,7 @@ partial class InboxFuncs
       var isValidMessage = IsValidInboxMessage(message);
       if (isValidMessage is false) {
         var valErrors = GetInboxMessageValidationErrors(message);
+        data.InboxMessage = null;
         data.InboxMessageError = valErrors;
         InstrumentValidateInboxMessageDataError(message.MessageId, valErrors, services);
         return new ((data, ValidateInboxMessageDataErrorState));

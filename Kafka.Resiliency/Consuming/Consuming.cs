@@ -11,7 +11,7 @@ partial class ResiliencyFuncs
   {
     while (!cancellationToken.IsCancellationRequested)
     {
-      var error = await ConsumeKafkaMessagesAsync(services, cancellationToken);
+      var error = await ConsumeKafkaMessagesAsync<IConsumingServices<TKey, TValue, TPayload, TSession>, IConsumingData<TKey, TValue, TPayload>, TKey, TValue, TPayload, TSession>(services, cancellationToken);
       if (error is not null)
       {
         await DelayTask(kafkaOptions.SessionTimeout, cancellationToken);

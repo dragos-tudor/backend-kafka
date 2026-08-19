@@ -10,8 +10,8 @@ partial class InboxFuncs
   [LoggerMessage(12, LogLevel.Error, "Map kafka message error. MessageKey: {messageKey}.")]
   static partial void LogMapKafkaMessageError(ILogger logger, string? messageKey, Exception ex);
 
-  [LoggerMessage(13, LogLevel.Error, "Map kafka message value error. MessageKey: {messageKey}. MessageId: {messageId}. CorrelationId: {correlationId}.")]
-  static partial void LogMapKafkaMessageValueError(ILogger logger, string? messageKey, Guid? messageId, Guid? correlationId, Exception ex);
+  [LoggerMessage(13, LogLevel.Error, "Map kafka message value error. MessageKey: {messageKey}.")]
+  static partial void LogMapKafkaMessageValueError(ILogger logger, string? messageKey, Exception ex);
 
   static void InstrumentMappedKafkaMessage(
     string? messageKey,
@@ -39,14 +39,10 @@ partial class InboxFuncs
 
   static void InstrumentMapKafkaMessageValueError(
     string? messageKey,
-    Guid? messageId,
-    Guid? correlationId,
     Exception ex,
     IInstrumentationServices services)
   {
-    LogMapKafkaMessageValueError(services.GetLogger(), messageKey, messageId, correlationId, ex);
-    AddActivityTag(Activity.Current, "message.id", messageId);
-    AddActivityTag(Activity.Current, "correlation.id", correlationId);
+    LogMapKafkaMessageValueError(services.GetLogger(), messageKey, ex);
     AddActivityTag(Activity.Current, "message.key", messageKey);
     AddMetricCounter(MapValueErrorCounter);
     AddActivityEvent(Activity.Current, "map.kafka.message.value.error");

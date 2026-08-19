@@ -23,6 +23,14 @@ public interface IReadInboxMessagesService<TKey, TPayload>
     CancellationToken ct = default);
 }
 
+public interface IReadDeadLetteringInboxMessagesService<TKey, TPayload>
+{
+  Task<IReadOnlyList<InboxMessage<TKey, TPayload>>> GetDeadLetteringInboxMessagesAsync(
+    DateTime dueAt,
+    int batchSize,
+    CancellationToken ct = default);
+}
+
 public interface IUpdateInboxMessageService<TKey, TPayload>
 {
   Task UpdateInboxMessageAsync<TMessage>(

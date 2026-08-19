@@ -10,40 +10,25 @@ partial class PipelinesFuncs
   where TServices : IRelayingServices<TKey, TValue, TPayload>
   where TData : IRelayingData<TKey, TValue, TPayload>
   {
-    IReadOnlyList<OutboxMessage<TKey, TPayload>> messages;
-    try
-    {
-      var batchSize = services.GetRelayBatchSize();
-      var utcDate = services.GetUtcDate();
-      messages = await services.GetOutboxMessagesAsync(utcDate, batchSize, ct);
-    }
-    catch(OperationCanceledException) { return default; }
-    catch(Exception exception)
-    {
-      InstrumentFetchOutboxMessageError(exception, services);
-      return RelayingCriticalErrorState;
-    }
+    var messages = await GetRelayingOutboxMessagesAsync<TServices, TData, TKey, TValue, TPayload>(services, ct);
+    if (messages is null) return default;
 
     foreach (var message in messages)
     {
       using var activity = CreateDefaultActivity(services.GetActivitySource(), "relay.outbox.message", ActivityKind.Internal);
       using var logScope = CreateComponentLogScope(services.GetLogger(), activity, "relay.outbox.message");
 
-      var currentData = (TData)CreateRelayingData<TKey, TValue, TPayload>(message);
-      var currentState = RelayingNotStartedState;
+      var initialData = (TData)CreateRelayingData<TKey, TValue, TPayload>(message);
+      var initialState = RelayingNotStartedState;
       var getStateAction = GetRelayingStateAction<TServices, TData, TKey, TValue, TPayload>;
 
-      await foreach (var (newData, newState) in RunStateMachineAsync(services, currentData, currentState, getStateAction, ct))
+      var (_, lastState) = await RunStateMachineAsync(services, initialData, initialState, getStateAction, ct);
+      if (RelayingCriticalStates.Contains(lastState))
       {
-        if (RelayingCriticalStates.Contains(newState))
-        {
-          InstrumentRelayOutboxMessageCriticalError(newState, services);
-          return RelayingCriticalErrorState;
-        }
-        currentData = newData;
-        currentState = newState;
+        InstrumentRelayOutboxMessageCriticalError(lastState, services);
+        return RelayingCriticalErrorState;
       }
-      InstrumentRelayedOutboxMessage(message.MessageId, currentState, services);
+      InstrumentRelayedOutboxMessage(message.MessageId, lastState, services);
     }
     return default;
   }

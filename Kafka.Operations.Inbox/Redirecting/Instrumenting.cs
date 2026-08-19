@@ -5,7 +5,7 @@ namespace Kafka.Operations.Inbox;
 partial class InboxFuncs
 {
   [LoggerMessage(92, LogLevel.Information, "Redirected kafka message. MessageKey: {messageKey}. MessageTopic: {messageTopic}. TopicPartitionOffset: {topicPartitionOffset}")]
-  static partial void LogRedirectedKafkaMessage(ILogger logger, string? messageKey, string messageTopic, TopicPartitionOffset topicPartitionOffset);
+  static partial void LogRedirectedKafkaMessage(ILogger logger, string? messageKey, string messageTopic, TopicPartitionOffset topicPartitionOffset, PersistenceStatus persistenceStatus);
 
   [LoggerMessage(93, LogLevel.Error, "Redirect kafka message error. MessageKey: {messageKey}.")]
   static partial void LogRedirectKafkaMessageError(ILogger logger, string? messageKey, Exception exception);
@@ -20,9 +20,10 @@ partial class InboxFuncs
     string? messageKey,
     string messageTopic,
     TopicPartitionOffset topicPartitionOffset,
+    PersistenceStatus persistenceStatus,
     IInstrumentationServices services)
   {
-    LogRedirectedKafkaMessage(services.GetLogger(), messageKey, messageTopic, topicPartitionOffset);
+    LogRedirectedKafkaMessage(services.GetLogger(), messageKey, messageTopic, topicPartitionOffset, persistenceStatus);
     AddMetricCounter(RedirectedKafkaCounter);
     AddActivityTag(Activity.Current, "redirecting.kafka.key", messageKey);
     AddActivityTag(Activity.Current, "redirecting.kafka.topic", messageTopic);

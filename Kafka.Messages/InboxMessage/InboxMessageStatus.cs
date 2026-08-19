@@ -1,4 +1,4 @@
 
 namespace Kafka.Messages;
 
-public enum InboxMessageStatus { Processing, Handled, DeadLettered }
+public enum InboxMessageStatus { Processing, Handled, DeadLettering, DeadLettered }

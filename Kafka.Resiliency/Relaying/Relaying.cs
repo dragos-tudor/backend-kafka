@@ -12,7 +12,7 @@ partial class ResiliencyFuncs
       "relay.outbox.messages",
       options.RelayOutboxInterval,
       options.RelayOutboxLockInterval,
-      ct => RelayOutboxMessagesAsync(services, ct),
+      ct => RelayOutboxMessagesAsync<IRelayingServices<TKey, TValue, TPayload>, IRelayingData<TKey, TValue, TPayload>, TKey, TValue, TPayload>(services, ct),
       services,
       cancellationToken);
   }

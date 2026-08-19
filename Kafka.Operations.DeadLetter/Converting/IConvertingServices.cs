@@ -1,6 +1,6 @@
 
 namespace Kafka.Operations.DeadLetter;
 
- public interface IConvertingServices<TKey, TValue, TPayload> :
+ public interface IConvertingServices :
   IInstrumentationServices,
   IUtcDateService;

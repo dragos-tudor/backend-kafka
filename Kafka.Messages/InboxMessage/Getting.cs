@@ -10,13 +10,7 @@ partial class MessagesFuncs
     int maxRetries = MaxInboxRetries) =>
       currentRetryCount + 1 <= maxRetries
           ? InboxMessageStatus.Processing
-          : InboxMessageStatus.DeadLettered;
-
-  internal static InboxMessageStatus GetInboxMessageStatus<TPayload>(
-    TPayload payload) =>
-      payload is not null
-          ? InboxMessageStatus.Processing
-          : InboxMessageStatus.DeadLettered;
+          : InboxMessageStatus.DeadLettering;
 
   internal static string GetInboxMessageValidationErrors<TKey, TPayload>(InboxMessage<TKey, TPayload> message) =>
     string.Join(

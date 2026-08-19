@@ -4,7 +4,7 @@ namespace Kafka.Operations.Inbox;
 
 partial class InboxFuncs
 {
-  internal static async ValueTask<(TData, string)> ScheduleInboxMessageAsync<TServices, TData, TKey, TValue, TPayload>(
+  internal static async ValueTask<(TData, string)> ScheduleInboxMessageAsync<TServices, TData, TKey, TPayload>(
     TServices services,
     TData data,
     CancellationToken ct)

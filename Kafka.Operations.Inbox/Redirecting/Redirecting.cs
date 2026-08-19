@@ -22,18 +22,9 @@ partial class InboxFuncs
       var messageKey = GetKafkaMessageKey(kafkaDeadLetter);
 
       var deliveryResult = await PublishMessageAsync(services.GetProducer(), topic, kafkaDeadLetter, ct);
-      var status = deliveryResult.Status switch {
-        PersistenceStatus.Persisted => RedirectedKafkaMessageState,
-        PersistenceStatus.PossiblyPersisted => RedirectKafkaMessageAmbiguousState,
-        _ => RedirectKafkaMessageDeliveryErrorState
-};
-      if (status != RedirectedKafkaMessageState) {
-        InstrumentRedirectKafkaMessageDeliveryWarning(messageKey, "Kafka message not or possibly redirected", services);
-        return (data, status);
-      }
 
-      InstrumentRedirectedKafkaMessage(messageKey, topic, deliveryResult.TopicPartitionOffset, services);
-      return (data, status);
+      InstrumentRedirectedKafkaMessage(messageKey, topic, deliveryResult.TopicPartitionOffset, deliveryResult.Status, services);
+      return (data, RedirectedKafkaMessageState);
     }
     catch (OperationCanceledException) { return default; }
     catch (KafkaException exception) when (exception.Error.IsFatal)

@@ -3,7 +3,7 @@ namespace Kafka.Operations.Inbox;
 
 partial class InboxFuncs
 {
-  [LoggerMessage(7, LogLevel.Information, "Offset consumer. Offset: {offset}")]
+  [LoggerMessage(7, LogLevel.Information, "Offset consumer. Offset: {offset}.")]
   static partial void LogOffsetConsumer(ILogger logger, TopicPartitionOffset? offset);
 
   [LoggerMessage(8, LogLevel.Information, "Offset consumer with missing message. Offset: {offset}")]

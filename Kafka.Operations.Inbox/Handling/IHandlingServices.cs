@@ -1,8 +1,10 @@
 
 namespace Kafka.Operations.Inbox;
 
-public interface IHandlingServices<TKey, TValue, TPayload, TSession> :
+public interface IHandlingServices<TKey, TPayload, TSession> :
   IInboxMessageHandler<TKey, TPayload>,
   IInstrumentationServices,
   ISessionServices<TSession>,
-  IUpdateInboxMessageSessionService<TKey, TPayload, TSession> where TSession : IDisposable;
+  IUpdateInboxMessageService<TKey, TPayload>,
+  IUpdateInboxMessageSessionService<TKey, TPayload, TSession>
+  where TSession : IDisposable;
